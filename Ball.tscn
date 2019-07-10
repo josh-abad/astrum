@@ -1,0 +1,98 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Ball.gd" type="Script" id=1]
+[ext_resource path="res://Assets/light.png" type="Texture" id=2]
+[ext_resource path="res://Assets/White.png" type="Texture" id=3]
+[ext_resource path="res://Audio/339056__cabled-mess__small-lighter-03-03-2016-omni-directional-lavalier-microphone-05.wav" type="AudioStream" id=4]
+
+[sub_resource type="PhysicsMaterial" id=1]
+friction = 0.0
+bounce = 1.0
+
+[sub_resource type="Gradient" id=4]
+offsets = PoolRealArray( 0, 0.44186, 1 )
+colors = PoolColorArray( 0.921875, 0.284485, 0.702772, 1, 0.992188, 0.693756, 0.931569, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=5]
+gradient = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+emission_shape = 1
+emission_sphere_radius = 32.0
+flag_disable_z = true
+spread = 180.0
+initial_velocity = 40.0
+angular_velocity = 28.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 1.0
+damping = 22.0
+angle = 45.0
+angle_random = 1.0
+color_ramp = SubResource( 5 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 31.5126
+
+[node name="Ball" type="RigidBody2D"]
+input_pickable = true
+mode = 2
+physics_material_override = SubResource( 1 )
+gravity_scale = 2.0
+contacts_reported = 10
+contact_monitor = true
+linear_velocity = Vector2( 1, 0 )
+linear_damp = 0.0
+angular_velocity = 1.0
+angular_damp = 0.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Particles2D" type="Particles2D" parent="."]
+emitting = false
+amount = 25
+one_shot = true
+preprocess = 0.25
+speed_scale = 1.5
+explosiveness = 1.0
+process_material = SubResource( 3 )
+
+[node name="Light2D" type="Light2D" parent="."]
+texture = ExtResource( 2 )
+color = Color( 0.427451, 0.898039, 0.745098, 1 )
+range_layer_min = -1
+shadow_enabled = true
+shadow_gradient_length = 15.0
+shadow_filter = 5
+shadow_filter_smooth = 10.0
+
+[node name="Sprite" type="Sprite" parent="Light2D"]
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource( 2 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+limit_left = 0
+limit_right = 1024
+limit_bottom = 600
+limit_smoothed = true
+smoothing_enabled = true
+drag_margin_left = 1.0
+drag_margin_top = 0.5
+drag_margin_right = 1.0
+drag_margin_bottom = 1.0
+editor_draw_limits = true
+
+[node name="Timer" type="Timer" parent="."]
+[connection signal="body_entered" from="." to="." method="_on_Ball_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
