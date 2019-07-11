@@ -38,6 +38,7 @@ func _on_Ball_body_entered(body):
 	$AudioStreamPlayer.play()
 	start_tween()
 	$Particles2D.set_emitting(true)
+	$Camera2D.shake(0.2, 15, 8)
 
 
 func _on_Timer_timeout():
