@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Dynamic Space Background FREE/Nebula Aqua-Pink.png" type="Texture" id=2]
 [ext_resource path="res://Ball.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Circle.tscn" type="PackedScene" id=4]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=5]
 
 [node name="MainNew" type="Node"]
 script = ExtResource( 1 )
@@ -45,4 +46,6 @@ position = Vector2( 832, -1696 )
 
 [node name="Circle5" parent="." instance=ExtResource( 4 )]
 position = Vector2( 288, -2528 )
+
+[node name="HUD" parent="." instance=ExtResource( 5 )]
 [connection signal="dropped" from="Ball" to="." method="_on_Ball_dropped"]
