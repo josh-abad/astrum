@@ -3,6 +3,7 @@ extends RigidBody2D
 const TWEEN_SCALE = 1.25
 const SPEED = -400
 
+signal dropped
 
 func _ready():
 	$Timer.start()
@@ -42,6 +43,18 @@ func _on_Ball_body_entered(body):
 
 
 func _on_Timer_timeout():
-	if $Light2D.energy > 0:
-		$Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, $Light2D.energy-0.1, 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-		$Tween.start()
+	pass
+	# if $Light2D.energy > 0:
+		# $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, $Light2D.energy-0.1, 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+		#  $Tween.start()
+
+func _on_VisibilityNotifier2D_screen_exited():
+	emit_signal("dropped")
+
+
+func unfocus_camera():
+	$Camera2D.current = false
+	
+	
+func stop_bounce():
+	bounce = 0
