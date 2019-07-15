@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/BallSound.wav-31a0344cd91a23a0a4a4cff4aad44b01.sample"
+
+[deps]
+
+source_file="res://Audio/BallSound.wav"
+dest_files=[ "res://.import/BallSound.wav-31a0344cd91a23a0a4a4cff4aad44b01.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

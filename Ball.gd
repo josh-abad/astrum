@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 const TWEEN_SCALE = 1.25
-const SPEED = -400
+const SPEED = -500
 
 signal dropped
 
@@ -10,8 +10,8 @@ func _ready():
 
 
 func tween(node, property, before, after):
-	$Tween.interpolate_property(node, property, before, after, 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-	$Tween.interpolate_property(node, property, after, before, 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	$Tween.interpolate_property(node, property, before, after, 0.3, Tween.TRANS_QUAD, Tween.EASE_IN)
+	$Tween.interpolate_property(node, property, after, before, 0.3, Tween.TRANS_QUAD, Tween.EASE_OUT)
 
 
 func start_tween():
@@ -37,15 +37,15 @@ func _input_event(viewport, event, shape_idx):
 		self.set_linear_velocity(-direction * SPEED)
 		play_sound()
 		start_tween()
-		$Particles2D.set_emitting(true)
+		$Spark.set_emitting(true)
 		reset_light()
 
 
 func _on_Ball_body_entered(body):
 	play_sound()
 	start_tween()
-	$Particles2D.set_emitting(true)
 	$Camera2D.shake(0.2, 15, 8)
+	$Spark.set_emitting(true)
 
 
 func _on_Timer_timeout():
@@ -68,9 +68,21 @@ func stop_bounce():
 	
 	
 func remove():
-	queue_free()
+	"""
+	Hack to stop the ball's sound effects when it's dropped.
+	"""
+	$AudioStreamPlayer.stream = null
 
 
 func _on_PitchTimer_timeout():
 	$AudioStreamPlayer.pitch_scale = 1
 	$AudioStreamPlayer/PitchTimer.stop()
+	
+	
+func turn_off_light():
+	$Tween.interpolate_property(
+		$Light2D, 'energy',
+		$Light2D.energy, 0,
+		0.4,
+		Tween.TRANS_QUAD,
+		Tween.EASE_IN)
