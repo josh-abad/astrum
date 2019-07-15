@@ -64,7 +64,7 @@ func unfocus_camera():
 	
 	
 func stop_bounce():
-	bounce = 0
+	physics_material_override.bounce = 0
 	
 	
 func remove():

@@ -24,7 +24,8 @@ func start_tween():
 
 
 func _on_Circle_body_entered(body):
-	$Spark.set_emitting(true)
-	$AudioStreamPlayer.play()
-	start_tween()
-	emit_signal('hit')
+	if body.is_in_group('balls'):
+		$Spark.set_emitting(true)
+		$AudioStreamPlayer.play()
+		start_tween()
+		emit_signal('hit')

@@ -29,7 +29,9 @@ color_ramp = SubResource( 6 )
 [sub_resource type="CircleShape2D" id=8]
 radius = 31.5126
 
-[node name="Ball" type="RigidBody2D"]
+[node name="Ball" type="RigidBody2D" groups=[
+"balls",
+]]
 input_pickable = true
 mode = 2
 physics_material_override = SubResource( 1 )
