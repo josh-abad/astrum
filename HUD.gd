@@ -13,4 +13,4 @@ func _ready():
 #	pass
 
 func set_label(text):
-	$Label.set_text(text)
+	$HBoxContainer/Label.set_text(text)
