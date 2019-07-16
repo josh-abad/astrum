@@ -1,7 +1,5 @@
 extends RigidBody2D
 
-signal hit
-
 const SPEED = 5
 
 
@@ -18,14 +16,26 @@ func get_smaller_scale():
 	return smaller_scale
 
 
+func get_smaller_radius():
+	return $Spark.process_material.emission_sphere_radius - 32
+
+
 func start_tween():
 	$Tween.interpolate_property($Sprite, 'scale', $Sprite.get_transform().get_scale(), get_smaller_scale(), 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+	$Tween.interpolate_property($Spark, 'emission_sphere_radius', $Spark.process_material.emission_sphere_radius, get_smaller_radius(), 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
 	$Tween.start()
+	if $Sprite.get_transform().get_scale().x <= 0:
+		queue_free()
 
 
 func _on_Circle_body_entered(body):
-	if body.is_in_group('balls'):
+	if body.is_in_group('Balls'):
 		$Spark.set_emitting(true)
-		$AudioStreamPlayer.play()
+		$HitSound.play()
 		start_tween()
-		emit_signal('hit')
+		get_tree().paused = true
+		$Freeze.start()
+
+
+func _on_Freeze_timeout():
+	get_tree().paused = false

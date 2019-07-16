@@ -3,10 +3,21 @@ extends RigidBody2D
 const TWEEN_SCALE = 1.25
 const SPEED = -500
 
+var score = 0
+
 signal dropped
+signal scored
 
 func _ready():
 	$Timer.start()
+
+
+func get_score():
+	return score
+
+
+func set_score(value):
+	score = value
 
 
 func tween(node, property, before, after):
@@ -46,6 +57,9 @@ func _on_Ball_body_entered(body):
 	start_tween()
 	$Camera2D.shake(0.2, 15, 8)
 	$Spark.set_emitting(true)
+	if body.is_in_group('Targets'):
+		score += 1
+		emit_signal('scored')
 
 
 func _on_Timer_timeout():

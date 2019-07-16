@@ -42,12 +42,7 @@ polygon = PoolVector2Array( 0, 608, 1024, 608, 1024, -73792, 1184, -73792, 1184,
 stream = ExtResource( 5 )
 volume_db = -7.736
 
-[node name="Freeze" type="Timer" parent="."]
-pause_mode = 2
-wait_time = 0.08
-
 [node name="Circles" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="Circle" parent="Circles" instance=ExtResource( 6 )]
 position = Vector2( 224, -352 )
@@ -78,5 +73,4 @@ texture = ExtResource( 8 )
 position = Vector2( 704, -5568 )
 texture = ExtResource( 9 )
 [connection signal="dropped" from="Ball" to="." method="_on_Ball_dropped"]
-[connection signal="timeout" from="Freeze" to="." method="_on_Freeze_timeout"]
-[connection signal="hit" from="Circles/Circle" to="." method="_on_Circle_hit"]
+[connection signal="scored" from="Ball" to="." method="_on_Ball_scored"]

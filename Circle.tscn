@@ -1,24 +1,27 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Circle.gd" type="Script" id=1]
 [ext_resource path="res://Assets/circle-xxl.png" type="Texture" id=2]
-[ext_resource path="res://Audio/376968__elmasmalo1__bubble-pop.wav" type="AudioStream" id=3]
+[ext_resource path="res://Audio/Laser.wav" type="AudioStream" id=3]
 
-[sub_resource type="OccluderPolygon2D" id=1]
+[sub_resource type="PhysicsMaterial" id=1]
+bounce = 1.0
+
+[sub_resource type="OccluderPolygon2D" id=2]
 polygon = PoolVector2Array( -37.7681, -121.514, -58.2073, -113.339, -74.5587, -103.411, -83.9023, -95.8194, -98.5018, -80.052, -105.51, -71.2924, -113.101, -57.8609, -119.525, -43.8454, -123.613, -28.662, -126.719, -13.0247, -127.436, -1.5532, -126.719, 11.3523, -124.568, 25.6917, -120.266, 42.899, -113.097, 58.6724, -103.776, 73.7288, -92.3045, 88.0682, -80.8329, 98.1058, -68.6444, 107.426, -56.4559, 113.879, -40.9469, 120.72, -24.3433, 125.248, -7.73978, 127.512, 5.84494, 127.512, 23.2032, 126.003, 36.7879, 122.229, 51.1273, 116.946, 64.712, 110.154, 79.0515, 100.66, 93.3909, 87.0754, 106.221, 71.2266, 115.277, 56.1325, 121.315, 40.1416, 127.353, 20.5192, 128.107, -0.612564, 127.353, -18.7255, 123.579, -35.3291, 117.541, -51.9326, 109.24, -69.2909, 97.1644, -83.6303, 85.8438, -94.9509, 85.8438, -94.9509, 72.2591, -106.271, 57.9197, -114.573, 41.3161, -121.366, 25.4673, -125.139, 11.8826, -127.403, -6.98508, -127.403, -27.3622, -125.139 )
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CircleShape2D" id=3]
 radius = 64.0511
 
-[sub_resource type="Gradient" id=3]
+[sub_resource type="Gradient" id=4]
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=4]
-gradient = SubResource( 3 )
+[sub_resource type="GradientTexture" id=5]
+gradient = SubResource( 4 )
 
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="ParticlesMaterial" id=6]
 emission_shape = 1
-emission_sphere_radius = 200.0
+emission_sphere_radius = 128.0
 flag_disable_z = true
 spread = 180.0
 initial_velocity = 40.0
@@ -30,11 +33,14 @@ damping = 22.0
 angle = 45.0
 angle_random = 1.0
 scale = 2.0
-color_ramp = SubResource( 4 )
+color_ramp = SubResource( 5 )
 
-[node name="Circle" type="RigidBody2D"]
+[node name="Circle" type="RigidBody2D" groups=[
+"Targets",
+]]
 position = Vector2( 571.578, 149.473 )
 mode = 2
+physics_material_override = SubResource( 1 )
 gravity_scale = 0.0
 contacts_reported = 3
 contact_monitor = true
@@ -47,11 +53,11 @@ __meta__ = {
 texture = ExtResource( 2 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite"]
-occluder = SubResource( 1 )
+occluder = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="Spark" type="Particles2D" parent="."]
 emitting = false
@@ -60,10 +66,15 @@ one_shot = true
 preprocess = 0.25
 speed_scale = 1.5
 explosiveness = 1.0
-process_material = SubResource( 5 )
+process_material = SubResource( 6 )
 
 [node name="Tween" type="Tween" parent="."]
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[node name="Freeze" type="Timer" parent="."]
+pause_mode = 2
+wait_time = 0.08
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
 [connection signal="body_entered" from="." to="." method="_on_Circle_body_entered"]
+[connection signal="timeout" from="Freeze" to="." method="_on_Freeze_timeout"]
