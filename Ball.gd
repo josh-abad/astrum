@@ -37,9 +37,9 @@ func reset_light():
 
 
 func play_sound():
-	$AudioStreamPlayer.play()
-	$AudioStreamPlayer.pitch_scale += 1
-	$AudioStreamPlayer/PitchTimer.start()
+	$BounceSound.play()
+	$BounceSound.pitch_scale += 1
+	$BounceSound/PitchTimer.start()
 
 
 func _input_event(viewport, event, shape_idx):
@@ -70,6 +70,7 @@ func _on_Timer_timeout():
 
 
 func _on_VisibilityNotifier2D_screen_exited():
+	$DroppedSound.play()
 	emit_signal("dropped")
 
 
@@ -85,12 +86,12 @@ func remove():
 	"""
 	Hack to stop the ball's sound effects when it's dropped.
 	"""
-	$AudioStreamPlayer.stream = null
+	$BounceSound.stream = null
 
 
 func _on_PitchTimer_timeout():
-	$AudioStreamPlayer.pitch_scale = 1
-	$AudioStreamPlayer/PitchTimer.stop()
+	$BounceSound.pitch_scale = 1
+	$BounceSound/PitchTimer.stop()
 	
 	
 func turn_off_light():
