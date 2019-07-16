@@ -24,8 +24,6 @@ func start_tween():
 	$Tween.interpolate_property($Sprite, 'scale', $Sprite.get_transform().get_scale(), get_smaller_scale(), 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
 	$Tween.interpolate_property($Spark, 'emission_sphere_radius', $Spark.process_material.emission_sphere_radius, get_smaller_radius(), 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
 	$Tween.start()
-	if $Sprite.get_transform().get_scale().x <= 0:
-		queue_free()
 
 
 func _on_Circle_body_entered(body):
@@ -39,3 +37,6 @@ func _on_Circle_body_entered(body):
 
 func _on_Freeze_timeout():
 	get_tree().paused = false
+	if $Sprite.get_transform().get_scale().x == 0.25:
+		print('here')
+		queue_free()

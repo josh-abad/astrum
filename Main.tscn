@@ -43,9 +43,13 @@ stream = ExtResource( 5 )
 volume_db = -7.736
 
 [node name="Circles" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="Circle" parent="Circles" instance=ExtResource( 6 )]
 position = Vector2( 224, -352 )
+
+[node name="Circle6" parent="Circles" instance=ExtResource( 6 )]
+position = Vector2( 192, 224 )
 
 [node name="Circle2" parent="Circles" instance=ExtResource( 6 )]
 position = Vector2( 736, -960 )
@@ -60,6 +64,7 @@ position = Vector2( 832, -1696 )
 position = Vector2( 288, -2528 )
 
 [node name="Stars" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="Stars Small_2" type="Sprite" parent="Stars"]
 position = Vector2( 864, -448 )

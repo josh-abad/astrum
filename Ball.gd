@@ -8,9 +8,6 @@ var score = 0
 signal dropped
 signal scored
 
-func _ready():
-	$Timer.start()
-
 
 func get_score():
 	return score
@@ -60,13 +57,6 @@ func _on_Ball_body_entered(body):
 	if body.is_in_group('Targets') and $VisibilityNotifier2D.is_on_screen():
 			score += 1
 			emit_signal('scored')
-
-
-func _on_Timer_timeout():
-	pass
-	# if $Light2D.energy > 0:
-		# $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, $Light2D.energy-0.1, 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-		#  $Tween.start()
 
 
 func _on_VisibilityNotifier2D_screen_exited():
