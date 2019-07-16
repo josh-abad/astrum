@@ -57,9 +57,9 @@ func _on_Ball_body_entered(body):
 	start_tween()
 	$Camera2D.shake(0.2, 15, 8)
 	$Spark.set_emitting(true)
-	if body.is_in_group('Targets'):
-		score += 1
-		emit_signal('scored')
+	if body.is_in_group('Targets') and $VisibilityNotifier2D.is_on_screen():
+			score += 1
+			emit_signal('scored')
 
 
 func _on_Timer_timeout():
