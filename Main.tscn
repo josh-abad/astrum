@@ -4,7 +4,7 @@
 [ext_resource path="res://Assets/Dynamic Space Background FREE/Nebula Aqua-Pink.png" type="Texture" id=2]
 [ext_resource path="res://Ball.tscn" type="PackedScene" id=3]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Audio/SpaceAmbience.wav" type="AudioStream" id=5]
+[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=5]
 [ext_resource path="res://Circle.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Dynamic Space Background FREE/Stars Small_2.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Dynamic Space Background FREE/Stars Small_1.png" type="Texture" id=8]
@@ -38,7 +38,7 @@ polygon = PoolVector2Array( 0, 608, 1024, 608, 1024, -73792, 1184, -73792, 1184,
 
 [node name="HUD" parent="." instance=ExtResource( 4 )]
 
-[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+[node name="AmbientMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 volume_db = -7.736
 

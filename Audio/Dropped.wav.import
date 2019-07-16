@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/BallSound.wav-31a0344cd91a23a0a4a4cff4aad44b01.sample"
+path="res://.import/Dropped.wav-78d578dc4fe4e90f5a29ca7a6e603ba9.sample"
 
 [deps]
 
-source_file="res://Audio/BallSound.wav"
-dest_files=[ "res://.import/BallSound.wav-31a0344cd91a23a0a4a4cff4aad44b01.sample" ]
+source_file="res://Audio/Dropped.wav"
+dest_files=[ "res://.import/Dropped.wav-78d578dc4fe4e90f5a29ca7a6e603ba9.sample" ]
 
 [params]
 

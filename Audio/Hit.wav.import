@@ -2,12 +2,12 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/SpaceAmbience.wav-0c2f326aba02c420d516b34073b81fa1.sample"
+path="res://.import/Hit.wav-054574b6a7ebaabd8be827db64721f83.sample"
 
 [deps]
 
-source_file="res://Audio/SpaceAmbience.wav"
-dest_files=[ "res://.import/SpaceAmbience.wav-0c2f326aba02c420d516b34073b81fa1.sample" ]
+source_file="res://Audio/Hit.wav"
+dest_files=[ "res://.import/Hit.wav-054574b6a7ebaabd8be827db64721f83.sample" ]
 
 [params]
 

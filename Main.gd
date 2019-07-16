@@ -2,7 +2,7 @@ extends Node
 
 
 func _ready():
-	$AudioStreamPlayer2.play()
+	$AmbientMusic.play()
 	$HUD.set_label(str($Ball.get_score()))
 
 
