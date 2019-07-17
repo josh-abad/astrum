@@ -24,9 +24,6 @@ texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color( 0.215686, 0.215686, 0.215686, 1 )
-
 [node name="Ball" parent="." instance=ExtResource( 3 )]
 position = Vector2( 512, 320 )
 
@@ -77,5 +74,8 @@ texture = ExtResource( 8 )
 [node name="Stars-Big_1_1_PC" type="Sprite" parent="Stars"]
 position = Vector2( 704, -5568 )
 texture = ExtResource( 9 )
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color( 0.0823529, 0.0823529, 0.0823529, 1 )
 [connection signal="dropped" from="Ball" to="." method="_on_Ball_dropped"]
 [connection signal="scored" from="Ball" to="." method="_on_Ball_scored"]
