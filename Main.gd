@@ -11,7 +11,7 @@ func _on_Ball_dropped():
     $Ball.turn_off_light()
     $Ball.stop_bounce()
     $Ball.remove()
-    $HUD.set_label('Lost in space')
+    $HUD.set_label('Game Over')
     $HUD.start_tween()
 
 
