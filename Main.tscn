@@ -31,7 +31,6 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
 [node name="Stars" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="Stars Small_2" type="Sprite" parent="Stars"]
 position = Vector2( 864, -448 )
@@ -46,6 +45,7 @@ position = Vector2( 704, -5568 )
 texture = ExtResource( 6 )
 
 [node name="Target" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="Circle" parent="Target" instance=ExtResource( 2 )]
 position = Vector2( 224, -352 )
@@ -66,6 +66,7 @@ position = Vector2( 832, -1696 )
 position = Vector2( 288, -2528 )
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
+editor/display_folded = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D2"]
 build_mode = 1
@@ -81,7 +82,6 @@ stream = ExtResource( 9 )
 volume_db = -7.736
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color( 0, 0, 0, 1 )
 
 [node name="TargetTimer" type="Timer" parent="."]
 wait_time = 5.0
@@ -90,6 +90,8 @@ wait_time = 5.0
 curve = SubResource( 1 )
 
 [node name="TargetSpawnLocation" type="PathFollow2D" parent="TargetPath"]
+
+[node name="Tween" type="Tween" parent="."]
 [connection signal="dropped" from="Ball" to="." method="_on_Ball_dropped"]
 [connection signal="scored" from="Ball" to="." method="_on_Ball_scored"]
 [connection signal="timeout" from="TargetTimer" to="." method="_on_TargetTimer_timeout"]
