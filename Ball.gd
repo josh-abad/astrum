@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 const TWEEN_SCALE := 1.25
-const SPEED := -500
+export var speed := -500
 
 var score := 0
 
@@ -42,9 +42,9 @@ func play_sound() -> void:
 func _input_event(viewport, event, shape_idx):
     if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
         var direction: Vector2 = (self.get_position() - get_global_mouse_position()).normalized()
-        self.set_linear_velocity(-direction * SPEED)
+        self.set_linear_velocity(-direction * speed)
         # TODO: implement better ball physics
-        # apply_central_impulse(-direction * SPEED)
+        # apply_central_impulse(-direction * speed)
         play_sound()
         _start_tween()
         $Spark.set_emitting(true)
