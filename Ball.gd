@@ -5,7 +5,6 @@ const COLORS: Array = [Color(127, 108, 29, 0.01), Color(45, 99, 77, 0.01), Color
 export var speed := -500
 
 var score := 0
-var tweening := false
 
 signal dropped
 signal scored
