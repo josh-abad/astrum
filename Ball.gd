@@ -5,6 +5,7 @@ const COLORS: Array = [Color(127, 108, 29, 0.01), Color(45, 99, 77, 0.01), Color
 export var speed := -500
 
 var score := 0
+var tweening := false
 
 signal dropped
 signal scored
@@ -19,15 +20,16 @@ func set_score(value: int) -> void:
 
 
 func _tween(node: Object, property: NodePath, before, after):
-    $Tween.interpolate_property(node, property, before, after, 0.2, Tween.TRANS_QUAD, Tween.EASE_IN)
-    $Tween.interpolate_property(node, property, after, before, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property(node, property, before, after, 0.4, Tween.TRANS_QUAD, Tween.EASE_IN)
+    $Tween.interpolate_property(node, property, after, before, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
 
 
 func _start_tween() -> void:
-    _tween($Light2D/Sprite, 'scale', $Light2D/Sprite.get_transform().get_scale(), Vector2(TWEEN_SCALE, TWEEN_SCALE))
-    _tween($Light2D, 'texture_scale', $Light2D.texture_scale, 1.5)
-    $Tween.interpolate_property($Light2D, 'color', $Light2D.color, COLORS[randi() % COLORS.size()], 0.3, Tween.TRANS_QUAD, Tween.EASE_IN)
-    $Tween.start()
+    if not $Tween.is_active():
+        _tween($Light2D/Sprite, 'scale', $Light2D/Sprite.get_transform().get_scale(), Vector2(TWEEN_SCALE, TWEEN_SCALE))
+        _tween($Light2D, 'texture_scale', $Light2D.texture_scale, 1.5)
+        $Tween.interpolate_property($Light2D, 'color', $Light2D.color, COLORS[randi() % COLORS.size()], 0.3, Tween.TRANS_QUAD, Tween.EASE_IN)
+        $Tween.start()
 
 
 func reset_light() -> void:
