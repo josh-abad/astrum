@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/circle-xxl.png-414d0820a304edab5669c4b77374365f.stex"
+path="res://.import/Maroon.png-3d723486e98f9a28656215e7d61f0722.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/circle-xxl.png"
-dest_files=[ "res://.import/circle-xxl.png-414d0820a304edab5669c4b77374365f.stex" ]
+source_file="res://Assets/Maroon.png"
+dest_files=[ "res://.import/Maroon.png-3d723486e98f9a28656215e7d61f0722.stex" ]
 
 [params]
 

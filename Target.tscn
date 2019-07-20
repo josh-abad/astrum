@@ -1,13 +1,13 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Target.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Target.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Green.png" type="Texture" id=2]
 [ext_resource path="res://Audio/Hit.wav" type="AudioStream" id=3]
 
 [sub_resource type="PhysicsMaterial" id=1]
 bounce = 1.0
 
-[sub_resource type="OccluderPolygon2D" id=7]
+[sub_resource type="OccluderPolygon2D" id=2]
 polygon = PoolVector2Array( 45.0952, -46.6227, 50.1125, -40.351, 55.13, -33.661, 59.3112, -25.2986, 62.6561, -17.7725, 63.4924, -9.82823, 64.3286, -0.211472, 63.0743, 9.40529, 60.5656, 22.367, 58.475, 29.475, 52.2032, 39.0918, 45.5133, 46.1998, 37.1509, 52.0535, 27.9523, 57.489, 14.5724, 63.3427, 3.2832, 65.0152, -8.42419, 64.5971, -8.42419, 64.5971, -19.7134, 62.0883, -19.7134, 62.0883, -34.3476, 55.8166, -44.3824, 47.4542, -52.7449, 37.4193, -59.0167, 25.7119, -63.616, 15.259, -65.2885, 4.80595, -65.2885, -6.90138, -63.1978, -16.1, -59.8529, -26.1349, -56.0898, -34.9154, -48.5637, -43.2778, -41.0375, -49.9677, -32.6751, -55.8214, -23.4764, -60.4207, -12.1873, -63.3475, -1.73425, -64.6019, 11.6456, -63.3475, 23.3529, -60.8388, 33.3878, -56.2395, 39.6596, -51.2221 )
 
 [sub_resource type="CircleShape2D" id=3]
@@ -52,9 +52,10 @@ __meta__ = {
 texture = ExtResource( 2 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite"]
-occluder = SubResource( 7 )
+occluder = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource( 3 )
 
 [node name="Spark" type="Particles2D" parent="."]
