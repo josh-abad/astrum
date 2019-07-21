@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Dingy.png-95a78e9db564c2bec2b3e70f6127126c.stex"
+path="res://.import/Pink.png-81d2aa7c1416fd99bc807d7cce9fdc9a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Dingy.png"
-dest_files=[ "res://.import/Dingy.png-95a78e9db564c2bec2b3e70f6127126c.stex" ]
+source_file="res://Assets/Pink.png"
+dest_files=[ "res://.import/Pink.png-81d2aa7c1416fd99bc807d7cce9fdc9a.stex" ]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
 flags/filter=true
-flags/mipmaps=false
+flags/mipmaps=true
 flags/anisotropic=false
 flags/srgb=2
 process/fix_alpha_border=true

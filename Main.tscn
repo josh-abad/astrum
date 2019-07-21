@@ -44,26 +44,6 @@ texture = ExtResource( 5 )
 position = Vector2( 704, -5568 )
 texture = ExtResource( 6 )
 
-[node name="Target" type="Node" parent="."]
-
-[node name="Circle" parent="Target" instance=ExtResource( 2 )]
-position = Vector2( 224, -352 )
-
-[node name="Circle6" parent="Target" instance=ExtResource( 2 )]
-position = Vector2( 192, 224 )
-
-[node name="Circle2" parent="Target" instance=ExtResource( 2 )]
-position = Vector2( 96, -960 )
-
-[node name="Circle3" parent="Target" instance=ExtResource( 2 )]
-position = Vector2( 224, -1696 )
-
-[node name="Circle4" parent="Target" instance=ExtResource( 2 )]
-position = Vector2( 384, -1376 )
-
-[node name="Circle5" parent="Target" instance=ExtResource( 2 )]
-position = Vector2( 288, -2528 )
-
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
 editor/display_folded = true
 
@@ -84,7 +64,7 @@ volume_db = -7.736
 color = Color( 0.713726, 0.713726, 0.713726, 1 )
 
 [node name="TargetTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.25
 
 [node name="TargetPath" type="Path2D" parent="."]
 position = Vector2( 0, -864 )
@@ -96,6 +76,15 @@ position = Vector2( 0, -27929.9 )
 rotation = 0.000497779
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="StartPosition" type="Position2D" parent="."]
+position = Vector2( 240, 950 )
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 [connection signal="dropped" from="Ball" to="." method="_on_Ball_dropped"]
 [connection signal="scored" from="Ball" to="." method="_on_Ball_scored"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]
 [connection signal="timeout" from="TargetTimer" to="." method="_on_TargetTimer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]

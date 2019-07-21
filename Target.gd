@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-const COLORS: Array = ['Target', 'Dingy', 'Eton', 'Flax']
+const COLORS: Array = ['Target', 'Pink', 'Cyan']
 
 
 func _ready():

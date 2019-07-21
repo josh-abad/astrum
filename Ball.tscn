@@ -59,7 +59,7 @@ texture = ExtResource( 3 )
 
 [node name="Light2D" type="Light2D" parent="."]
 texture = ExtResource( 4 )
-color = Color( 0.701961, 0.223529, 0.317647, 0.501961 )
+color = Color( 0.223529, 0.701961, 0.556863, 1 )
 range_layer_min = -1
 shadow_enabled = true
 shadow_gradient_length = 30.0
