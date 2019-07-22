@@ -52,7 +52,7 @@ build_mode = 1
 polygon = PoolVector2Array( 0, 640, 480, 640, 480, -73824, 640, -73824, 640, 768, -160, 768, -160, -73792, 0, -73792 )
 
 [node name="Ball" parent="." instance=ExtResource( 7 )]
-position = Vector2( 224, 480 )
+position = Vector2( 240, 320 )
 
 [node name="HUD" parent="." instance=ExtResource( 8 )]
 

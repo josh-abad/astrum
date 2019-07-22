@@ -19,7 +19,7 @@ func get_smaller_radius() -> float:
 
 
 func start_tween() -> void:
-    $Tween.interpolate_property($Sprite, 'scale', $Sprite.get_transform().get_scale(), get_smaller_scale(), 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+    $Tween.interpolate_property($Sprite, 'scale', $Sprite.get_transform().get_scale(), get_smaller_scale(), 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.interpolate_property($Spark, 'emission_sphere_radius', $Spark.process_material.emission_sphere_radius, get_smaller_radius(), 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
     $Tween.start()
 

@@ -25,18 +25,11 @@ func new_game():
     $Ball.set_score(0)
     $HUD.set_label('0')
     $Ball.start($StartPosition.position)
-    $Ball.turn_on_light()
-    $Ball.focus_camera()
-    $Ball.enable_bounce()
     $StartTimer.start()
 
 
 func _on_Ball_dropped():
     $HUD.show_game_over()
-    $Ball.unfocus_camera()
-    $Ball.turn_off_light()
-    $Ball.stop_bounce()
-    $Ball.remove()
     dim_screen()
 
 

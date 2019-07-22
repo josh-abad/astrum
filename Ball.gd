@@ -5,34 +5,48 @@ const COLORS: Array = [Color(8, 0, 4, 0.1)]
 export var speed := -500
 
 var score := 0
+var reset_position := false
+var should_reset := false
 
 signal dropped
 signal scored
+
+onready var start_pos: Vector2 = get_position()
+onready var start_transform: Transform2D = get_transform()
 
 
 func _ready():
     hide()
 
 
-func start(pos):
-    position = pos
+func _integrate_forces(state):
+    if reset_position:
+        state.set_transform(start_transform)
+        state.set_linear_velocity(Vector2())
+        reset_position = false
+
+
+func start(pos: Vector2) -> void:
     show()
+    reset_position = true
+    turn_on_light()
+    $Camera2D.make_current()
     $CollisionShape2D.disabled = false
-    print(position.x)
-    print(position.y)
 
 
 func get_score() -> int:
+    """Returns the player's score"""
     return score
 
 
 func set_score(value: int) -> void:
+    """Sets the player's score by the specified value"""
     score = value
 
 
 func _tween(node: Object, property: NodePath, before, after):
-    $Tween.interpolate_property(node, property, before, after, 0.4, Tween.TRANS_QUAD, Tween.EASE_IN)
-    $Tween.interpolate_property(node, property, after, before, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property(node, property, before, after, 0.4, Tween.TRANS_BOUNCE, Tween.EASE_IN)
+    $Tween.interpolate_property(node, property, after, before, 0.4, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
 
 
 func _start_tween() -> void:
@@ -77,31 +91,10 @@ func _on_Ball_body_entered(body):
 
 func _on_VisibilityNotifier2D_screen_exited():
     $DroppedSound.play()
-    emit_signal("dropped")
-
-
-func unfocus_camera() -> void:
+    $CollisionShape2D.set_deferred('disabled', true)
+    turn_off_light()
     $Camera2D.current = false
-    
-    
-func focus_camera() -> void:
-    $Camera2D.make_current()
-    
-    
-func stop_bounce() -> void:
-    physics_material_override.bounce = 0
-    
-    
-func enable_bounce() -> void:
-    physics_material_override.bounce = 1
-    
-    
-func remove() -> void:
-    """
-    Hack to stop the ball's sound effects when it's dropped.
-    """
-    # $BounceSound.stream = null
-    pass
+    emit_signal("dropped")
 
 
 func _on_PitchTimer_timeout():
