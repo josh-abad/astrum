@@ -40,7 +40,7 @@ region_rect = Rect2( 0, 0, 30000, 147456 )
 
 [node name="Collision" type="CollisionPolygon2D" parent="Walls"]
 build_mode = 1
-polygon = PoolVector2Array( 0, 740, 480, 740, 480, -73824, 640, -73824, 640, 768, -160, 768, -160, -73792, 0, -73792 )
+polygon = PoolVector2Array( 0, 820, 480, 820, 480, -73824, 640, -73824, 640, 830, -150, 830, -160, -73792, 0, -73792 )
 
 [node name="Ball" parent="." instance=ExtResource( 5 )]
 position = Vector2( 240, 320 )
