@@ -1,14 +1,12 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Target.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Dynamic Space Background FREE/Nebula Aqua-Pink.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Dynamic Space Background FREE/Stars Small_2.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Dynamic Space Background FREE/Stars Small_1.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Dynamic Space Background FREE/Stars-Big_1_1_PC.png" type="Texture" id=6]
-[ext_resource path="res://Ball.tscn" type="PackedScene" id=7]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Dynamic Space Background FREE/Stars Small_1.png" type="Texture" id=4]
+[ext_resource path="res://Ball.tscn" type="PackedScene" id=5]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=7]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -32,32 +30,25 @@ region_rect = Rect2( 0, 0, 98304, 147456 )
 
 [node name="Stars" type="Node" parent="."]
 
-[node name="Stars Small_2" type="Sprite" parent="Stars"]
-position = Vector2( 864, -448 )
-texture = ExtResource( 4 )
-
 [node name="Stars Small_1" type="Sprite" parent="Stars"]
 position = Vector2( 416, -1056 )
-texture = ExtResource( 5 )
+texture = ExtResource( 4 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 30000, 147456 )
 
-[node name="Stars-Big_1_1_PC" type="Sprite" parent="Stars"]
-position = Vector2( 704, -5568 )
-texture = ExtResource( 6 )
+[node name="Walls" type="StaticBody2D" parent="."]
 
-[node name="StaticBody2D2" type="StaticBody2D" parent="."]
-editor/display_folded = true
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D2"]
+[node name="Collision" type="CollisionPolygon2D" parent="Walls"]
 build_mode = 1
-polygon = PoolVector2Array( 0, 640, 480, 640, 480, -73824, 640, -73824, 640, 768, -160, 768, -160, -73792, 0, -73792 )
+polygon = PoolVector2Array( 0, 740, 480, 740, 480, -73824, 640, -73824, 640, 768, -160, 768, -160, -73792, 0, -73792 )
 
-[node name="Ball" parent="." instance=ExtResource( 7 )]
+[node name="Ball" parent="." instance=ExtResource( 5 )]
 position = Vector2( 240, 320 )
 
-[node name="HUD" parent="." instance=ExtResource( 8 )]
+[node name="HUD" parent="." instance=ExtResource( 6 )]
 
 [node name="AmbientMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 9 )
+stream = ExtResource( 7 )
 volume_db = -7.736
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
@@ -77,11 +68,7 @@ rotation = 0.000497779
 
 [node name="Tween" type="Tween" parent="."]
 
-[node name="StartPosition" type="Position2D" parent="."]
-position = Vector2( 240, 950 )
-
 [node name="StartTimer" type="Timer" parent="."]
-wait_time = 2.0
 one_shot = true
 [connection signal="dropped" from="Ball" to="." method="_on_Ball_dropped"]
 [connection signal="scored" from="Ball" to="." method="_on_Ball_scored"]

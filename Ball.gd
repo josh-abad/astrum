@@ -6,13 +6,10 @@ export var speed := -500
 
 var score := 0
 var reset_position := false
-var should_reset := false
+var playing = false
 
 signal dropped
 signal scored
-
-onready var start_pos: Vector2 = get_position()
-onready var start_transform: Transform2D = get_transform()
 
 
 func _ready():
@@ -21,19 +18,27 @@ func _ready():
 
 func _integrate_forces(state):
     if reset_position:
-        state.set_transform(start_transform)
+        state.set_transform(Transform2D(0.0, _get_camera_center()))
         state.set_linear_velocity(Vector2())
         reset_position = false
 
 
-func start(pos: Vector2) -> void:
-    show()
-    reset_position = true
-    turn_on_light()
+func start() -> void:
     $Camera2D.make_current()
+    show()
+    set_light(true)
+    reset_position = true
+    playing = true
     $CollisionShape2D.disabled = false
-
-
+    
+    
+func _get_camera_center():
+    var vtrans = get_canvas_transform()
+    var top_left = -vtrans.get_origin() / vtrans.get_scale()
+    var vsize = get_viewport_rect().size
+    return top_left + 0.5 * vsize / vtrans.get_scale()
+    
+    
 func get_score() -> int:
     """Returns the player's score"""
     return score
@@ -42,19 +47,6 @@ func get_score() -> int:
 func set_score(value: int) -> void:
     """Sets the player's score by the specified value"""
     score = value
-
-
-func _tween(node: Object, property: NodePath, before, after):
-    $Tween.interpolate_property(node, property, before, after, 0.4, Tween.TRANS_BOUNCE, Tween.EASE_IN)
-    $Tween.interpolate_property(node, property, after, before, 0.4, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
-
-
-func _start_tween() -> void:
-    if not $Tween.is_active():
-        _tween($Light2D/Sprite, 'scale', $Light2D/Sprite.get_transform().get_scale(), Vector2(TWEEN_SCALE, TWEEN_SCALE))
-        _tween($Light2D, 'texture_scale', $Light2D.texture_scale, 1.5)
-        _tween($Light2D, 'color', $Light2D.color, COLORS[randi() % COLORS.size()])
-        $Tween.start()
 
 
 func reset_light() -> void:
@@ -90,11 +82,13 @@ func _on_Ball_body_entered(body):
 
 
 func _on_VisibilityNotifier2D_screen_exited():
-    $DroppedSound.play()
-    $CollisionShape2D.set_deferred('disabled', true)
-    turn_off_light()
-    $Camera2D.current = false
-    emit_signal("dropped")
+    if playing:
+        $DroppedSound.play()
+        $CollisionShape2D.set_deferred('disabled', true)
+        set_light(false)
+        $Camera2D.current = false
+        emit_signal("dropped")
+        playing = false
 
 
 func _on_PitchTimer_timeout():
@@ -102,19 +96,23 @@ func _on_PitchTimer_timeout():
     $BounceSound/PitchTimer.stop()
     
     
-func turn_off_light() -> void:
+func set_light(on: bool) -> void:
     $Tween.interpolate_property(
         $Light2D, 'energy',
-        $Light2D.energy, 0,
-        0.4,
+        $Light2D.energy, 1 if on else 0,
+        0.2,
         Tween.TRANS_QUAD,
         Tween.EASE_IN)
-        
-        
-func turn_on_light() -> void:
-    $Tween.interpolate_property(
-        $Light2D, 'energy',
-        $Light2D.energy, 1,
-        0.4,
-        Tween.TRANS_QUAD,
-        Tween.EASE_IN)
+
+
+func _tween(node: Object, property: NodePath, before, after):
+    $Tween.interpolate_property(node, property, before, after, 0.4, Tween.TRANS_BOUNCE, Tween.EASE_IN)
+    $Tween.interpolate_property(node, property, after, before, 0.4, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+
+
+func _start_tween() -> void:
+    if not $Tween.is_active():
+        _tween($Light2D/Sprite, 'scale', $Light2D/Sprite.get_transform().get_scale(), Vector2(TWEEN_SCALE, TWEEN_SCALE))
+        _tween($Light2D, 'texture_scale', $Light2D.texture_scale, 1.5)
+        _tween($Light2D, 'color', $Light2D.color, COLORS[randi() % COLORS.size()])
+        $Tween.start()

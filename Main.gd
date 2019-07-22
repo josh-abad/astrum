@@ -24,8 +24,8 @@ func new_game():
     undim_screen()
     $Ball.set_score(0)
     $HUD.set_label('0')
-    $Ball.start($StartPosition.position)
     $StartTimer.start()
+    $Ball.start()
 
 
 func _on_Ball_dropped():
