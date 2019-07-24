@@ -26,6 +26,7 @@ func new_game():
     $HUD.set_label('0')
     $StartTimer.start()
     $Ball.start()
+    $BlackHole.appear()
 
 
 func _on_Ball_dropped():
@@ -38,14 +39,24 @@ func _on_Ball_scored():
 
 
 func _on_TargetTimer_timeout():
-    $TargetPath/TargetSpawnLocation.set_offset(randi())
+    var camera = $Ball/Camera2D.get_camera_position()
+    var viewport = get_viewport()
+    var x = camera.x - (randi() % viewport.size.x as int)
+    var y = camera.y - (randi() % (camera.y + $Ball.position.y) as int)
     var target = Target.instance()
     add_child(target)
-    var direction = $TargetPath/TargetSpawnLocation.rotation + PI / 2
-    target.position = $TargetPath/TargetSpawnLocation.position
-    direction += rand_range(-PI / 4, PI / 4)
-    target.rotation = direction
+    target.position = Vector2(x, y)
+    print('camera.y: ', camera.y)
+    print('$Ball.position.y: ', $Ball.position.y)
+    print('Spawn y', y, '\n')
 
 
 func _on_StartTimer_timeout():
     $TargetTimer.start()
+
+
+func _on_BlackHole_absorb():
+    $BlackHole.disappear()
+    $Ball.disappear()
+    $HUD.show_game_over()
+    dim_screen()

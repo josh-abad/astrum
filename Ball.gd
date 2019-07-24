@@ -4,7 +4,7 @@ const TWEEN_SCALE := 1.25
 const COLORS: Array = [Color(8, 0, 4, 0.1)]
 export var speed := -500
 
-var score := 0
+var score := 0 setget set_score, get_score
 var reset_position := false
 var playing = false
 
@@ -21,7 +21,7 @@ func _integrate_forces(state):
         state.set_transform(Transform2D(0.0, _get_camera_center()))
         state.set_linear_velocity(Vector2())
         reset_position = false
-
+        
 
 func start() -> void:
     $Camera2D.make_current()
@@ -53,12 +53,6 @@ func reset_light() -> void:
     $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, 1, 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
 
 
-func play_sound() -> void:
-    $BounceSound.play()
-    $BounceSound.pitch_scale += 1
-    $BounceSound/PitchTimer.start()
-
-
 func _input_event(viewport, event, shape_idx):
     if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
         var direction: Vector2 = (self.get_position() - get_global_mouse_position()).normalized()
@@ -76,10 +70,10 @@ func _on_Ball_body_entered(body):
     _start_tween()
     $Camera2D.shake(0.2, 15, 8)
     $Spark.set_emitting(true)
-    if body.is_in_group('Targets') and $VisibilityNotifier2D.is_on_screen():
+    if $VisibilityNotifier2D.is_on_screen() and body.is_in_group('Targets'):
         score += 1
         emit_signal('scored')
-
+            
 
 func _on_VisibilityNotifier2D_screen_exited():
     if playing:
@@ -89,6 +83,12 @@ func _on_VisibilityNotifier2D_screen_exited():
         $Camera2D.current = false
         emit_signal("dropped")
         playing = false
+
+
+func play_sound() -> void:
+    $BounceSound.play()
+    $BounceSound.pitch_scale += 1
+    $BounceSound/PitchTimer.start()
 
 
 func _on_PitchTimer_timeout():
@@ -116,3 +116,12 @@ func _start_tween() -> void:
         _tween($Light2D, 'texture_scale', $Light2D.texture_scale, 1.5)
         _tween($Light2D, 'color', $Light2D.color, COLORS[randi() % COLORS.size()])
         $Tween.start()
+        
+        
+func disappear() -> void:
+    playing = false
+    $CollisionShape2D.set_deferred('disabled', true)
+    $Camera2D.current = false
+    $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
+    $Tween.interpolate_property(self, 'visible', visible, false, 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
+    $Tween.start()

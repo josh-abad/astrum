@@ -42,7 +42,7 @@ func _process(delta):
         set_offset(get_offset() - _last_offset)
 
 # Kick off a new screenshake effect.
-func shake(duration, frequency, amplitude):
+func shake(duration: float, frequency: float, amplitude: float) -> void:
     # Initialize variables.
     _duration = duration
     _timer = duration
