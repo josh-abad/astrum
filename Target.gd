@@ -1,10 +1,10 @@
 extends RigidBody2D
 
-const COLORS: Array = ['Target', 'Pink', 'Cyan']
+# const COLORS: Array = ['Target', 'Pink', 'Cyan']
 
 
 func _ready():
-    $Sprite.set_texture(load("res://Assets/%s.png" % COLORS[randi() % COLORS.size()]))
+    $Sprite.set_texture(load("res://Assets/Planets/Planet%d.png" % rand_range(0, 9)))
 
 
 func get_smaller_scale() -> Vector2:

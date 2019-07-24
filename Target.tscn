@@ -1,17 +1,17 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Target.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Target.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Planets/Planet0.png" type="Texture" id=2]
 [ext_resource path="res://Audio/Hit.wav" type="AudioStream" id=3]
 
 [sub_resource type="PhysicsMaterial" id=1]
 bounce = 1.0
 
-[sub_resource type="OccluderPolygon2D" id=2]
-polygon = PoolVector2Array( 45.0952, -46.6227, 50.1125, -40.351, 55.13, -33.661, 59.3112, -25.2986, 62.6561, -17.7725, 63.4924, -9.82823, 64.3286, -0.211472, 63.0743, 9.40529, 60.5656, 22.367, 58.475, 29.475, 52.2032, 39.0918, 45.5133, 46.1998, 37.1509, 52.0535, 27.9523, 57.489, 14.5724, 63.3427, 3.2832, 65.0152, -8.42419, 64.5971, -8.42419, 64.5971, -19.7134, 62.0883, -19.7134, 62.0883, -34.3476, 55.8166, -44.3824, 47.4542, -52.7449, 37.4193, -59.0167, 25.7119, -63.616, 15.259, -65.2885, 4.80595, -65.2885, -6.90138, -63.1978, -16.1, -59.8529, -26.1349, -56.0898, -34.9154, -48.5637, -43.2778, -41.0375, -49.9677, -32.6751, -55.8214, -23.4764, -60.4207, -12.1873, -63.3475, -1.73425, -64.6019, 11.6456, -63.3475, 23.3529, -60.8388, 33.3878, -56.2395, 39.6596, -51.2221 )
+[sub_resource type="OccluderPolygon2D" id=7]
+polygon = PoolVector2Array( -1.11749, -75.3365, 8.41821, -74.996, 18.6351, -73.6337, 28.5114, -69.8875, 38.7281, -64.4386, 47.9233, -57.9679, 56.778, -49.7944, 61.8864, -42.9832, 64.2703, -39.237, 67.3353, -33.4475, 70.0598, -27.3174, 73.4655, -20.5061, 73.4655, -20.5061, 74.4871, -12.3327, 75.5088, -3.13753, 75.5088, 6.73875, 73.6182, 19.9505, 68.8516, 31.4697, 64.0851, 40.2084, 57.3324, 49.7415, 50.1826, 57.2886, 42.6355, 62.8496, 33.4996, 68.4106, 23.172, 72.3827, 10.8584, 74.766, -2.24963, 75.5604, -11.3856, 74.766, -21.7131, 72.3827, -29.6574, 69.6022, -38.3961, 64.8357, -45.9432, 60.0691, -53.4902, 53.7137, -61.0373, 44.5778, -66.5983, 35.4418, -70.9677, 24.7171, -74.5426, 15.1839, -75.337, 5.25359, -75.337, 5.25359, -76.1314, -3.48512, -74.9398, -14.6071, -71.7621, -26.2915, -66.5983, -35.8246, -60.6401, -45.3578, -55.0791, -51.7132, -48.7237, -57.6714, -39.1906, -65.2185, -29.2602, -69.985, -18.9326, -73.56, -7.81067, -75.1488 )
 
 [sub_resource type="CircleShape2D" id=3]
-radius = 64.9637
+radius = 76.0549
 
 [sub_resource type="Gradient" id=4]
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
@@ -52,13 +52,13 @@ __meta__ = {
 texture = ExtResource( 2 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="Sprite"]
-occluder = SubResource( 2 )
+occluder = SubResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource( 3 )
 
 [node name="Spark" type="Particles2D" parent="."]
+visible = false
 emitting = false
 amount = 80
 one_shot = true
@@ -74,6 +74,7 @@ pause_mode = 2
 wait_time = 0.08
 
 [node name="HitSound" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
 stream = ExtResource( 3 )
 [connection signal="body_entered" from="." to="." method="_on_Circle_body_entered"]
 [connection signal="timeout" from="Freeze" to="." method="_on_Freeze_timeout"]

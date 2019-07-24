@@ -1,22 +1,14 @@
 extends Node
 
 export (PackedScene) var Target
-onready var modulate_color: Color = $CanvasModulate.color
-
-
-func set_dim_screen(on: bool) -> void:
-    $Tween.interpolate_property($CanvasModulate, 'color', $CanvasModulate.color, Color(0, 0, 0) if on else modulate_color, 0.8, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-    $Tween.start()
 
 
 func _ready():
     randomize()
     $AmbientMusic.play()
-    set_dim_screen(true)
 
 
 func new_game() -> void:
-    set_dim_screen(false)
     $Ball.set_score(0)
     $HUD.set_label('0')
     $StartTimer.start()
@@ -25,7 +17,6 @@ func new_game() -> void:
 
 func _on_Ball_dropped():
     $HUD.show_game_over()
-    set_dim_screen(true)
 
 
 func _on_Ball_scored():
@@ -54,7 +45,6 @@ func _on_BlackHole_absorb():
     $BlackHole.disappear()
     $Ball.disappear()
     $HUD.show_game_over()
-    set_dim_screen(true)
 
 
 func _on_BlackHoleTimer_timeout() -> void:

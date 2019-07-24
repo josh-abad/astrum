@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 const TWEEN_SCALE := 1.25
-const COLORS: Array = [Color(8, 0, 4, 0.1)]
+const COLORS: Array = [Color(1, 1, 1)]
 
 export var speed := -500 setget set_speed, get_speed
 
@@ -40,10 +40,6 @@ func _get_camera_center() -> Vector2:
     return top_left + 0.5 * vsize / vtrans.get_scale()
     
 
-func reset_light() -> void:
-    $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, 1, 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
-
-
 func _input_event(viewport, event, shape_idx):
     if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
         var direction: Vector2 = (self.get_position() - get_global_mouse_position()).normalized()
@@ -51,7 +47,6 @@ func _input_event(viewport, event, shape_idx):
         play_sound()
         _start_tween()
         $Spark.set_emitting(true)
-        reset_light()
 
 
 func _on_Ball_body_entered(body):
@@ -66,7 +61,7 @@ func _on_Ball_body_entered(body):
 
 func _on_VisibilityNotifier2D_screen_exited():
     if playing:
-        $DroppedSound.play()
+        dropped_sound_transition()
         $CollisionShape2D.set_deferred('disabled', true)
         set_light(false)
         $Camera2D.current = false
@@ -86,6 +81,7 @@ func _on_PitchTimer_timeout():
     
 func set_light(on: bool) -> void:
     $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, 1 if on else 0, 0.2, Tween.TRANS_QUAD, Tween.EASE_IN)
+    $Tween.start()
 
 
 func _tween(node: Object, property: NodePath, before, after):
@@ -108,6 +104,15 @@ func disappear() -> void:
     $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'visible', visible, false, 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
+    
+    
+func dropped_sound_transition() -> void:
+    $DroppedSound.play()
+    $Tween.interpolate_property($DroppedSound, 'volume_db', $DroppedSound.volume_db, -25, 2, Tween.TRANS_QUAD, Tween.EASE_OUT_IN)
+    $Tween.start()
+    yield(get_tree().create_timer(2), 'timeout')
+    $DroppedSound.stop()
+    $DroppedSound.set_volume_db(10)
     
     
 func get_speed() -> int:

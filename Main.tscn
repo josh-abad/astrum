@@ -1,13 +1,17 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Target.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Dynamic Space Background FREE/Nebula Aqua-Pink.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Dynamic Space Background FREE/Stars Small_1.png" type="Texture" id=4]
-[ext_resource path="res://Ball.tscn" type="PackedScene" id=5]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=7]
-[ext_resource path="res://BlackHole.tscn" type="PackedScene" id=8]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=6]
+[ext_resource path="res://BlackHole.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Ball.tscn" type="PackedScene" id=8]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+
+[sub_resource type="CanvasItemMaterial" id=2]
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
@@ -24,8 +28,10 @@ texture = ExtResource( 3 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
+[node name="BackgroundModulate" type="CanvasModulate" parent="ParallaxBackground/ParallaxLayer"]
+color = Color( 0.0784314, 0.0784314, 0.0784314, 1 )
+
 [node name="ParallaxStars" type="ParallaxBackground" parent="."]
-editor/display_folded = true
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxStars"]
 motion_scale = Vector2( 0.75, 0.75 )
@@ -36,6 +42,9 @@ texture = ExtResource( 4 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
+[node name="StarsModulate" type="CanvasModulate" parent="ParallaxStars/ParallaxLayer"]
+color = Color( 0.0980392, 0.0980392, 0.0980392, 1 )
+
 [node name="Walls" type="StaticBody2D" parent="."]
 editor/display_folded = true
 
@@ -43,18 +52,12 @@ editor/display_folded = true
 build_mode = 1
 polygon = PoolVector2Array( 0, 820, 480, 820, 480, -73824, 640, -73824, 640, 830, -150, 830, -160, -73792, 0, -73792 )
 
-[node name="Ball" parent="." instance=ExtResource( 5 )]
-position = Vector2( 240, 320 )
-speed = -600
-
-[node name="HUD" parent="." instance=ExtResource( 6 )]
+[node name="HUD" parent="." instance=ExtResource( 5 )]
 
 [node name="AmbientMusic" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
+pause_mode = 2
+stream = ExtResource( 6 )
 volume_db = -7.736
-
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color( 0.713726, 0.713726, 0.713726, 1 )
 
 [node name="TargetTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -64,18 +67,27 @@ wait_time = 2.0
 [node name="StartTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="BlackHole" parent="." instance=ExtResource( 8 )]
+[node name="BlackHole" parent="." instance=ExtResource( 7 )]
 visible = false
 position = Vector2( 340, 90 )
 
 [node name="BlackHoleTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
-[connection signal="dropped" from="Ball" to="." method="_on_Ball_dropped"]
-[connection signal="scored" from="Ball" to="." method="_on_Ball_scored"]
+
+[node name="MainModulate" type="CanvasModulate" parent="."]
+material = SubResource( 1 )
+color = Color( 0.156863, 0.156863, 0.156863, 1 )
+
+[node name="Ball" parent="." instance=ExtResource( 8 )]
+material = SubResource( 2 )
+position = Vector2( 240, 320 )
+speed = -600
 [connection signal="start_game" from="HUD" to="." method="new_game"]
 [connection signal="timeout" from="TargetTimer" to="." method="_on_TargetTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="absorb" from="BlackHole" to="." method="_on_BlackHole_absorb"]
 [connection signal="inactive" from="BlackHole" to="." method="_on_BlackHole_inactive"]
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]
+[connection signal="dropped" from="Ball" to="." method="_on_Ball_dropped"]
+[connection signal="scored" from="Ball" to="." method="_on_Ball_scored"]

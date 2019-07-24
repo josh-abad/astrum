@@ -14,11 +14,11 @@ func _physics_process(delta):
                 emit_signal("absorb")
 
 
-func appear(position: Vector2) -> void:
+func appear(position: Vector2 = self.position) -> void:
     show()
     self.position = position
-    $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(1, 1), 0.4, Tween.TRANS_CIRC, Tween.EASE_IN)
-    $Tween.interpolate_property(self, 'visible', visible, true, 0.4, Tween.TRANS_CIRC, Tween.EASE_IN)
+    $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
+    $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.start()
     active = true
     $ActiveTimer.start()
@@ -27,8 +27,8 @@ func appear(position: Vector2) -> void:
     
     
 func disappear() -> void:
-    $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
-    $Tween.interpolate_property(self, 'visible', visible, false, 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
+    $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
+    $Tween.interpolate_property(self, 'visible', visible, false, 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
     active = false
     $AmbientSound.stop()
