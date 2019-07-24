@@ -15,6 +15,7 @@ signal scored
 
 func _ready():
     hide()
+    $CollisionShape2D.set_deferred('disabled', true)
 
 
 func _integrate_forces(state):

@@ -14,7 +14,6 @@ func disappear() -> void:
     queue_free()
     
 
-
 func start_freeze() -> void:
     """Freezes the screen for 7.5 milliseconds"""
     get_tree().paused = true
