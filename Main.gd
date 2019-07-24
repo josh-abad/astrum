@@ -45,6 +45,7 @@ func _on_BlackHole_absorb():
     $BlackHole.disappear()
     $Ball.disappear()
     $HUD.show_game_over()
+    $Ball.dropped_sound_transition()
 
 
 func _on_BlackHoleTimer_timeout() -> void:

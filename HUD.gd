@@ -3,6 +3,7 @@ extends CanvasLayer
 signal start_game
 
 onready var center_y : int = get_center_y()
+const RESTART_ICON := preload("res://Assets/HUD/Restart.png")
 
 
 func _ready():
@@ -16,6 +17,7 @@ func set_label(text: String) -> void:
 func show_game_over() -> void:
     set_label('Game Over')
     center_label()
+    $StartButton.set_button_icon(RESTART_ICON)
     $StartButton.show()
     
     
