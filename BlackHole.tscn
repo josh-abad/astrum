@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://BlackHole.gd" type="Script" id=1]
 [ext_resource path="res://Spark.tscn" type="PackedScene" id=2]
@@ -12,8 +12,10 @@
 [ext_resource path="res://Assets/BlackHoleAnimation/3.5.png" type="Texture" id=10]
 [ext_resource path="res://Assets/BlackHoleAnimation/4.png" type="Texture" id=11]
 [ext_resource path="res://Assets/BlackHoleAnimation/4.5.png" type="Texture" id=12]
+[ext_resource path="res://Audio/BlackHole.wav" type="AudioStream" id=13]
+[ext_resource path="res://Audio/BlackHoleClose.wav" type="AudioStream" id=14]
 
-[sub_resource type="SpriteFrames" id=6]
+[sub_resource type="SpriteFrames" id=1]
 animations = [ {
 "frames": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ) ],
 "loop": true,
@@ -21,7 +23,7 @@ animations = [ {
 "speed": 24.0
 } ]
 
-[sub_resource type="CircleShape2D" id=5]
+[sub_resource type="CircleShape2D" id=2]
 radius = 31.5126
 
 [node name="BlackHole" type="Area2D" groups=[
@@ -52,17 +54,26 @@ visible = false
 texture = ExtResource( 4 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Light2D"]
-frames = SubResource( 6 )
+frames = SubResource( 1 )
 frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-shape = SubResource( 5 )
+shape = SubResource( 2 )
 
 [node name="Tween" type="Tween" parent="."]
 
 [node name="ActiveTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
+
+[node name="AmbientSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 13 )
+area_mask = 0
+
+[node name="TransitionSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 14 )
+attenuation = 0.63728
+area_mask = 0
 [connection signal="timeout" from="ActiveTimer" to="." method="_on_ActiveTimer_timeout"]

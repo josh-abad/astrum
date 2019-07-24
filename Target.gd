@@ -25,9 +25,7 @@ func start_tween() -> void:
 
 
 func start_freeze() -> void:
-    """
-    Freezes the screen for 7.5 milliseconds.
-    """
+    """Freezes the screen for 7.5 milliseconds"""
     get_tree().paused = true
     $Freeze.start()
 

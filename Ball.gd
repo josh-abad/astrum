@@ -2,11 +2,12 @@ extends RigidBody2D
 
 const TWEEN_SCALE := 1.25
 const COLORS: Array = [Color(8, 0, 4, 0.1)]
-export var speed := -500
+
+export var speed := -500 setget set_speed, get_speed
 
 var score := 0 setget set_score, get_score
-var reset_position := false
-var playing = false
+var reset_position := false setget set_reset_position, is_reset_position
+var playing = false setget set_playing, is_playing
 
 signal dropped
 signal scored
@@ -32,22 +33,12 @@ func start() -> void:
     $CollisionShape2D.disabled = false
     
     
-func _get_camera_center():
-    var vtrans = get_canvas_transform()
-    var top_left = -vtrans.get_origin() / vtrans.get_scale()
-    var vsize = get_viewport_rect().size
+func _get_camera_center() -> Vector2:
+    var vtrans: Transform2D = get_canvas_transform()
+    var top_left: Vector2 = -vtrans.get_origin() / vtrans.get_scale()
+    var vsize: Vector2 = get_viewport_rect().size
     return top_left + 0.5 * vsize / vtrans.get_scale()
     
-    
-func get_score() -> int:
-    """Returns the player's score"""
-    return score
-
-
-func set_score(value: int) -> void:
-    """Sets the player's score by the specified value"""
-    score = value
-
 
 func reset_light() -> void:
     $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, 1, 0.4, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
@@ -57,8 +48,6 @@ func _input_event(viewport, event, shape_idx):
     if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
         var direction: Vector2 = (self.get_position() - get_global_mouse_position()).normalized()
         self.set_linear_velocity(-direction * speed)
-        # TODO: implement better ball physics
-        # apply_central_impulse(-direction * speed)
         play_sound()
         _start_tween()
         $Spark.set_emitting(true)
@@ -93,16 +82,10 @@ func play_sound() -> void:
 
 func _on_PitchTimer_timeout():
     $BounceSound.pitch_scale = 1
-    $BounceSound/PitchTimer.stop()
     
     
 func set_light(on: bool) -> void:
-    $Tween.interpolate_property(
-        $Light2D, 'energy',
-        $Light2D.energy, 1 if on else 0,
-        0.2,
-        Tween.TRANS_QUAD,
-        Tween.EASE_IN)
+    $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, 1 if on else 0, 0.2, Tween.TRANS_QUAD, Tween.EASE_IN)
 
 
 func _tween(node: Object, property: NodePath, before, after):
@@ -125,3 +108,35 @@ func disappear() -> void:
     $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'visible', visible, false, 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
+    
+    
+func get_speed() -> int:
+    return speed
+    
+    
+func set_speed(value: int) -> void:
+    speed = value
+    
+    
+func get_score() -> int:
+    return score
+
+
+func set_score(value: int) -> void:
+    score = value
+    
+    
+func is_reset_position() -> bool:
+    return reset_position
+    
+    
+func set_reset_position(value: bool) -> void:
+    reset_position = value
+
+
+func is_playing() -> bool:
+    return playing
+    
+    
+func set_playing(value: bool) -> void:
+    playing = value

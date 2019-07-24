@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Target.tscn" type="PackedScene" id=2]
@@ -8,11 +8,6 @@
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=7]
 [ext_resource path="res://BlackHole.tscn" type="PackedScene" id=8]
-
-[sub_resource type="Curve2D" id=1]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, -27929.9, 0, 0, 0, 0, 1024, -27929.9, 0, 0, 0, 0, 1024, 576, 0, 0, 0, 0, 0, 576, 0, 0, 0, 0, 0, -27929.9 )
-}
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
@@ -29,25 +24,17 @@ texture = ExtResource( 3 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
-[node name="ParallaxBackground2" type="ParallaxBackground" parent="."]
+[node name="ParallaxStars" type="ParallaxBackground" parent="."]
+editor/display_folded = true
 
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground2"]
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxStars"]
 motion_scale = Vector2( 0.75, 0.75 )
 
-[node name="Sprite" type="Sprite" parent="ParallaxBackground2/ParallaxLayer"]
+[node name="Sprite" type="Sprite" parent="ParallaxStars/ParallaxLayer"]
 position = Vector2( -1280, -96 )
 texture = ExtResource( 4 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
-
-[node name="Stars" type="Node" parent="."]
-
-[node name="Stars Small_1" type="Sprite" parent="Stars"]
-visible = false
-position = Vector2( 416, -1056 )
-texture = ExtResource( 4 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 30000, 147456 )
 
 [node name="Walls" type="StaticBody2D" parent="."]
 editor/display_folded = true
@@ -58,6 +45,7 @@ polygon = PoolVector2Array( 0, 820, 480, 820, 480, -73824, 640, -73824, 640, 830
 
 [node name="Ball" parent="." instance=ExtResource( 5 )]
 position = Vector2( 240, 320 )
+speed = -600
 
 [node name="HUD" parent="." instance=ExtResource( 6 )]
 
@@ -71,15 +59,6 @@ color = Color( 0.713726, 0.713726, 0.713726, 1 )
 [node name="TargetTimer" type="Timer" parent="."]
 wait_time = 2.0
 
-[node name="TargetPath" type="Path2D" parent="."]
-position = Vector2( 0, -864 )
-scale = Vector2( 0.46875, 2.61111 )
-curve = SubResource( 1 )
-
-[node name="TargetSpawnLocation" type="PathFollow2D" parent="TargetPath"]
-position = Vector2( 0, -27929.9 )
-rotation = 0.000497779
-
 [node name="Tween" type="Tween" parent="."]
 
 [node name="StartTimer" type="Timer" parent="."]
@@ -88,9 +67,15 @@ one_shot = true
 [node name="BlackHole" parent="." instance=ExtResource( 8 )]
 visible = false
 position = Vector2( 340, 90 )
+
+[node name="BlackHoleTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 [connection signal="dropped" from="Ball" to="." method="_on_Ball_dropped"]
 [connection signal="scored" from="Ball" to="." method="_on_Ball_scored"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
 [connection signal="timeout" from="TargetTimer" to="." method="_on_TargetTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="absorb" from="BlackHole" to="." method="_on_BlackHole_absorb"]
+[connection signal="inactive" from="BlackHole" to="." method="_on_BlackHole_inactive"]
+[connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]
