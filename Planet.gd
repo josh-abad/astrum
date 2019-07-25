@@ -29,7 +29,7 @@ func start_freeze() -> void:
     $Freeze.start()
 
 
-func _on_Circle_body_entered(body):
+func _on_Planet_body_entered(body):
     if body.is_in_group('Balls'):
         $HitSound.play()
         disappear()

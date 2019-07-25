@@ -1,14 +1,14 @@
 [gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
-[ext_resource path="res://Target.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Star.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Dynamic Space Background FREE/Nebula Aqua-Pink.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Dynamic Space Background FREE/Stars Small_1.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Parallax/Background.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=5]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=7]
 [ext_resource path="res://BlackHole.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Ball.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Comet.tscn" type="PackedScene" id=9]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -16,7 +16,7 @@
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
-Target = ExtResource( 2 )
+Planet = ExtResource( 2 )
 Star = ExtResource( 3 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
@@ -61,7 +61,7 @@ pause_mode = 2
 stream = ExtResource( 7 )
 volume_db = -7.736
 
-[node name="TargetTimer" type="Timer" parent="."]
+[node name="PlanetTimer" type="Timer" parent="."]
 wait_time = 2.0
 
 [node name="Tween" type="Tween" parent="."]
@@ -81,7 +81,7 @@ color = Color( 0.235294, 0.235294, 0.235294, 1 )
 visible = false
 position = Vector2( 340, 90 )
 
-[node name="Ball" parent="." instance=ExtResource( 9 )]
+[node name="Comet" parent="." instance=ExtResource( 9 )]
 material = SubResource( 2 )
 position = Vector2( 240, 320 )
 speed = -600
@@ -89,11 +89,11 @@ speed = -600
 [node name="StarTimer" type="Timer" parent="."]
 wait_time = 6.0
 [connection signal="start_game" from="HUD" to="." method="new_game"]
-[connection signal="timeout" from="TargetTimer" to="." method="_on_TargetTimer_timeout"]
+[connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]
 [connection signal="absorb" from="BlackHole" to="." method="_on_BlackHole_absorb"]
 [connection signal="inactive" from="BlackHole" to="." method="_on_BlackHole_inactive"]
-[connection signal="dropped" from="Ball" to="." method="_on_Ball_dropped"]
-[connection signal="scored" from="Ball" to="." method="_on_Ball_scored"]
+[connection signal="dropped" from="Comet" to="." method="_on_Comet_dropped"]
+[connection signal="scored" from="Comet" to="." method="_on_Comet_scored"]
 [connection signal="timeout" from="StarTimer" to="." method="_on_Timer_timeout"]

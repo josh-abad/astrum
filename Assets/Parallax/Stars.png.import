@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Stars Small_1.png-70d9567d0be1f8a46fec258eda4dd373.stex"
+path="res://.import/Stars.png-4aefd14e1424d0715b1f04aef3efb903.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Dynamic Space Background FREE/Stars Small_1.png"
-dest_files=[ "res://.import/Stars Small_1.png-70d9567d0be1f8a46fec258eda4dd373.stex" ]
+source_file="res://Assets/Parallax/Stars.png"
+dest_files=[ "res://.import/Stars.png-4aefd14e1424d0715b1f04aef3efb903.stex" ]
 
 [params]
 

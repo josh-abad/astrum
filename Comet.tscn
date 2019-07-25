@@ -1,16 +1,38 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://Ball.gd" type="Script" id=1]
-[ext_resource path="res://Spark.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Assets/White.png" type="Texture" id=3]
-[ext_resource path="res://Assets/Light.png" type="Texture" id=4]
-[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=5]
-[ext_resource path="res://Camera2D.gd" type="Script" id=6]
-[ext_resource path="res://Audio/Dropped.wav" type="AudioStream" id=7]
+[ext_resource path="res://Comet.gd" type="Script" id=1]
+[ext_resource path="res://Assets/White.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Light.png" type="Texture" id=3]
+[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=4]
+[ext_resource path="res://Camera2D.gd" type="Script" id=5]
+[ext_resource path="res://Audio/Dropped.wav" type="AudioStream" id=6]
 
 [sub_resource type="PhysicsMaterial" id=1]
 friction = 0.0
 bounce = 1.0
+
+[sub_resource type="Gradient" id=6]
+offsets = PoolRealArray( 0, 0.44186, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.834961, 0.834961, 0.834961, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=7]
+gradient = SubResource( 6 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+emission_shape = 1
+emission_sphere_radius = 32.0
+flag_disable_z = true
+spread = 180.0
+initial_velocity = 40.0
+angular_velocity = 28.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 1.0
+damping = 22.0
+angle = 45.0
+angle_random = 1.0
+scale = 2.0
+color_ramp = SubResource( 7 )
 
 [sub_resource type="Gradient" id=2]
 offsets = PoolRealArray( 0.00581395, 1 )
@@ -30,7 +52,7 @@ color_ramp = SubResource( 3 )
 [sub_resource type="CircleShape2D" id=5]
 radius = 31.5126
 
-[node name="Ball" type="RigidBody2D" groups=[
+[node name="Comet" type="RigidBody2D" groups=[
 "Balls",
 ]]
 input_pickable = true
@@ -48,17 +70,24 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Spark" parent="." instance=ExtResource( 2 )]
+[node name="Spark" type="Particles2D" parent="."]
+emitting = false
+amount = 40
+one_shot = true
+preprocess = 0.25
+speed_scale = 1.5
+explosiveness = 1.0
+process_material = SubResource( 8 )
 
 [node name="Trail" type="Particles2D" parent="."]
 amount = 10
 speed_scale = 2.0
 local_coords = false
 process_material = SubResource( 4 )
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
 
 [node name="Light2D" type="Light2D" parent="."]
-texture = ExtResource( 4 )
+texture = ExtResource( 3 )
 color = Color( 0, 0.858824, 1, 1 )
 range_layer_min = -1
 shadow_enabled = true
@@ -67,7 +96,7 @@ shadow_filter = 5
 shadow_filter_smooth = 60.0
 
 [node name="Sprite" type="Sprite" parent="Light2D"]
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -77,7 +106,7 @@ shape = SubResource( 5 )
 
 [node name="BounceSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 5 )
+stream = ExtResource( 4 )
 
 [node name="PitchTimer" type="Timer" parent="BounceSound"]
 wait_time = 0.75
@@ -96,13 +125,13 @@ drag_margin_top = 0.25
 drag_margin_right = 1.0
 drag_margin_bottom = 1.0
 editor_draw_limits = true
-script = ExtResource( 6 )
+script = ExtResource( 5 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 
 [node name="DroppedSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 7 )
+stream = ExtResource( 6 )
 volume_db = 10.0
-[connection signal="body_entered" from="." to="." method="_on_Ball_body_entered"]
+[connection signal="body_entered" from="." to="." method="_on_Comet_body_entered"]
 [connection signal="timeout" from="BounceSound/PitchTimer" to="." method="_on_PitchTimer_timeout"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

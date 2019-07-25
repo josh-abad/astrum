@@ -50,7 +50,7 @@ func _input_event(viewport, event, shape_idx):
         $Spark.set_emitting(true)
 
 
-func _on_Ball_body_entered(body):
+func _on_Comet_body_entered(body):
     play_sound()
     _start_tween()
     $Camera2D.shake(0.2, 15, 8)

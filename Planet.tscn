@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Target.gd" type="Script" id=1]
+[ext_resource path="res://Planet.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Planets/Planet0.png" type="Texture" id=2]
 [ext_resource path="res://Audio/Hit.wav" type="AudioStream" id=3]
 
@@ -13,7 +13,7 @@ polygon = PoolVector2Array( -1.11749, -75.3365, 8.41821, -74.996, 18.6351, -73.6
 [sub_resource type="CircleShape2D" id=3]
 radius = 76.0549
 
-[node name="Target" type="RigidBody2D" groups=[
+[node name="Planet" type="RigidBody2D" groups=[
 "Targets",
 ]]
 position = Vector2( 571.578, 149.473 )
@@ -45,5 +45,5 @@ wait_time = 0.08
 [node name="HitSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
 stream = ExtResource( 3 )
-[connection signal="body_entered" from="." to="." method="_on_Circle_body_entered"]
+[connection signal="body_entered" from="." to="." method="_on_Planet_body_entered"]
 [connection signal="timeout" from="Freeze" to="." method="_on_Freeze_timeout"]
