@@ -18,6 +18,7 @@ func _physics_process(delta):
                 disappear()
                 collected = true
                 $CollectSound.play()
+                start_freeze()
 
 
 func appear(position: Vector2) -> void:
@@ -31,3 +32,15 @@ func disappear() -> void:
     $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'visible', visible, false, 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
+    yield(get_tree().create_timer(1), "timeout")
+    queue_free()
+    
+    
+func start_freeze() -> void:
+    """Freezes the screen for 7.5 milliseconds"""
+    get_tree().paused = true
+    $Freeze.start()
+
+
+func _on_Freeze_timeout() -> void:
+    get_tree().paused = false

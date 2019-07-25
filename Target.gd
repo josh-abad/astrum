@@ -31,12 +31,9 @@ func start_freeze() -> void:
 
 func _on_Circle_body_entered(body):
     if body.is_in_group('Balls'):
-        $Spark.set_emitting(true)
         $HitSound.play()
         disappear()
 
 
 func _on_Freeze_timeout():
     get_tree().paused = false
-    if $Sprite.get_transform().get_scale().x < 0.25:
-        queue_free()

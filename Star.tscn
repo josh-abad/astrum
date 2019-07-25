@@ -32,7 +32,7 @@ color = Color( 0.976471, 0.741176, 0.247059, 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Light2D"]
 frames = SubResource( 1 )
-frame = 1
+frame = 5
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -42,4 +42,10 @@ shape = SubResource( 2 )
 [node name="Tween" type="Tween" parent="."]
 
 [node name="CollectSound" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
 stream = ExtResource( 8 )
+
+[node name="Freeze" type="Timer" parent="."]
+pause_mode = 2
+wait_time = 0.08
+[connection signal="timeout" from="Freeze" to="." method="_on_Freeze_timeout"]
