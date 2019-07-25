@@ -6,6 +6,7 @@ func _ready():
 
 
 func disappear() -> void:
+    $CollisionShape2D.set_deferred('disabled', true)
     $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 1, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'visible', visible, false, 1, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
