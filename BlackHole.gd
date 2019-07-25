@@ -21,6 +21,7 @@ func appear(position: Vector2 = self.position) -> void:
     $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.start()
     active = true
+    $ActiveTimer.set_wait_time(rand_range(5, 10))
     $ActiveTimer.start()
     $TransitionSound.play()
     $AmbientSound.play()

@@ -3,6 +3,15 @@ extends RigidBody2D
 
 func _ready():
     $Sprite.set_texture(load("res://Assets/Planets/Planet%d.png" % rand_range(0, 9)))
+    hide()
+
+
+func appear(position: Vector2) -> void:
+    show()
+    self.position = position
+    $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
+    $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
+    $Tween.start()
 
 
 func disappear() -> void:
