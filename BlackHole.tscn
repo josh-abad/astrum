@@ -1,24 +1,23 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://BlackHole.gd" type="Script" id=1]
 [ext_resource path="res://Spark.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Particle.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Light.png" type="Texture" id=4]
-[ext_resource path="res://Assets/BlackHole.png" type="Texture" id=5]
-[ext_resource path="res://Assets/BlackHoleAnimation/1.png" type="Texture" id=6]
-[ext_resource path="res://Assets/BlackHoleAnimation/1.5.png" type="Texture" id=7]
-[ext_resource path="res://Assets/BlackHoleAnimation/2.png" type="Texture" id=8]
-[ext_resource path="res://Assets/BlackHoleAnimation/2.5.png" type="Texture" id=9]
-[ext_resource path="res://Assets/BlackHoleAnimation/3.png" type="Texture" id=10]
-[ext_resource path="res://Assets/BlackHoleAnimation/3.5.png" type="Texture" id=11]
-[ext_resource path="res://Assets/BlackHoleAnimation/4.png" type="Texture" id=12]
-[ext_resource path="res://Assets/BlackHoleAnimation/4.5.png" type="Texture" id=13]
-[ext_resource path="res://Audio/BlackHole.wav" type="AudioStream" id=14]
-[ext_resource path="res://Audio/BlackHoleClose.wav" type="AudioStream" id=15]
+[ext_resource path="res://Assets/BlackHoleAnimation/1.png" type="Texture" id=5]
+[ext_resource path="res://Assets/BlackHoleAnimation/1.5.png" type="Texture" id=6]
+[ext_resource path="res://Assets/BlackHoleAnimation/2.png" type="Texture" id=7]
+[ext_resource path="res://Assets/BlackHoleAnimation/2.5.png" type="Texture" id=8]
+[ext_resource path="res://Assets/BlackHoleAnimation/3.png" type="Texture" id=9]
+[ext_resource path="res://Assets/BlackHoleAnimation/3.5.png" type="Texture" id=10]
+[ext_resource path="res://Assets/BlackHoleAnimation/4.png" type="Texture" id=11]
+[ext_resource path="res://Assets/BlackHoleAnimation/4.5.png" type="Texture" id=12]
+[ext_resource path="res://Audio/BlackHole.wav" type="AudioStream" id=13]
+[ext_resource path="res://Audio/BlackHoleClose.wav" type="AudioStream" id=14]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ) ],
+"frames": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ) ],
 "loop": true,
 "name": "default",
 "speed": 24.0
@@ -51,13 +50,9 @@ shadow_gradient_length = 30.0
 shadow_filter = 5
 shadow_filter_smooth = 60.0
 
-[node name="Sprite" type="Sprite" parent="Light2D"]
-visible = false
-texture = ExtResource( 5 )
-
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Light2D"]
 frames = SubResource( 1 )
-frame = 7
+frame = 5
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -72,12 +67,12 @@ one_shot = true
 
 [node name="AmbientSound" type="AudioStreamPlayer2D" parent="."]
 pause_mode = 2
-stream = ExtResource( 14 )
+stream = ExtResource( 13 )
 area_mask = 0
 
 [node name="TransitionSound" type="AudioStreamPlayer2D" parent="."]
 pause_mode = 2
-stream = ExtResource( 15 )
+stream = ExtResource( 14 )
 attenuation = 0.63728
 area_mask = 0
 [connection signal="timeout" from="ActiveTimer" to="." method="_on_ActiveTimer_timeout"]

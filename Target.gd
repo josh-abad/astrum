@@ -2,12 +2,11 @@ extends RigidBody2D
 
 
 func _ready():
-    $Sprite.set_texture(load("res://Assets/Planets/Planet%d.png" % rand_range(0, 9)))
+    $Sprite.set_texture(load("res://Assets/Planets/Planet%d.png" % floor(rand_range(0, 9))))
     hide()
 
 
 func appear(position: Vector2) -> void:
-    show()
     self.position = position
     $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
@@ -20,7 +19,7 @@ func disappear() -> void:
     $Tween.interpolate_property(self, 'visible', visible, false, 1, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
     start_freeze()
-    yield(get_tree().create_timer(0.9), 'timeout')
+    yield(get_tree().create_timer(1), 'timeout')
     queue_free()
     
 

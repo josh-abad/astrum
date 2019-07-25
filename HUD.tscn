@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Assets/HUD/Start.png" type="Texture" id=3]
+[ext_resource path="res://Audio/Button.wav" type="AudioStream" id=4]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -114,4 +115,7 @@ margin_right = 38.0
 custom_fonts/font = SubResource( 6 )
 icon = ExtResource( 3 )
 flat = true
+
+[node name="ButtonSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]

@@ -37,5 +37,6 @@ func uncenter_label() -> void:
 
 func _on_StartButton_pressed():
     $StartButton.hide()
+    $ButtonSound.play()
     uncenter_label()
     emit_signal('start_game')

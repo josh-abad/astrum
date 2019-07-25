@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Black.png-4d5bb25538b22d0662c28da0ccd930ee.stex"
+path="res://.import/LightSmall.png-efcdd99f6072dca4e742a360742365cf.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Black.png"
-dest_files=[ "res://.import/Black.png-4d5bb25538b22d0662c28da0ccd930ee.stex" ]
+source_file="res://Audio/LightSmall.png"
+dest_files=[ "res://.import/LightSmall.png-efcdd99f6072dca4e742a360742365cf.stex" ]
 
 [params]
 
