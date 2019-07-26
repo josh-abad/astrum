@@ -4,24 +4,24 @@
 [ext_resource path="res://Assets/Particle.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Light.png" type="Texture" id=3]
 [ext_resource path="res://Assets/BlackHoleAnimation/1.png" type="Texture" id=4]
-[ext_resource path="res://Assets/BlackHoleAnimation/1.5.png" type="Texture" id=5]
-[ext_resource path="res://Assets/BlackHoleAnimation/2.png" type="Texture" id=6]
-[ext_resource path="res://Assets/BlackHoleAnimation/2.5.png" type="Texture" id=7]
-[ext_resource path="res://Assets/BlackHoleAnimation/3.png" type="Texture" id=8]
-[ext_resource path="res://Assets/BlackHoleAnimation/3.5.png" type="Texture" id=9]
-[ext_resource path="res://Assets/BlackHoleAnimation/4.png" type="Texture" id=10]
-[ext_resource path="res://Assets/BlackHoleAnimation/4.5.png" type="Texture" id=11]
+[ext_resource path="res://Assets/BlackHoleAnimation/2.png" type="Texture" id=5]
+[ext_resource path="res://Assets/BlackHoleAnimation/3.png" type="Texture" id=6]
+[ext_resource path="res://Assets/BlackHoleAnimation/4.png" type="Texture" id=7]
+[ext_resource path="res://Assets/BlackHoleAnimation/5.png" type="Texture" id=8]
+[ext_resource path="res://Assets/BlackHoleAnimation/6.png" type="Texture" id=9]
+[ext_resource path="res://Assets/BlackHoleAnimation/7.png" type="Texture" id=10]
+[ext_resource path="res://Assets/BlackHoleAnimation/8.png" type="Texture" id=11]
 [ext_resource path="res://Audio/BlackHole.wav" type="AudioStream" id=12]
 [ext_resource path="res://Audio/BlackHoleClose.wav" type="AudioStream" id=13]
 
-[sub_resource type="Gradient" id=6]
+[sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.44186, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 0.834961, 0.834961, 0.834961, 1, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=7]
-gradient = SubResource( 6 )
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
 
-[sub_resource type="ParticlesMaterial" id=8]
+[sub_resource type="ParticlesMaterial" id=3]
 emission_shape = 1
 emission_sphere_radius = 32.0
 flag_disable_z = true
@@ -35,9 +35,9 @@ damping = 22.0
 angle = 45.0
 angle_random = 1.0
 scale = 2.0
-color_ramp = SubResource( 7 )
+color_ramp = SubResource( 2 )
 
-[sub_resource type="SpriteFrames" id=9]
+[sub_resource type="SpriteFrames" id=4]
 animations = [ {
 "frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ) ],
 "loop": true,
@@ -45,7 +45,7 @@ animations = [ {
 "speed": 24.0
 } ]
 
-[sub_resource type="CircleShape2D" id=10]
+[sub_resource type="CircleShape2D" id=5]
 radius = 31.5126
 
 [node name="BlackHole" type="Area2D" groups=[
@@ -61,7 +61,7 @@ lifetime = 2.0
 preprocess = 0.25
 speed_scale = 3.0
 explosiveness = 1.0
-process_material = SubResource( 8 )
+process_material = SubResource( 3 )
 texture = ExtResource( 2 )
 
 [node name="Light2D" type="Light2D" parent="."]
@@ -74,13 +74,13 @@ shadow_filter = 5
 shadow_filter_smooth = 60.0
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Light2D"]
-frames = SubResource( 9 )
-frame = 7
+frames = SubResource( 4 )
+frame = 5
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-shape = SubResource( 10 )
+shape = SubResource( 5 )
 
 [node name="Tween" type="Tween" parent="."]
 
