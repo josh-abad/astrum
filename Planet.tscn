@@ -14,7 +14,7 @@ polygon = PoolVector2Array( -1.11749, -75.3365, 8.41821, -74.996, 18.6351, -73.6
 radius = 76.0549
 
 [node name="Planet" type="RigidBody2D" groups=[
-"Targets",
+"Planets",
 ]]
 position = Vector2( 571.578, 149.473 )
 mode = 2

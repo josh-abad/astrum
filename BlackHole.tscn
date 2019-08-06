@@ -51,7 +51,8 @@ radius = 31.5126
 [node name="BlackHole" type="Area2D" groups=[
 "Black Hole",
 ]]
-linear_damp = 0.0
+space_override = 3
+gravity_point = true
 angular_damp = 0.0
 script = ExtResource( 1 )
 
@@ -75,7 +76,6 @@ shadow_filter_smooth = 60.0
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Light2D"]
 frames = SubResource( 4 )
-frame = 5
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

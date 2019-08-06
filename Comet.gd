@@ -10,7 +10,7 @@ var reset_position := false setget set_reset_position, is_reset_position
 var playing = false setget set_playing, is_playing
 
 signal dropped
-signal scored
+signal scored(planet_position, points)
 
 
 func _ready():
@@ -46,6 +46,7 @@ func _input_event(viewport, event, shape_idx):
         var direction: Vector2 = (self.get_position() - get_global_mouse_position()).normalized()
         self.set_linear_velocity(-direction * speed)
         play_sound()
+        $Camera2D.shake(0.2, 15, 8)
         _start_tween()
         $Spark.set_emitting(true)
 
@@ -55,9 +56,9 @@ func _on_Comet_body_entered(body):
     _start_tween()
     $Camera2D.shake(0.2, 15, 8)
     $Spark.set_emitting(true)
-    if $VisibilityNotifier2D.is_on_screen() and body.is_in_group('Targets'):
+    if $VisibilityNotifier2D.is_on_screen() and body.is_in_group('Planets'):
         score += 1
-        emit_signal('scored')
+        emit_signal('scored', body.get_position(), 1)
             
 
 func _on_VisibilityNotifier2D_screen_exited():

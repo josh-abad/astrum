@@ -12,7 +12,10 @@ func _physics_process(delta):
         for body in overlapping_bodies:
             if body.is_in_group('Balls'):
                 emit_signal("absorb")
-
+            elif body.is_in_group('Planets'):
+                body.disappear(false, get_position())
+                expand()
+                
 
 func appear(position: Vector2 = self.position) -> void:
     show()
@@ -25,6 +28,7 @@ func appear(position: Vector2 = self.position) -> void:
     $ActiveTimer.start()
     $TransitionSound.play()
     $AmbientSound.play()
+    set_gravity_vector(position)
     
     
 func disappear() -> void:
@@ -35,6 +39,11 @@ func disappear() -> void:
     $AmbientSound.stop()
     $TransitionSound.play()
     
+
+func expand() -> void:
+    $Tween.interpolate_property(self, 'scale', scale, Vector2(1.25, 1.25), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
+    $Tween.start()
+
 
 func _on_ActiveTimer_timeout():
     disappear()

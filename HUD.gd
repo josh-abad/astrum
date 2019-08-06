@@ -11,6 +11,10 @@ func _ready():
 
 
 func set_label(text: String) -> void:
+    if not $Tween.is_active():
+        $Tween.interpolate_property($CenterContainer/Label, 'modulate', $CenterContainer/Label.modulate, Color(1, 1, 1, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+        $Tween.interpolate_property($CenterContainer/Label, 'modulate', Color(1, 1, 1, 0), $CenterContainer/Label.modulate, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+        $Tween.start()
     $CenterContainer/Label.set_text(text)
     
     

@@ -1,6 +1,6 @@
 extends Area2D
 
-signal collect
+signal collect(star_position)
 
 var collected := false
 
@@ -14,7 +14,7 @@ func _physics_process(delta):
     if not collected and overlapping_bodies.size() > 0:
         for body in overlapping_bodies:
             if body.is_in_group('Balls'):
-                emit_signal("collect")
+                emit_signal("collect", get_position())
                 disappear()
                 collected = true
                 $CollectSound.play()

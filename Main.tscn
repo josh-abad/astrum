@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=7]
 [ext_resource path="res://BlackHole.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Comet.tscn" type="PackedScene" id=9]
+[ext_resource path="res://ScoredPopup.tscn" type="PackedScene" id=10]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -75,7 +76,7 @@ one_shot = true
 
 [node name="MainModulate" type="CanvasModulate" parent="."]
 material = SubResource( 1 )
-color = Color( 0.235294, 0.235294, 0.235294, 1 )
+color = Color( 0.156863, 0.156863, 0.156863, 1 )
 
 [node name="BlackHole" parent="." instance=ExtResource( 8 )]
 visible = false
@@ -88,6 +89,8 @@ speed = -600
 
 [node name="StarTimer" type="Timer" parent="."]
 wait_time = 6.0
+
+[node name="ScoredPopup" parent="." instance=ExtResource( 10 )]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
 [connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]

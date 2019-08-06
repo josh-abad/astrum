@@ -11,6 +11,10 @@ func _ready():
     $AmbientMusic.play()
 
 
+func _process(delta: float) -> void:
+    set_planet_gravity($BlackHole.active)
+
+
 func new_game() -> void:
     $Comet.set_score(0)
     $HUD.set_label('0')
@@ -24,8 +28,9 @@ func _on_Comet_dropped() -> void:
     active = false
 
 
-func _on_Comet_scored() -> void:
+func _on_Comet_scored(planet_position, points) -> void:
     $HUD.set_label(str($Comet.get_score()))
+    $ScoredPopup.display(planet_position, '+' + str(points))
 
 
 func get_random_position(off_screen: bool = false) -> Vector2:
@@ -45,6 +50,19 @@ func _on_StartTimer_timeout():
     $PlanetTimer.start()
     $BlackHoleTimer.start()
     $StarTimer.start()
+
+
+func set_planet_gravity(on: bool) -> void:
+    var planets: Array = get_tree().get_nodes_in_group('Planets')
+    for planet in planets:
+        if is_instance_valid(planet):
+            planet.set_gravity(on)
+            if not on:
+                # TODO: tween the planets' braking
+                # TODO: planets should gravitate towards black hole even if they're past it
+                # TODO: add juice to black hole expansion
+                # TODO: expand black hole past scale of 1.25
+                planet.set_linear_velocity(Vector2(0, 0))
 
 
 func _on_BlackHole_absorb():
@@ -73,7 +91,8 @@ func _on_Timer_timeout() -> void:
         star.appear(get_random_position())
         
         
-func _on_Star_collect() -> void:
+func _on_Star_collect(star_position) -> void:
     $Comet.set_score($Comet.get_score() + 2)
     $Comet._start_tween()
     $HUD.set_label(str($Comet.get_score()))
+    $ScoredPopup.display(star_position, '+2')
