@@ -1,8 +1,21 @@
 extends RigidBody2D
 
+onready var planets = [
+    load("res://Assets/Planets/Planet0.png"),
+    load("res://Assets/Planets/Planet1.png"),
+    load("res://Assets/Planets/Planet2.png"),
+    load("res://Assets/Planets/Planet3.png"),
+    load("res://Assets/Planets/Planet4.png"),
+    load("res://Assets/Planets/Planet5.png"),
+    load("res://Assets/Planets/Planet6.png"),
+    load("res://Assets/Planets/Planet7.png"),
+    load("res://Assets/Planets/Planet8.png"),
+    load("res://Assets/Planets/Planet9.png")
+]
+
 
 func _ready():
-    $Sprite.set_texture(load("res://Assets/Planets/Planet%d.png" % floor(rand_range(0, 9))))
+    $Sprite.set_texture(planets[randi() % planets.size()])
     hide()
 
 

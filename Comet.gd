@@ -48,17 +48,16 @@ func _input_event(viewport, event, shape_idx):
         play_sound()
         $Camera2D.shake(0.2, 15, 8)
         _start_tween()
-        $Spark.set_emitting(true)
 
 
 func _on_Comet_body_entered(body):
     play_sound()
     _start_tween()
     $Camera2D.shake(0.2, 15, 8)
-    $Spark.set_emitting(true)
     if $VisibilityNotifier2D.is_on_screen() and body.is_in_group('Planets'):
         score += 1
         emit_signal('scored', body.get_position(), 1)
+        $Spark.set_emitting(true)
             
 
 func _on_VisibilityNotifier2D_screen_exited():
@@ -92,8 +91,8 @@ func _tween(node: Object, property: NodePath, before, after):
 
         
 func pulse() -> void:
-    $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, 2, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
-    $Tween.interpolate_property($Light2D, 'energy', 2, $Light2D.energy, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, 2, 0.8, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property($Light2D, 'energy', 2, $Light2D.energy, 0.8, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
     
     
