@@ -6,6 +6,10 @@ func _ready():
     hide()
 
 
+func _on_start_game() -> void:
+    queue_free()
+
+
 func appear(position: Vector2) -> void:
     self.position = position
     $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)

@@ -21,7 +21,8 @@ func appear(position: Vector2 = self.position) -> void:
     show()
     self.position = position
     $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
-    $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
+    # $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
+    $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
     active = true
     $ActiveTimer.set_wait_time(rand_range(5, 10))
@@ -33,7 +34,8 @@ func appear(position: Vector2 = self.position) -> void:
     
 func disappear() -> void:
     $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
-    $Tween.interpolate_property(self, 'visible', visible, false, 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
+    # $Tween.interpolate_property(self, 'visible', visible, false, 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
+    $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
     active = false
     $AmbientSound.stop()
@@ -41,7 +43,7 @@ func disappear() -> void:
     
 
 func expand() -> void:
-    $Tween.interpolate_property(self, 'scale', scale, Vector2(1.25, 1.25), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
+    $Tween.interpolate_property(self, 'scale', scale, scale + Vector2(0.25, 0.25), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
 
 

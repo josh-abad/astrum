@@ -90,13 +90,20 @@ func _tween(node: Object, property: NodePath, before, after):
     $Tween.interpolate_property(node, property, before, after, 0.4, Tween.TRANS_BOUNCE, Tween.EASE_IN)
     $Tween.interpolate_property(node, property, after, before, 0.4, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
 
-
+        
+func pulse() -> void:
+    $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, 2, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property($Light2D, 'energy', 2, $Light2D.energy, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()
+    
+    
 func _start_tween() -> void:
     if not $Tween.is_active():
         _tween($Light2D/Sprite, 'scale', $Light2D/Sprite.get_transform().get_scale(), Vector2(TWEEN_SCALE, TWEEN_SCALE))
         _tween($Light2D, 'texture_scale', $Light2D.texture_scale, 1.5)
         _tween($Light2D, 'color', $Light2D.color, COLORS[randi() % COLORS.size()])
         $Tween.start()
+
         
         
 func disappear() -> void:

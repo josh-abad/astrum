@@ -44,6 +44,7 @@ func _on_PlanetTimer_timeout() -> void:
         var planet = Planet.instance()
         add_child(planet)
         planet.appear(get_random_position(true))
+        $HUD.connect("start_game", planet, "_on_start_game")
 
 
 func _on_StartTimer_timeout():
@@ -61,7 +62,6 @@ func set_planet_gravity(on: bool) -> void:
                 # TODO: tween the planets' braking
                 # TODO: planets should gravitate towards black hole even if they're past it
                 # TODO: add juice to black hole expansion
-                # TODO: expand black hole past scale of 1.25
                 planet.set_linear_velocity(Vector2(0, 0))
 
 
@@ -74,7 +74,10 @@ func _on_BlackHole_absorb():
 
 
 func _on_BlackHoleTimer_timeout() -> void:
-    $BlackHole.appear(get_random_position())
+    if $Comet.get_score() >= 10:
+        $BlackHole.appear(get_random_position())
+    else:
+        $BlackHoleTimer.start()
 
 
 func _on_BlackHole_inactive() -> void:
@@ -89,6 +92,7 @@ func _on_Timer_timeout() -> void:
         star.connect('collect', self, '_on_Star_collect')
         add_child(star)
         star.appear(get_random_position())
+        $HUD.connect("start_game", star, "_on_start_game")
         
         
 func _on_Star_collect(star_position) -> void:
@@ -96,3 +100,4 @@ func _on_Star_collect(star_position) -> void:
     $Comet._start_tween()
     $HUD.set_label(str($Comet.get_score()))
     $ScoredPopup.display(star_position, '+2')
+    

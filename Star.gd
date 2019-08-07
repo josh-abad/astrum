@@ -9,6 +9,10 @@ func _ready() -> void:
     hide()
 
 
+func _on_start_game() -> void:
+    queue_free()
+
+
 func _physics_process(delta):
     var overlapping_bodies: Array = get_overlapping_bodies()
     if not collected and overlapping_bodies.size() > 0:
@@ -16,6 +20,7 @@ func _physics_process(delta):
             if body.is_in_group('Balls'):
                 emit_signal("collect", get_position())
                 disappear()
+                body.pulse()
                 collected = true
                 $CollectSound.play()
                 start_freeze()
@@ -25,6 +30,7 @@ func appear(position: Vector2) -> void:
     self.position = position
     $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
+    $Tween.interpolate_property(self, 'modulate', Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.start()
 
 
