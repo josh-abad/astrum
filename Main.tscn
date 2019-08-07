@@ -46,7 +46,7 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
 [node name="StarsModulate" type="CanvasModulate" parent="ParallaxStars/ParallaxLayer"]
-color = Color( 0.156863, 0.156863, 0.156863, 1 )
+color = Color( 0.0784314, 0.0784314, 0.0784314, 1 )
 
 [node name="Walls" type="StaticBody2D" parent="."]
 editor/display_folded = true

@@ -17,9 +17,10 @@ func appear(position: Vector2) -> void:
     $Tween.start()
 
 
-func disappear(animate: bool, to_position: Vector2 = get_position()) -> void:
+func disappear(to_position: Vector2 = get_position()) -> void:
     $HitSound.play()
     $CollisionShape2D.set_deferred('disabled', true)
+    $Sprite/LightOccluder2D.set_deferred('visible', false)
     $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 1, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'position', get_position(), to_position, 1, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CIRC, Tween.EASE_OUT)
@@ -42,7 +43,7 @@ func start_freeze() -> void:
 func _on_Planet_body_entered(body):
     if body.is_in_group('Balls'):
         $CollisionShape2D.set_deferred('disabled', true)
-        disappear(true)
+        disappear()
 
 
 func _on_Freeze_timeout():

@@ -59,10 +59,10 @@ func set_planet_gravity(on: bool) -> void:
         if is_instance_valid(planet):
             planet.set_gravity(on)
             if not on:
-                # TODO: tween the planets' braking
                 # TODO: planets should gravitate towards black hole even if they're past it
                 # TODO: add juice to black hole expansion
-                planet.set_linear_velocity(Vector2(0, 0))
+                $Tween.interpolate_property(planet, 'linear_velocity', planet.linear_velocity, Vector2(0, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+                $Tween.start()
 
 
 func _on_BlackHole_absorb():
