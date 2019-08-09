@@ -4,6 +4,9 @@ export (PackedScene) var Planet
 export (PackedScene) var Star
 
 var active := false
+onready var bg_modulate = $ParallaxBackground/ParallaxLayer/BackgroundModulate.color
+onready var stars_modulate = $ParallaxStars/ParallaxLayer/StarsModulate.color
+onready var main_modulate = $MainModulate.color
 
 
 func _ready():
@@ -16,11 +19,16 @@ func _process(delta: float) -> void:
 
 
 func new_game() -> void:
+    $Comet.power = 0
+    $HUD.reset_power()
     $Comet.set_score(0)
     $HUD.set_label('0')
     $StartTimer.start()
     $Comet.start()
     active = true
+    $ParallaxBackground/ParallaxLayer/BackgroundModulate.color = bg_modulate
+    $ParallaxStars/ParallaxLayer/StarsModulate.color = stars_modulate
+    $MainModulate.color = main_modulate
 
 
 func _on_Comet_dropped() -> void:
@@ -31,6 +39,17 @@ func _on_Comet_dropped() -> void:
 func _on_Comet_scored(planet_position, points) -> void:
     $HUD.set_label(str($Comet.get_score()))
     $ScoredPopup.display(planet_position, '+' + str(points))
+    if ($Comet.power <= 95):
+        $Comet.power += 5
+        $HUD.increase_power(5)
+        brighten($ParallaxBackground/ParallaxLayer/BackgroundModulate)
+        brighten($ParallaxStars/ParallaxLayer/StarsModulate)
+        brighten($MainModulate)
+
+
+func brighten(canvas: CanvasModulate) -> void:
+    var color = canvas.color
+    canvas.color = Color(color.r + 0.05, color.g + 0.05, color.b + 0.05)
 
 
 func get_random_position(off_screen: bool = false) -> Vector2:
@@ -100,4 +119,11 @@ func _on_Star_collect(star_position) -> void:
     $Comet._start_tween()
     $HUD.set_label(str($Comet.get_score()))
     $ScoredPopup.display(star_position, '+2')
+    if ($Comet.power <= 90):
+        $Comet.power += 10
+        $HUD.increase_power(10)
     
+
+func _on_Comet_used_power() -> void:
+    $Comet.power -= 10
+    $HUD.decrease_power(10)

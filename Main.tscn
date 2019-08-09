@@ -5,11 +5,11 @@
 [ext_resource path="res://Star.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Parallax/Background.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=5]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=7]
-[ext_resource path="res://BlackHole.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Comet.tscn" type="PackedScene" id=9]
-[ext_resource path="res://ScoredPopup.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=6]
+[ext_resource path="res://BlackHole.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Comet.tscn" type="PackedScene" id=8]
+[ext_resource path="res://ScoredPopup.tscn" type="PackedScene" id=9]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=10]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -49,17 +49,15 @@ region_rect = Rect2( 0, 0, 98304, 147456 )
 color = Color( 0.0784314, 0.0784314, 0.0784314, 1 )
 
 [node name="Walls" type="StaticBody2D" parent="."]
-editor/display_folded = true
 
 [node name="Collision" type="CollisionPolygon2D" parent="Walls"]
+position = Vector2( 0, 40 )
 build_mode = 1
-polygon = PoolVector2Array( 0, 820, 480, 820, 480, -73824, 640, -73824, 640, 830, -150, 830, -160, -73792, 0, -73792 )
-
-[node name="HUD" parent="." instance=ExtResource( 6 )]
+polygon = PoolVector2Array( 0, 792, 320, 792, 320, -73800, 640, -73800, 640, 830, -150, 830, -160, -73792, 0, -73792 )
 
 [node name="AmbientMusic" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 7 )
+stream = ExtResource( 6 )
 volume_db = -7.736
 
 [node name="PlanetTimer" type="Timer" parent="."]
@@ -78,20 +76,21 @@ one_shot = true
 material = SubResource( 1 )
 color = Color( 0.156863, 0.156863, 0.156863, 1 )
 
-[node name="BlackHole" parent="." instance=ExtResource( 8 )]
+[node name="BlackHole" parent="." instance=ExtResource( 7 )]
 visible = false
 position = Vector2( 340, 90 )
 
-[node name="Comet" parent="." instance=ExtResource( 9 )]
+[node name="Comet" parent="." instance=ExtResource( 8 )]
 material = SubResource( 2 )
-position = Vector2( 240, 320 )
+position = Vector2( 120, 160 )
 speed = -600
 
 [node name="StarTimer" type="Timer" parent="."]
 wait_time = 6.0
 
-[node name="ScoredPopup" parent="." instance=ExtResource( 10 )]
-[connection signal="start_game" from="HUD" to="." method="new_game"]
+[node name="ScoredPopup" parent="." instance=ExtResource( 9 )]
+
+[node name="HUD" parent="." instance=ExtResource( 10 )]
 [connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]
@@ -99,4 +98,6 @@ wait_time = 6.0
 [connection signal="inactive" from="BlackHole" to="." method="_on_BlackHole_inactive"]
 [connection signal="dropped" from="Comet" to="." method="_on_Comet_dropped"]
 [connection signal="scored" from="Comet" to="." method="_on_Comet_scored"]
+[connection signal="used_power" from="Comet" to="." method="_on_Comet_used_power"]
 [connection signal="timeout" from="StarTimer" to="." method="_on_Timer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]

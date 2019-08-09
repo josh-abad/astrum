@@ -6,11 +6,13 @@ const COLORS: Array = [Color(1, 1, 1)]
 export var speed := -500 setget set_speed, get_speed
 
 var score := 0 setget set_score, get_score
+var power := 0
 var reset_position := false setget set_reset_position, is_reset_position
 var playing = false setget set_playing, is_playing
 
 signal dropped
 signal scored(planet_position, points)
+signal used_power
 
 
 func _ready():
@@ -46,7 +48,7 @@ func _input_event(viewport, event, shape_idx):
         var direction: Vector2 = (self.get_position() - get_global_mouse_position()).normalized()
         self.set_linear_velocity(-direction * speed)
         play_sound()
-        $Camera2D.shake(0.2, 15, 8)
+        # $Camera2D.shake(0.2, 15, 8)
         _start_tween()
 
 
@@ -104,7 +106,6 @@ func _start_tween() -> void:
         $Tween.start()
 
         
-        
 func disappear() -> void:
     playing = false
     $CollisionShape2D.set_deferred('disabled', true)
@@ -153,3 +154,10 @@ func is_playing() -> bool:
     
 func set_playing(value: bool) -> void:
     playing = value
+
+
+func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+    if power >= 10 and event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
+        $Tween.interpolate_property(self, 'linear_velocity', linear_velocity, Vector2(0, 0), 0.6, Tween.TRANS_QUAD, Tween.EASE_OUT)
+        $Tween.start()
+        emit_signal("used_power")
