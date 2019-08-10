@@ -16,11 +16,18 @@ onready var planets = [
 
 func _ready():
     $Sprite.set_texture(planets[randi() % planets.size()])
+    _rand_scale()
     hide()
 
 
 func _on_start_game() -> void:
     queue_free()
+
+
+func _rand_scale() -> void:
+    var scale: float = rand_range(0.5, 1.0)
+    $Sprite.set_scale(Vector2(scale, scale))
+    $CollisionShape2D.set_scale(Vector2(scale, scale))
 
 
 func appear(position: Vector2) -> void:

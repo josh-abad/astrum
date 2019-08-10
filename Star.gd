@@ -7,10 +7,17 @@ var collected := false
 
 func _ready() -> void:
     hide()
+    _rand_scale()
 
 
 func _on_start_game() -> void:
     queue_free()
+
+
+func _rand_scale() -> void:
+    var scale: float = rand_range(0.5, 1.0)
+    $Light2D/AnimatedSprite.set_scale(Vector2(scale, scale))
+    $CollisionShape2D.set_scale(Vector2(scale, scale))
 
 
 func _physics_process(delta):

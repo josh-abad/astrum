@@ -38,7 +38,6 @@ extents = Vector2( 60, 100 )
 ]]
 input_pickable = true
 physics_material_override = SubResource( 1 )
-gravity_scale = 2.0
 contacts_reported = 10
 contact_monitor = true
 linear_velocity = Vector2( 1, 0 )
@@ -81,10 +80,12 @@ shadow_filter = 1
 shadow_filter_smooth = 60.0
 
 [node name="Sprite" type="Sprite" parent="Light2D"]
+scale = Vector2( 1.25, 1.25 )
 texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
+scale = Vector2( 1.25, 1.25 )
 shape = SubResource( 4 )
 
 [node name="Tween" type="Tween" parent="."]

@@ -31,15 +31,18 @@ func show_game_over() -> void:
     
     
 func reset_power() -> void:
-    $TextureProgress.value = 0
+    $Tween.interpolate_property($TextureProgress, 'value', $TextureProgress.value, 0, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()
     
     
 func increase_power(value: int) -> void:
-    $TextureProgress.value += value
+    $Tween.interpolate_property($TextureProgress, 'value', $TextureProgress.value, $TextureProgress.value + value, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()
     
     
 func decrease_power(value: int) -> void:
-    $TextureProgress.value -= value
+    $Tween.interpolate_property($TextureProgress, 'value', $TextureProgress.value, $TextureProgress.value - value, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()
     
     
 func _on_StartButton_pressed():

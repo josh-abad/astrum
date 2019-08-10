@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-const TWEEN_SCALE := 1.25
+const TWEEN_SCALE := 1.50
 const COLORS: Array = [Color(1, 1, 1)]
 
 export var speed := -500 setget set_speed, get_speed
@@ -22,7 +22,7 @@ func _ready():
 
 func _integrate_forces(state):
     if reset_position:
-        state.set_transform(Transform2D(0.0, _get_camera_center()))
+        state.set_transform(Transform2D(0.0, $Camera2D.get_camera_screen_center()))
         state.set_linear_velocity(Vector2())
         reset_position = false
         
@@ -34,14 +34,7 @@ func start() -> void:
     reset_position = true
     playing = true
     $CollisionShape2D.disabled = false
-    
-    
-func _get_camera_center() -> Vector2:
-    var vtrans: Transform2D = get_canvas_transform()
-    var top_left: Vector2 = -vtrans.get_origin() / vtrans.get_scale()
-    var vsize: Vector2 = get_viewport_rect().size
-    return top_left + 0.5 * vsize / vtrans.get_scale()
-    
+        
 
 func _input_event(viewport, event, shape_idx):
     if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
@@ -59,7 +52,7 @@ func _on_Comet_body_entered(body):
     if $VisibilityNotifier2D.is_on_screen() and body.is_in_group('Planets'):
         score += 1
         emit_signal('scored', body.get_position(), 1)
-        $Spark.set_emitting(true)
+        # $Spark.set_emitting(true)
             
 
 func _on_VisibilityNotifier2D_screen_exited():
@@ -87,9 +80,9 @@ func set_light(on: bool) -> void:
     $Tween.start()
 
 
-func _tween(node: Object, property: NodePath, before, after):
-    $Tween.interpolate_property(node, property, before, after, 0.4, Tween.TRANS_BOUNCE, Tween.EASE_IN)
-    $Tween.interpolate_property(node, property, after, before, 0.4, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+func _tween(node: Object, property: NodePath, before, after, duration: float = 0.4):
+    $Tween.interpolate_property(node, property, before, after, duration, Tween.TRANS_BOUNCE, Tween.EASE_IN)
+    $Tween.interpolate_property(node, property, after, before, duration, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
 
         
 func pulse() -> void:
@@ -110,7 +103,7 @@ func disappear() -> void:
     playing = false
     $CollisionShape2D.set_deferred('disabled', true)
     $Camera2D.current = false
-    $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
+    set_linear_velocity(Vector2())
     $Tween.interpolate_property(self, 'visible', visible, false, 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
     
@@ -158,6 +151,8 @@ func set_playing(value: bool) -> void:
 
 func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
     if power >= 10 and event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
-        $Tween.interpolate_property(self, 'linear_velocity', linear_velocity, Vector2(0, 0), 0.6, Tween.TRANS_QUAD, Tween.EASE_OUT)
+        if not $Tween.is_active():
+            _tween($Light2D, 'color', $Light2D.color, Color("#d52a7a"), 0.8)
+        $Tween.interpolate_property(self, 'linear_velocity', linear_velocity, Vector2(0, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
         $Tween.start()
         emit_signal("used_power")

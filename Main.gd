@@ -39,6 +39,8 @@ func _on_Comet_dropped() -> void:
 func _on_Comet_scored(planet_position, points) -> void:
     $HUD.set_label(str($Comet.get_score()))
     $ScoredPopup.display(planet_position, '+' + str(points))
+    $PlanetSpark.set_position(planet_position)
+    $PlanetSpark.set_emitting(true)
     if ($Comet.power <= 95):
         $Comet.power += 5
         $HUD.increase_power(5)
@@ -49,7 +51,8 @@ func _on_Comet_scored(planet_position, points) -> void:
 
 func brighten(canvas: CanvasModulate) -> void:
     var color = canvas.color
-    canvas.color = Color(color.r + 0.05, color.g + 0.05, color.b + 0.05)
+    if color.r < 0.95:
+        canvas.color = Color(color.r + 0.05, color.g + 0.05, color.b + 0.05)
 
 
 func get_random_position(off_screen: bool = false) -> Vector2:

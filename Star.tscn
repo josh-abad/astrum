@@ -28,12 +28,12 @@ __meta__ = {
 
 [node name="Light2D" type="Light2D" parent="."]
 texture = ExtResource( 2 )
-color = Color( 0.835294, 0.164706, 0.729412, 1 )
+color = Color( 0.835294, 0.164706, 0.478431, 1 )
 range_layer_min = -1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Light2D"]
 frames = SubResource( 1 )
-frame = 2
+frame = 8
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
