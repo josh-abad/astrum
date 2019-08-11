@@ -5,14 +5,12 @@ const COLORS: Array = [Color(1, 1, 1)]
 
 export var speed := -500 setget set_speed, get_speed
 
-var score := 0 setget set_score, get_score
-var power := 0
 var reset_position := false setget set_reset_position, is_reset_position
 var playing = false setget set_playing, is_playing
 
 signal dropped
-signal scored(planet_position, points)
-signal used_power
+signal scored(planet_position)
+signal activate_power
 
 
 func _ready():
@@ -41,7 +39,6 @@ func _input_event(viewport, event, shape_idx):
         var direction: Vector2 = (self.get_position() - get_global_mouse_position()).normalized()
         self.set_linear_velocity(-direction * speed)
         play_sound()
-        # $Camera2D.shake(0.2, 15, 8)
         _start_tween()
 
 
@@ -50,9 +47,7 @@ func _on_Comet_body_entered(body):
     _start_tween()
     $Camera2D.shake(0.2, 15, 8)
     if $VisibilityNotifier2D.is_on_screen() and body.is_in_group('Planets'):
-        score += 1
-        emit_signal('scored', body.get_position(), 1)
-        # $Spark.set_emitting(true)
+        emit_signal('scored', body.get_position())
             
 
 func _on_VisibilityNotifier2D_screen_exited():
@@ -124,15 +119,7 @@ func get_speed() -> int:
 func set_speed(value: int) -> void:
     speed = value
     
-    
-func get_score() -> int:
-    return score
-
-
-func set_score(value: int) -> void:
-    score = value
-    
-    
+       
 func is_reset_position() -> bool:
     return reset_position
     
@@ -150,9 +137,13 @@ func set_playing(value: bool) -> void:
 
 
 func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-    if power >= 10 and event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
-        if not $Tween.is_active():
-            _tween($Light2D, 'color', $Light2D.color, Color("#d52a7a"), 0.8)
-        $Tween.interpolate_property(self, 'linear_velocity', linear_velocity, Vector2(0, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
-        $Tween.start()
-        emit_signal("used_power")
+    if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
+        emit_signal("activate_power")
+        
+        
+func use_power() -> void:
+    if not $Tween.is_active():
+        _tween($Light2D, 'color', $Light2D.color, Color("#d52a7a"), 0.8)
+    $Tween.interpolate_property(self, 'linear_velocity', linear_velocity, Vector2(0, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()
+    $PowerSound.play()

@@ -8,8 +8,11 @@ onready var bg_modulate = $ParallaxBackground/ParallaxLayer/BackgroundModulate.c
 onready var stars_modulate = $ParallaxStars/ParallaxLayer/StarsModulate.color
 onready var main_modulate = $MainModulate.color
 
+var score: int = 0
+var high_score: int = 0
+var power: int = 0
 
-func _ready():
+func _ready() -> void:
     randomize()
     $AmbientMusic.play()
 
@@ -19,10 +22,8 @@ func _process(delta: float) -> void:
 
 
 func new_game() -> void:
-    $Comet.power = 0
-    $HUD.reset_power()
-    $Comet.set_score(0)
-    $HUD.set_label('0')
+    update_power(0)
+    update_score(0)
     $StartTimer.start()
     $Comet.start()
     active = true
@@ -36,23 +37,39 @@ func _on_Comet_dropped() -> void:
     active = false
 
 
-func _on_Comet_scored(planet_position, points) -> void:
-    $HUD.set_label(str($Comet.get_score()))
-    $ScoredPopup.display(planet_position, '+' + str(points))
+func _on_Comet_scored(planet_position) -> void:
+    update_score(score + 1)
+    if score > high_score:
+        update_high_score(score)
+    $ScoredPopup.display(planet_position, '+1')
     $PlanetSpark.set_position(planet_position)
     $PlanetSpark.set_emitting(true)
-    if ($Comet.power <= 95):
-        $Comet.power += 5
-        $HUD.increase_power(5)
-        brighten($ParallaxBackground/ParallaxLayer/BackgroundModulate)
-        brighten($ParallaxStars/ParallaxLayer/StarsModulate)
-        brighten($MainModulate)
+    update_power(power + 5)
+    brighten($ParallaxBackground/ParallaxLayer/BackgroundModulate)
+    brighten($ParallaxStars/ParallaxLayer/StarsModulate)
+    brighten($MainModulate)
+
+
+func update_score(value: int) -> void:
+    score = value
+    $HUD.update_score(score)
+
+
+func update_high_score(value: int) -> void:
+    high_score = value
+    $HUD.update_high_score(high_score)
+
+
+func update_power(value: int) -> void:
+    power = value if value <= 100 else 100
+    $HUD.update_power(power)
 
 
 func brighten(canvas: CanvasModulate) -> void:
     var color = canvas.color
     if color.r < 0.95:
-        canvas.color = Color(color.r + 0.05, color.g + 0.05, color.b + 0.05)
+        $Tween.interpolate_property(canvas, 'color', canvas.color, Color(color.r + 0.05, color.g + 0.05, color.b + 0.05), 0.4, Tween.TRANS_QUAD, Tween.EASE_IN)
+        $Tween.start()
 
 
 func get_random_position(off_screen: bool = false) -> Vector2:
@@ -81,8 +98,6 @@ func set_planet_gravity(on: bool) -> void:
         if is_instance_valid(planet):
             planet.set_gravity(on)
             if not on:
-                # TODO: planets should gravitate towards black hole even if they're past it
-                # TODO: add juice to black hole expansion
                 $Tween.interpolate_property(planet, 'linear_velocity', planet.linear_velocity, Vector2(0, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
                 $Tween.start()
 
@@ -96,7 +111,7 @@ func _on_BlackHole_absorb():
 
 
 func _on_BlackHoleTimer_timeout() -> void:
-    if $Comet.get_score() >= 10:
+    if score >= 10:
         $BlackHole.appear(get_random_position())
     else:
         $BlackHoleTimer.start()
@@ -118,15 +133,15 @@ func _on_Timer_timeout() -> void:
         
         
 func _on_Star_collect(star_position) -> void:
-    $Comet.set_score($Comet.get_score() + 2)
+    update_score(score + 2)
+    if score > high_score:
+        update_high_score(score)
     $Comet._start_tween()
-    $HUD.set_label(str($Comet.get_score()))
     $ScoredPopup.display(star_position, '+2')
-    if ($Comet.power <= 90):
-        $Comet.power += 10
-        $HUD.increase_power(10)
+    update_power(power + 10)
     
 
-func _on_Comet_used_power() -> void:
-    $Comet.power -= 10
-    $HUD.decrease_power(10)
+func _on_Comet_activate_power() -> void:
+    if power >= 10:
+        $Comet.use_power()
+        update_power(power - 10)
