@@ -196,6 +196,7 @@ scale = Vector2( 31.4062, 28.9063 )
 texture = ExtResource( 7 )
 
 [node name="CRT" type="ColorRect" parent="."]
+visible = false
 material = ExtResource( 8 )
 margin_right = 320.0
 margin_bottom = 480.0
