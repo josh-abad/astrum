@@ -22,7 +22,7 @@ func _process(delta: float) -> void:
 
 
 func new_game() -> void:
-    update_power(0)
+    _update_power(0)
     update_score(0)
     $StartTimer.start()
     $Comet.start()
@@ -44,7 +44,7 @@ func _on_Comet_scored(planet_position) -> void:
     $ScoredPopup.display(planet_position, '+1')
     $PlanetSpark.set_position(planet_position)
     $PlanetSpark.set_emitting(true)
-    update_power(power + 5)
+    _update_power(power + 5)
     brighten($ParallaxBackground/ParallaxLayer/BackgroundModulate)
     brighten($ParallaxStars/ParallaxLayer/StarsModulate)
     brighten($MainModulate)
@@ -60,7 +60,7 @@ func update_high_score(value: int) -> void:
     $HUD.update_high_score(high_score)
 
 
-func update_power(value: int) -> void:
+func _update_power(value: int) -> void:
     power = value if value <= 100 else 100
     $HUD.update_power(power)
 
@@ -136,12 +136,12 @@ func _on_Star_collect(star_position) -> void:
     update_score(score + 2)
     if score > high_score:
         update_high_score(score)
-    $Comet._start_tween()
+    $Comet.pulse()
     $ScoredPopup.display(star_position, '+2')
-    update_power(power + 10)
+    _update_power(power + 10)
     
 
-func _on_Comet_activate_power() -> void:
+func _on_HUD_activate_power() -> void:
     if power >= 10:
         $Comet.use_power()
-        update_power(power - 10)
+        _update_power(power - 10)

@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-const TWEEN_SCALE := 1.50
+const TWEEN_SCALE := 1.25
 const COLORS: Array = [Color(1, 1, 1)]
 
 export var speed := -500 setget set_speed, get_speed
@@ -10,7 +10,6 @@ var playing = false setget set_playing, is_playing
 
 signal dropped
 signal scored(planet_position)
-signal activate_power
 
 
 func _ready():
@@ -81,8 +80,8 @@ func _tween(node: Object, property: NodePath, before, after, duration: float = 0
 
         
 func pulse() -> void:
-    $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, 2, 0.8, Tween.TRANS_QUAD, Tween.EASE_OUT)
-    $Tween.interpolate_property($Light2D, 'energy', 2, $Light2D.energy, 0.8, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, 3, 0.8, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property($Light2D, 'energy', 3, $Light2D.energy, 0.8, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
     
     
@@ -134,12 +133,7 @@ func is_playing() -> bool:
     
 func set_playing(value: bool) -> void:
     playing = value
-
-
-func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-    if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
-        emit_signal("activate_power")
-        
+     
         
 func use_power() -> void:
     if not $Tween.is_active():
@@ -147,3 +141,4 @@ func use_power() -> void:
     $Tween.interpolate_property(self, 'linear_velocity', linear_velocity, Vector2(0, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
     $PowerSound.play()
+    $Spark.set_emitting(true)    

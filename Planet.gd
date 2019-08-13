@@ -1,7 +1,6 @@
 extends RigidBody2D
 
 onready var planets = [
-    load("res://Assets/Planets/Planet0.png"),
     load("res://Assets/Planets/Planet1.png"),
     load("res://Assets/Planets/Planet2.png"),
     load("res://Assets/Planets/Planet3.png"),

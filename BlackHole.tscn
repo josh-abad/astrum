@@ -61,7 +61,7 @@ shadow_filter_smooth = 60.0
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Light2D"]
 frames = SubResource( 2 )
-frame = 4
+frame = 7
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

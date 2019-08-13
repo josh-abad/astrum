@@ -1,6 +1,7 @@
 extends CanvasLayer
 
 signal start_game
+signal activate_power
 
 const RESTART_ICON := preload("res://Assets/HUD/Restart.png")
 
@@ -10,6 +11,7 @@ func _ready():
     $GameOverLabel.modulate = Color(1, 1, 1, 0)
     $HighScore/Label.modulate = Color(1, 1, 1, 0)
     $HighScore/HighScoreLabel.modulate = Color(1, 1, 1, 0)
+    $PowerButton.hide()
 
 
 func fade(out: bool, object: Object) -> void:
@@ -37,12 +39,14 @@ func show_game_over() -> void:
     fade(false, $GameOverLabel)
     $StartButton.set_button_icon(RESTART_ICON)
     $Tween.start()
-    $StartButton.visible = true
+    $StartButton.show()
+    $PowerButton.hide()
     
 
 func update_power(power: int) -> void:
     $Tween.interpolate_property($TextureProgress, 'value', $TextureProgress.value, power, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
+    $PowerButton.hide() if power < 10 else $PowerButton.show()    
     
     
 func _on_StartButton_pressed():
@@ -52,6 +56,12 @@ func _on_StartButton_pressed():
     fade(true, $GameOverLabel)
     fade(true, $StartLabel)
     $Tween.start()
-    $StartButton.visible = false
+    $PowerButton.show()
+    $StartButton.hide()
     $ButtonSound.play()
     emit_signal('start_game')
+
+
+func _on_PowerButton_pressed() -> void:
+    $Tween.start()
+    emit_signal("activate_power")

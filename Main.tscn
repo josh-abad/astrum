@@ -87,7 +87,7 @@ position = Vector2( 340, 90 )
 [node name="Comet" parent="." instance=ExtResource( 8 )]
 material = SubResource( 2 )
 position = Vector2( 120, 160 )
-speed = -600
+speed = -500
 
 [node name="StarTimer" type="Timer" parent="."]
 wait_time = 6.0
@@ -116,8 +116,8 @@ color_ramp = SubResource( 3 )
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]
 [connection signal="absorb" from="BlackHole" to="." method="_on_BlackHole_absorb"]
 [connection signal="inactive" from="BlackHole" to="." method="_on_BlackHole_inactive"]
-[connection signal="activate_power" from="Comet" to="." method="_on_Comet_activate_power"]
 [connection signal="dropped" from="Comet" to="." method="_on_Comet_dropped"]
 [connection signal="scored" from="Comet" to="." method="_on_Comet_scored"]
 [connection signal="timeout" from="StarTimer" to="." method="_on_Timer_timeout"]
+[connection signal="activate_power" from="HUD" to="." method="_on_HUD_activate_power"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]

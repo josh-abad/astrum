@@ -7,7 +7,6 @@ var collected := false
 
 func _ready() -> void:
     hide()
-    _rand_scale()
 
 
 func _on_start_game() -> void:
@@ -27,7 +26,6 @@ func _physics_process(delta):
             if body.is_in_group('Balls'):
                 emit_signal("collect", get_position())
                 disappear()
-                body.pulse()
                 collected = true
                 $CollectSound.play()
                 start_freeze()
