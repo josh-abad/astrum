@@ -1,14 +1,13 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Comet.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Particle.png" type="Texture" id=2]
-[ext_resource path="res://Assets/White.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Comet.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Light.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Comet.png" type="Texture" id=5]
-[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=6]
-[ext_resource path="res://Camera2D.gd" type="Script" id=7]
-[ext_resource path="res://Audio/Dropped.wav" type="AudioStream" id=8]
-[ext_resource path="res://Audio/Power.wav" type="AudioStream" id=9]
+[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=5]
+[ext_resource path="res://Camera2D.gd" type="Script" id=6]
+[ext_resource path="res://Audio/Dropped.wav" type="AudioStream" id=7]
+[ext_resource path="res://Audio/Power.wav" type="AudioStream" id=8]
 
 [sub_resource type="PhysicsMaterial" id=1]
 friction = 0.0
@@ -18,7 +17,7 @@ bounce = 1.0
 colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
 
 [sub_resource type="Gradient" id=3]
-colors = PoolColorArray( 0.368627, 0.741176, 0.92549, 0.0745098, 1, 1, 1, 0 )
+colors = PoolColorArray( 0.368627, 0.741176, 0.92549, 0.027451, 1, 1, 1, 0 )
 
 [sub_resource type="CircleShape2D" id=4]
 radius = 40.0
@@ -54,10 +53,13 @@ scale_amount_random = 1.0
 color_ramp = SubResource( 2 )
 
 [node name="Trail" type="CPUParticles2D" parent="."]
-amount = 20
-speed_scale = 2.0
+amount = 40
+speed_scale = 4.0
 local_coords = false
 texture = ExtResource( 3 )
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector2( 0, 0 )
 color_ramp = SubResource( 3 )
 
 [node name="Light2D" type="Light2D" parent="."]
@@ -70,7 +72,7 @@ shadow_filter = 1
 shadow_filter_smooth = 60.0
 
 [node name="Sprite" type="Sprite" parent="Light2D"]
-texture = ExtResource( 5 )
+texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2( 1.25, 1.25 )
@@ -80,7 +82,7 @@ shape = SubResource( 4 )
 
 [node name="BounceSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 6 )
+stream = ExtResource( 5 )
 volume_db = -20.0
 
 [node name="PitchTimer" type="Timer" parent="BounceSound"]
@@ -100,16 +102,16 @@ drag_margin_top = 0.0
 drag_margin_right = 1.0
 drag_margin_bottom = 1.0
 editor_draw_limits = true
-script = ExtResource( 7 )
+script = ExtResource( 6 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 
 [node name="DroppedSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 8 )
+stream = ExtResource( 7 )
 volume_db = 10.0
 
 [node name="PowerSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 9 )
+stream = ExtResource( 8 )
 [connection signal="body_entered" from="." to="." method="_on_Comet_body_entered"]
 [connection signal="timeout" from="BounceSound/PitchTimer" to="." method="_on_PitchTimer_timeout"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

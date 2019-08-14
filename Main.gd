@@ -14,7 +14,7 @@ var power: int = 0
 
 func _ready() -> void:
     randomize()
-    $AmbientMusic.play()
+    # $AmbientMusic.play()
 
 
 func _process(delta: float) -> void:

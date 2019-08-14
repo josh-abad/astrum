@@ -1,16 +1,15 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Star.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Parallax/Background.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=5]
-[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=6]
-[ext_resource path="res://BlackHole.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Comet.tscn" type="PackedScene" id=8]
-[ext_resource path="res://ScoredPopup.tscn" type="PackedScene" id=9]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=10]
-[ext_resource path="res://Assets/Particle.png" type="Texture" id=11]
+[ext_resource path="res://BlackHole.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Comet.tscn" type="PackedScene" id=7]
+[ext_resource path="res://ScoredPopup.tscn" type="PackedScene" id=8]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Assets/Particle.png" type="Texture" id=10]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -59,11 +58,6 @@ position = Vector2( 0, 40 )
 build_mode = 1
 polygon = PoolVector2Array( 0, 792, 320, 792, 320, -73800, 640, -73800, 640, 830, -150, 830, -160, -73792, 0, -73792 )
 
-[node name="AmbientMusic" type="AudioStreamPlayer" parent="."]
-pause_mode = 2
-stream = ExtResource( 6 )
-volume_db = -7.736
-
 [node name="PlanetTimer" type="Timer" parent="."]
 wait_time = 2.0
 
@@ -80,11 +74,11 @@ one_shot = true
 material = SubResource( 1 )
 color = Color( 0.156863, 0.156863, 0.156863, 1 )
 
-[node name="BlackHole" parent="." instance=ExtResource( 7 )]
+[node name="BlackHole" parent="." instance=ExtResource( 6 )]
 visible = false
 position = Vector2( 340, 90 )
 
-[node name="Comet" parent="." instance=ExtResource( 8 )]
+[node name="Comet" parent="." instance=ExtResource( 7 )]
 material = SubResource( 2 )
 position = Vector2( 120, 160 )
 speed = -500
@@ -92,9 +86,9 @@ speed = -500
 [node name="StarTimer" type="Timer" parent="."]
 wait_time = 6.0
 
-[node name="ScoredPopup" parent="." instance=ExtResource( 9 )]
+[node name="ScoredPopup" parent="." instance=ExtResource( 8 )]
 
-[node name="HUD" parent="." instance=ExtResource( 10 )]
+[node name="HUD" parent="." instance=ExtResource( 9 )]
 
 [node name="PlanetSpark" type="CPUParticles2D" parent="."]
 emitting = false
@@ -102,7 +96,7 @@ amount = 20
 one_shot = true
 speed_scale = 5.0
 explosiveness = 1.0
-texture = ExtResource( 11 )
+texture = ExtResource( 10 )
 emission_shape = 1
 emission_sphere_radius = 50.0
 spread = 180.0
