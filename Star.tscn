@@ -33,7 +33,7 @@ range_layer_min = -1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Light2D"]
 frames = SubResource( 1 )
-frame = 8
+frame = 7
 speed_scale = 0.75
 playing = true
 

@@ -1,12 +1,11 @@
 extends RigidBody2D
 
 const TWEEN_SCALE := 1.25
-const COLORS: Array = [Color(1, 1, 1)]
 
-export var speed := -500 setget set_speed, get_speed
+export var speed := -500
 
-var reset_position := false setget set_reset_position, is_reset_position
-var playing = false setget set_playing, is_playing
+var reset_position := false
+var playing = false
 
 signal dropped
 signal scored(planet_position)
@@ -74,23 +73,22 @@ func set_light(on: bool) -> void:
     $Tween.start()
 
 
-func _tween(node: Object, property: NodePath, before, after, duration: float = 0.4):
+func _tween(node: Object, property: NodePath, before, after, final, duration: float = 0.4):
     $Tween.interpolate_property(node, property, before, after, duration, Tween.TRANS_BOUNCE, Tween.EASE_IN)
-    $Tween.interpolate_property(node, property, after, before, duration, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+    $Tween.interpolate_property(node, property, after, final, duration, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
 
         
 func pulse() -> void:
     $Tween.interpolate_property($Light2D, 'energy', $Light2D.energy, 3, 0.8, Tween.TRANS_QUAD, Tween.EASE_OUT)
-    $Tween.interpolate_property($Light2D, 'energy', 3, $Light2D.energy, 0.8, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property($Light2D, 'energy', 3, 1, 0.8, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
     
     
 func _start_tween() -> void:
-    if not $Tween.is_active():
-        _tween($Light2D/Sprite, 'scale', $Light2D/Sprite.get_transform().get_scale(), Vector2(TWEEN_SCALE, TWEEN_SCALE))
-        _tween($Light2D, 'texture_scale', $Light2D.texture_scale, 1.5)
-        _tween($Light2D, 'color', $Light2D.color, COLORS[randi() % COLORS.size()])
-        $Tween.start()
+    _tween($Light2D/Sprite, 'scale', $Light2D/Sprite.get_transform().get_scale(), Vector2(TWEEN_SCALE, TWEEN_SCALE), Vector2(1, 1))
+    _tween($Light2D, 'texture_scale', $Light2D.texture_scale, 1.5, 1)
+    _tween($Light2D, 'color', $Light2D.color, Color(1, 1, 1), Color("#00dbff"))
+    $Tween.start()
 
         
 func disappear() -> void:
@@ -109,35 +107,10 @@ func dropped_sound_transition() -> void:
     yield(get_tree().create_timer(2), 'timeout')
     $DroppedSound.stop()
     $DroppedSound.set_volume_db(10)
-    
-    
-func get_speed() -> int:
-    return speed
-    
-    
-func set_speed(value: int) -> void:
-    speed = value
-    
-       
-func is_reset_position() -> bool:
-    return reset_position
-    
-    
-func set_reset_position(value: bool) -> void:
-    reset_position = value
 
-
-func is_playing() -> bool:
-    return playing
-    
-    
-func set_playing(value: bool) -> void:
-    playing = value
-     
-        
+              
 func use_power() -> void:
-    if not $Tween.is_active():
-        _tween($Light2D, 'color', $Light2D.color, Color("#d52a7a"), 0.8)
+    _tween($Light2D, 'color', $Light2D.color, Color("#d52a7a"), Color("#00dbff"), 0.8)
     $Tween.interpolate_property(self, 'linear_velocity', linear_velocity, Vector2(0, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
     $PowerSound.play()

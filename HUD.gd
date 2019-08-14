@@ -19,18 +19,16 @@ func fade(out: bool, object: Object) -> void:
     
     
 func update_score(score: int) -> void:
-    if not $Tween.is_active():
-        $Tween.interpolate_property($ScoreLabel, 'modulate', $ScoreLabel.modulate, Color(1, 1, 1, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
-        $Tween.interpolate_property($ScoreLabel, 'modulate', Color(1, 1, 1, 0), $ScoreLabel.modulate, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
-        $Tween.start()
+    $Tween.interpolate_property($ScoreLabel, 'modulate', $ScoreLabel.modulate, Color(1, 1, 1, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property($ScoreLabel, 'modulate', Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()
     $ScoreLabel.set_text(str(score))
     
     
 func update_high_score(high_score: int) -> void:
-    if not $Tween.is_active():
-        $Tween.interpolate_property($HighScore/HighScoreLabel, 'modulate', $HighScore/HighScoreLabel.modulate, Color(1, 1, 1, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
-        $Tween.interpolate_property($HighScore/HighScoreLabel, 'modulate', Color(1, 1, 1, 0), $HighScore/HighScoreLabel.modulate, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
-        $Tween.start()
+    $Tween.interpolate_property($HighScore/HighScoreLabel, 'modulate', $HighScore/HighScoreLabel.modulate, Color(1, 1, 1, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property($HighScore/HighScoreLabel, 'modulate', Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()
     $HighScore/HighScoreLabel.set_text(str(high_score))
     
     

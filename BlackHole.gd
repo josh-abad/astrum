@@ -32,13 +32,13 @@ func appear(position: Vector2 = self.position) -> void:
     
     
 func disappear() -> void:
-    $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
-    # $Tween.interpolate_property(self, 'visible', visible, false, 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
-    $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
-    $Tween.start()
-    active = false
-    $AmbientSound.stop()
-    $TransitionSound.play()
+    if active:
+        $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
+        $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
+        $Tween.start()
+        active = false
+        $AmbientSound.stop()
+        $TransitionSound.play()
     
 
 func expand() -> void:
