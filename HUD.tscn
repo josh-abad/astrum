@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://Assets/HUD/Start.png" type="Texture" id=2]
@@ -6,8 +6,7 @@
 [ext_resource path="res://Audio/Button.wav" type="AudioStream" id=4]
 [ext_resource path="res://Assets/ProgressBar/Under.png" type="Texture" id=5]
 [ext_resource path="res://Assets/ProgressBar/Progress.png" type="Texture" id=6]
-[ext_resource path="res://simplex2d.tres" type="Shader" id=7]
-[ext_resource path="res://icon.png" type="Texture" id=8]
+[ext_resource path="res://icon.png" type="Texture" id=7]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Fonts/Comfortaa-Regular.ttf"
@@ -48,11 +47,6 @@ font_path = "res://Fonts/Comfortaa-Regular.ttf"
 [sub_resource type="DynamicFont" id=11]
 size = 20
 font_data = SubResource( 10 )
-
-[sub_resource type="ShaderMaterial" id=12]
-shader = ExtResource( 7 )
-shader_param/offset = null
-shader_param/scale = 500.0
 
 [sub_resource type="Shader" id=13]
 code = "shader_type canvas_item;
@@ -201,18 +195,10 @@ step = 0.1
 texture_under = ExtResource( 5 )
 texture_progress = ExtResource( 6 )
 
-[node name="Noise" type="Sprite" parent="."]
-visible = false
-modulate = Color( 1, 1, 1, 0.0392157 )
-material = SubResource( 12 )
-position = Vector2( 435, 285 )
-scale = Vector2( 34.2188, 32.6563 )
-texture = ExtResource( 8 )
-
 [node name="ChromaticAberration" type="Sprite" parent="."]
 material = SubResource( 14 )
 position = Vector2( 615, 465 )
 scale = Vector2( 31.4062, 28.9063 )
-texture = ExtResource( 8 )
+texture = ExtResource( 7 )
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="pressed" from="PowerButton" to="." method="_on_PowerButton_pressed"]
