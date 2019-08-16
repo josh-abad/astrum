@@ -7,6 +7,8 @@ var active := false setget set_active, is_active
 
 
 func _physics_process(delta):
+    if delta:
+        pass
     var overlapping_bodies: Array = get_overlapping_bodies()
     if active and overlapping_bodies.size() > 0:
         for body in overlapping_bodies:

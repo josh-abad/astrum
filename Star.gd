@@ -20,6 +20,8 @@ func _rand_scale() -> void:
 
 
 func _physics_process(delta):
+    if delta:
+        pass
     var overlapping_bodies: Array = get_overlapping_bodies()
     if not collected and overlapping_bodies.size() > 0:
         for body in overlapping_bodies:

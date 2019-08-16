@@ -7,17 +7,21 @@ var active := false
 onready var bg_modulate = $ParallaxBackground/ParallaxLayer/BackgroundModulate.color
 onready var stars_modulate = $ParallaxStars/ParallaxLayer/StarsModulate.color
 onready var main_modulate = $MainModulate.color
+onready var Spark = load("res://Spark.tscn")
 
 var score: int = 0
 var high_score: int = 0
 var power: int = 0
 
+
 func _ready() -> void:
     randomize()
-    # $AmbientMusic.play()
+    $AmbientSound.play()
 
 
 func _process(delta: float) -> void:
+    if delta:
+        pass
     _set_planet_gravity($BlackHole.active)
 
 
@@ -36,20 +40,29 @@ func new_game() -> void:
 func _on_Comet_dropped() -> void:
     $HUD.show_game_over()
     $BlackHole.disappear()
+    _update_power(0)
     active = false
 
 
 func _on_Comet_scored(planet_position) -> void:
+    if not active:
+        return
     _update_score(score + 1)
     if score > high_score:
         _update_high_score(score)
-    $ScoredPopup.display(planet_position, '+1')
-    $PlanetSpark.set_position(planet_position)
-    $PlanetSpark.set_emitting(true)
     _update_power(power + 5)
+    $ScoredPopup.display(planet_position, '+1')
+    
     _brighten($ParallaxBackground/ParallaxLayer/BackgroundModulate)
     _brighten($ParallaxStars/ParallaxLayer/StarsModulate)
     _brighten($MainModulate)
+    
+    var spark = Spark.instance()
+    add_child(spark)
+    spark.set_position(planet_position)
+    spark.set_emitting(true)
+    yield(get_tree().create_timer(3), "timeout")
+    spark.queue_free()    
 
 
 func _update_score(value: int) -> void:
@@ -85,7 +98,8 @@ func _on_PlanetTimer_timeout() -> void:
         var planet = Planet.instance()
         add_child(planet)
         planet.appear(_get_random_position(true))
-        $HUD.connect("start_game", planet, "_on_start_game")
+        if $HUD.connect("start_game", planet, "_on_start_game"):
+            pass
 
 
 func _on_StartTimer_timeout():
@@ -108,8 +122,8 @@ func _on_BlackHole_absorb():
     $BlackHole.disappear()
     $Comet.disappear()
     $HUD.show_game_over()
-    $Comet.dropped_sound_transition()
     active = false
+    _update_power(0)
 
 
 func _on_BlackHoleTimer_timeout() -> void:
@@ -128,19 +142,23 @@ func _on_BlackHole_inactive() -> void:
 func _on_Timer_timeout() -> void:
     if active:
         var star: Object = Star.instance()
-        star.connect('collect', self, '_on_Star_collect')
+        if star.connect('collect', self, '_on_Star_collect'):
+            pass
         add_child(star)
         star.appear(_get_random_position())
-        $HUD.connect("start_game", star, "_on_start_game")
+        if $HUD.connect("start_game", star, "_on_start_game"):
+            pass
         
         
 func _on_Star_collect(star_position) -> void:
+    if not active:
+        return
     _update_score(score + 2)
     if score > high_score:
         _update_high_score(score)
+    _update_power(power + 10)        
     $Comet.pulse()
     $ScoredPopup.display(star_position, '+2')
-    _update_power(power + 10)
     
 
 func _on_HUD_activate_power() -> void:

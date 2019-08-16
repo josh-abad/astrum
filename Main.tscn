@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
@@ -9,14 +9,11 @@
 [ext_resource path="res://Comet.tscn" type="PackedScene" id=7]
 [ext_resource path="res://ScoredPopup.tscn" type="PackedScene" id=8]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Assets/Particle.png" type="Texture" id=10]
+[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=10]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
 [sub_resource type="CanvasItemMaterial" id=2]
-
-[sub_resource type="Gradient" id=3]
-colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
@@ -90,21 +87,9 @@ wait_time = 6.0
 
 [node name="HUD" parent="." instance=ExtResource( 9 )]
 
-[node name="PlanetSpark" type="CPUParticles2D" parent="."]
-emitting = false
-amount = 20
-one_shot = true
-speed_scale = 5.0
-explosiveness = 1.0
-texture = ExtResource( 10 )
-emission_shape = 1
-emission_sphere_radius = 50.0
-spread = 180.0
-gravity = Vector2( 0, 0 )
-initial_velocity = 32.0
-scale_amount = 0.5
-scale_amount_random = 1.0
-color_ramp = SubResource( 3 )
+[node name="AmbientSound" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 10 )
 [connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]

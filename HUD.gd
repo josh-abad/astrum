@@ -38,13 +38,15 @@ func show_game_over() -> void:
     $StartButton.set_button_icon(RESTART_ICON)
     $Tween.start()
     $StartButton.show()
-    $PowerButton.hide()
     
 
 func update_power(power: int) -> void:
     $Tween.interpolate_property($TextureProgress, 'value', $TextureProgress.value, power, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
-    $PowerButton.hide() if power < 10 else $PowerButton.show()    
+    if power < 10:
+        $PowerButton.hide()
+    else:
+        $PowerButton.show()    
     
     
 func _on_StartButton_pressed():
@@ -61,5 +63,7 @@ func _on_StartButton_pressed():
 
 
 func _on_PowerButton_pressed() -> void:
-    $Tween.start()
     emit_signal("activate_power")
+    $PowerButton.disabled = true
+    yield(get_tree().create_timer(2), "timeout")
+    $PowerButton.disabled = false

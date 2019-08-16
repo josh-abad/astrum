@@ -48,7 +48,7 @@ font_path = "res://Fonts/Comfortaa-Regular.ttf"
 size = 20
 font_data = SubResource( 10 )
 
-[sub_resource type="Shader" id=13]
+[sub_resource type="Shader" id=12]
 code = "shader_type canvas_item;
 
 uniform float r_offset_x = -0.002;
@@ -72,8 +72,8 @@ COLOR.rgb = Chromatic_Aberration;
 // COLOR.rgb= textureLod(SCREEN_TEXTURE,uv,0.0).rgb;
 }"
 
-[sub_resource type="ShaderMaterial" id=14]
-shader = SubResource( 13 )
+[sub_resource type="ShaderMaterial" id=13]
+shader = SubResource( 12 )
 shader_param/r_offset_x = 0.005
 shader_param/r_offset_y = 0.0
 shader_param/g_offset_x = 0.005
@@ -196,7 +196,7 @@ texture_under = ExtResource( 5 )
 texture_progress = ExtResource( 6 )
 
 [node name="ChromaticAberration" type="Sprite" parent="."]
-material = SubResource( 14 )
+material = SubResource( 13 )
 position = Vector2( 615, 465 )
 scale = Vector2( 31.4062, 28.9063 )
 texture = ExtResource( 7 )

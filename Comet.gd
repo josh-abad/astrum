@@ -33,6 +33,8 @@ func start() -> void:
         
 
 func _input_event(viewport, event, shape_idx):
+    if viewport and shape_idx:
+        pass
     if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
         var direction: Vector2 = (self.get_position() - get_global_mouse_position()).normalized()
         self.set_linear_velocity(-direction * speed)
@@ -50,7 +52,6 @@ func _on_Comet_body_entered(body):
 
 func _on_VisibilityNotifier2D_screen_exited():
     if playing:
-        dropped_sound_transition()
         $CollisionShape2D.set_deferred('disabled', true)
         set_light(false)
         $Camera2D.current = false
@@ -99,15 +100,6 @@ func disappear() -> void:
     $Tween.interpolate_property(self, 'visible', visible, false, 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
     
-    
-func dropped_sound_transition() -> void:
-    $DroppedSound.play()
-    $Tween.interpolate_property($DroppedSound, 'volume_db', $DroppedSound.volume_db, -25, 2, Tween.TRANS_QUAD, Tween.EASE_OUT_IN)
-    $Tween.start()
-    yield(get_tree().create_timer(2), 'timeout')
-    $DroppedSound.stop()
-    $DroppedSound.set_volume_db(10)
-
               
 func use_power() -> void:
     _tween($Light2D, 'color', $Light2D.color, Color("#d52a7a"), Color("#00dbff"), 0.8)
@@ -115,3 +107,6 @@ func use_power() -> void:
     $Tween.start()
     $PowerSound.play()
     $Spark.set_emitting(true)    
+    get_tree().paused = true
+    yield(get_tree().create_timer(0.08), "timeout")
+    get_tree().paused = false
