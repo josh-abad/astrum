@@ -8,10 +8,12 @@ onready var bg_modulate = $ParallaxBackground/ParallaxLayer/BackgroundModulate.c
 onready var stars_modulate = $ParallaxStars/ParallaxLayer/StarsModulate.color
 onready var main_modulate = $MainModulate.color
 onready var Spark = load("res://Spark.tscn")
+onready var ScoredPopup = load("res://ScoredPopup.tscn")
 
 var score: int = 0
 var high_score: int = 0
 var power: int = 0
+var shield: bool = true
 
 
 func _ready() -> void:
@@ -28,6 +30,7 @@ func _process(delta: float) -> void:
 func new_game() -> void:
     _update_power(0)
     _update_score(0)
+    _update_shield(false)
     $StartTimer.start()
     $Comet.start()
     active = true
@@ -51,19 +54,18 @@ func _on_Comet_scored(planet_position) -> void:
     if score > high_score:
         _update_high_score(score)
     _update_power(power + 5)
-    $ScoredPopup.display(planet_position, '+1')
     
-    _brighten($ParallaxBackground/ParallaxLayer/BackgroundModulate)
-    _brighten($ParallaxStars/ParallaxLayer/StarsModulate)
-    _brighten($MainModulate)
+    var popup = ScoredPopup.instance()
+    add_child(popup)
+    popup.display(planet_position, 1)
     
     var spark = Spark.instance()
     add_child(spark)
     spark.set_position(planet_position)
     spark.set_emitting(true)
     yield(get_tree().create_timer(3), "timeout")
-    spark.queue_free()    
-
+    spark.queue_free()
+    
 
 func _update_score(value: int) -> void:
     score = value
@@ -80,11 +82,9 @@ func _update_power(value: int) -> void:
     $HUD.update_power(power)
 
 
-func _brighten(canvas: CanvasModulate) -> void:
-    var color = canvas.color
-    if color.r <= 0.95:
-        $Tween.interpolate_property(canvas, 'color', canvas.color, Color(color.r + 0.05, color.g + 0.05, color.b + 0.05), 0.4, Tween.TRANS_QUAD, Tween.EASE_IN)
-        $Tween.start()
+func _update_shield(value: bool) -> void:
+    shield = value
+    $Comet.enable_shield(shield)
 
 
 func _get_random_position(off_screen: bool = false) -> Vector2:
@@ -158,10 +158,18 @@ func _on_Star_collect(star_position) -> void:
         _update_high_score(score)
     _update_power(power + 10)        
     $Comet.pulse()
-    $ScoredPopup.display(star_position, '+2')
+    
+    var popup = ScoredPopup.instance()
+    add_child(popup)
+    popup.display(star_position, 2)
     
 
 func _on_HUD_activate_power() -> void:
     if power >= 10:
         $Comet.use_power()
         _update_power(power - 10)
+
+
+func _on_Comet_shielded() -> void:
+    $BlackHole.disappear()
+    _update_shield(false)

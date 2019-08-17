@@ -19,6 +19,10 @@ config/name="Astrum"
 run/main_scene="res://Main.tscn"
 config/icon="res://Assets/res/mipmap-xxxhdpi/astrum_launcher.png"
 
+[autoload]
+
+Freeze="*res://Freeze.gd"
+
 [display]
 
 window/size/width=320

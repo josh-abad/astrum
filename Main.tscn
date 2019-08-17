@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
@@ -7,9 +7,8 @@
 [ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=5]
 [ext_resource path="res://BlackHole.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Comet.tscn" type="PackedScene" id=7]
-[ext_resource path="res://ScoredPopup.tscn" type="PackedScene" id=8]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=10]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=9]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -83,13 +82,12 @@ speed = -500
 [node name="StarTimer" type="Timer" parent="."]
 wait_time = 6.0
 
-[node name="ScoredPopup" parent="." instance=ExtResource( 8 )]
-
-[node name="HUD" parent="." instance=ExtResource( 9 )]
+[node name="HUD" parent="." instance=ExtResource( 8 )]
 
 [node name="AmbientSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 10 )
+stream = ExtResource( 9 )
+volume_db = -30.0
 [connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]
@@ -97,6 +95,7 @@ stream = ExtResource( 10 )
 [connection signal="inactive" from="BlackHole" to="." method="_on_BlackHole_inactive"]
 [connection signal="dropped" from="Comet" to="." method="_on_Comet_dropped"]
 [connection signal="scored" from="Comet" to="." method="_on_Comet_scored"]
+[connection signal="shielded" from="Comet" to="." method="_on_Comet_shielded"]
 [connection signal="timeout" from="StarTimer" to="." method="_on_Timer_timeout"]
 [connection signal="activate_power" from="HUD" to="." method="_on_HUD_activate_power"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]

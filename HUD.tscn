@@ -74,9 +74,9 @@ COLOR.rgb = Chromatic_Aberration;
 
 [sub_resource type="ShaderMaterial" id=13]
 shader = SubResource( 12 )
-shader_param/r_offset_x = 0.005
+shader_param/r_offset_x = 0.004
 shader_param/r_offset_y = 0.0
-shader_param/g_offset_x = 0.005
+shader_param/g_offset_x = 0.004
 shader_param/g_offset_y = 0.0
 shader_param/b_offset_x = 0.0
 shader_param/b_offset_y = 0.0
@@ -151,14 +151,13 @@ margin_top = 16.0
 margin_right = 55.0
 margin_bottom = 38.0
 custom_fonts/font = SubResource( 8 )
-custom_colors/font_color = Color( 0, 0.858824, 1, 0.501961 )
+custom_colors/font_color = Color( 0.027451, 0.976471, 0.862745, 0.501961 )
 text = "0"
 align = 2
 
 [node name="Tween" type="Tween" parent="."]
 
 [node name="StartButton" type="Button" parent="."]
-self_modulate = Color( 0, 0.858824, 1, 1 )
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5

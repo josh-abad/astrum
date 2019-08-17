@@ -6,9 +6,11 @@ export var speed := -500
 
 var reset_position := false
 var playing = false
+var shield_on = false
 
 signal dropped
 signal scored(planet_position)
+signal shielded
 
 
 func _ready():
@@ -42,7 +44,7 @@ func _input_event(viewport, event, shape_idx):
         _start_tween()
 
 
-func _on_Comet_body_entered(body):
+func _on_Comet_body_entered(body: PhysicsBody2D):
     play_sound()
     _start_tween()
     $Camera2D.shake(0.2, 15, 8)
@@ -88,7 +90,7 @@ func pulse() -> void:
 func _start_tween() -> void:
     _tween($Light2D/Sprite, 'scale', $Light2D/Sprite.get_transform().get_scale(), Vector2(TWEEN_SCALE, TWEEN_SCALE), Vector2(1, 1))
     _tween($Light2D, 'texture_scale', $Light2D.texture_scale, 1.5, 1)
-    _tween($Light2D, 'color', $Light2D.color, Color(1, 1, 1), Color("#00dbff"))
+    _tween($Light2D, 'color', $Light2D.color, Color(1, 1, 1), Color("#07f9dc"))
     $Tween.start()
 
         
@@ -102,11 +104,20 @@ func disappear() -> void:
     
               
 func use_power() -> void:
-    _tween($Light2D, 'color', $Light2D.color, Color("#d52a7a"), Color("#00dbff"), 0.8)
+    _tween($Light2D, 'color', $Light2D.color, Color("#fb2778"), Color("#07f9dc"), 0.8)
     $Tween.interpolate_property(self, 'linear_velocity', linear_velocity, Vector2(0, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
     $PowerSound.play()
-    $Spark.set_emitting(true)    
-    get_tree().paused = true
-    yield(get_tree().create_timer(0.08), "timeout")
-    get_tree().paused = false
+    $Spark.set_emitting(true)
+    Freeze.freeze()
+    
+    
+func enable_shield(yes: bool) -> void:
+    shield_on = yes
+    $Tween.interpolate_property($Shield, "modulate", $Shield.modulate, Color(1, 1, 1, 1 if yes else 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()
+
+
+func _on_Shield_area_entered(area: Area2D) -> void:
+    if $VisibilityNotifier2D.is_on_screen() and shield_on and area.is_in_group("Black Hole") and area.active:
+        emit_signal("shielded")

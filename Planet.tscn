@@ -38,12 +38,7 @@ shape = SubResource( 3 )
 
 [node name="Tween" type="Tween" parent="."]
 
-[node name="Freeze" type="Timer" parent="."]
-pause_mode = 2
-wait_time = 0.08
-
 [node name="HitSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
 stream = ExtResource( 3 )
 [connection signal="body_entered" from="." to="." method="_on_Planet_body_entered"]
-[connection signal="timeout" from="Freeze" to="." method="_on_Freeze_timeout"]
