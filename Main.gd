@@ -2,6 +2,7 @@ extends Node
 
 export (PackedScene) var Planet
 export (PackedScene) var Star
+export (PackedScene) var Shield
 
 var active := false
 onready var bg_modulate = $ParallaxBackground/ParallaxLayer/BackgroundModulate.color
@@ -106,6 +107,7 @@ func _on_StartTimer_timeout():
     $PlanetTimer.start()
     $BlackHoleTimer.start()
     $StarTimer.start()
+    $ShieldTimer.start()
 
 
 func _set_planet_gravity(on: bool) -> void:
@@ -163,6 +165,13 @@ func _on_Star_collect(star_position) -> void:
     add_child(popup)
     popup.display(star_position, 2)
     
+    
+func _on_Shield_collect() -> void:
+    if not active:
+        return
+    _update_shield(true)
+    $Comet.pulse()
+    
 
 func _on_HUD_activate_power() -> void:
     if power >= 10:
@@ -173,3 +182,14 @@ func _on_HUD_activate_power() -> void:
 func _on_Comet_shielded() -> void:
     $BlackHole.disappear()
     _update_shield(false)
+
+
+func _on_ShieldTimer_timeout() -> void:
+    if active and not shield:
+        var shield: Object = Shield.instance()
+        if shield.connect('collect', self, '_on_Shield_collect'):
+            pass
+        add_child(shield)
+        shield.appear(_get_random_position())
+        if $HUD.connect("start_game", shield, "_on_start_game"):
+            pass

@@ -38,13 +38,13 @@ func appear(position: Vector2) -> void:
 
 func disappear(to_position: Vector2 = get_position()) -> void:
     $HitSound.play()
+    Freeze.freeze()    
     $CollisionShape2D.set_deferred('disabled', true)
     $Sprite/LightOccluder2D.set_deferred('visible', false)
     $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 1, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'position', get_position(), to_position, 1, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
-    Freeze.freeze()
     yield(get_tree().create_timer(1), 'timeout')
     queue_free()
     

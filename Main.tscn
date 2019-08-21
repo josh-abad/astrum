@@ -1,14 +1,15 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Star.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Parallax/Background.png" type="Texture" id=4]
-[ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=5]
-[ext_resource path="res://BlackHole.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Comet.tscn" type="PackedScene" id=7]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=9]
+[ext_resource path="res://Shield.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Parallax/Background.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=6]
+[ext_resource path="res://BlackHole.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Comet.tscn" type="PackedScene" id=8]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=10]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -18,6 +19,7 @@
 script = ExtResource( 1 )
 Planet = ExtResource( 2 )
 Star = ExtResource( 3 )
+Shield = ExtResource( 4 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -26,7 +28,7 @@ motion_scale = Vector2( 0.5, 0.5 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
 position = Vector2( -1280, -100 )
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
@@ -40,7 +42,7 @@ motion_scale = Vector2( 0.75, 0.75 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxStars/ParallaxLayer"]
 position = Vector2( -1280, -96 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
@@ -70,23 +72,26 @@ one_shot = true
 material = SubResource( 1 )
 color = Color( 0.156863, 0.156863, 0.156863, 1 )
 
-[node name="BlackHole" parent="." instance=ExtResource( 6 )]
+[node name="BlackHole" parent="." instance=ExtResource( 7 )]
 visible = false
 position = Vector2( 340, 90 )
 
-[node name="Comet" parent="." instance=ExtResource( 7 )]
+[node name="Comet" parent="." instance=ExtResource( 8 )]
 material = SubResource( 2 )
 position = Vector2( 120, 160 )
 speed = -500
 
+[node name="ShieldTimer" type="Timer" parent="."]
+wait_time = 12.0
+
 [node name="StarTimer" type="Timer" parent="."]
 wait_time = 6.0
 
-[node name="HUD" parent="." instance=ExtResource( 8 )]
+[node name="HUD" parent="." instance=ExtResource( 9 )]
 
 [node name="AmbientSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 9 )
+stream = ExtResource( 10 )
 volume_db = -30.0
 [connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
@@ -96,6 +101,7 @@ volume_db = -30.0
 [connection signal="dropped" from="Comet" to="." method="_on_Comet_dropped"]
 [connection signal="scored" from="Comet" to="." method="_on_Comet_scored"]
 [connection signal="shielded" from="Comet" to="." method="_on_Comet_shielded"]
+[connection signal="timeout" from="ShieldTimer" to="." method="_on_ShieldTimer_timeout"]
 [connection signal="timeout" from="StarTimer" to="." method="_on_Timer_timeout"]
 [connection signal="activate_power" from="HUD" to="." method="_on_HUD_activate_power"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
