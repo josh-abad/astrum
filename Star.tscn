@@ -1,20 +1,36 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Star.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Light.png" type="Texture" id=2]
-[ext_resource path="res://Assets/StarAnimation/1.png" type="Texture" id=3]
-[ext_resource path="res://Assets/StarAnimation/2.png" type="Texture" id=4]
-[ext_resource path="res://Assets/StarAnimation/3.png" type="Texture" id=5]
-[ext_resource path="res://Assets/StarAnimation/4.png" type="Texture" id=6]
-[ext_resource path="res://Assets/StarAnimation/5.png" type="Texture" id=7]
-[ext_resource path="res://Audio/Collect.wav" type="AudioStream" id=8]
+[ext_resource path="res://Assets/StarAnimation/0.png" type="Texture" id=3]
+[ext_resource path="res://Assets/StarAnimation/1.png" type="Texture" id=4]
+[ext_resource path="res://Assets/StarAnimation/2.png" type="Texture" id=5]
+[ext_resource path="res://Assets/StarAnimation/3.png" type="Texture" id=6]
+[ext_resource path="res://Assets/StarAnimation/4.png" type="Texture" id=7]
+[ext_resource path="res://Assets/StarAnimation/5.png" type="Texture" id=8]
+[ext_resource path="res://Assets/StarAnimation/6.png" type="Texture" id=9]
+[ext_resource path="res://Assets/StarAnimation/7.png" type="Texture" id=10]
+[ext_resource path="res://Assets/StarAnimation/8.png" type="Texture" id=11]
+[ext_resource path="res://Assets/StarAnimation/9.png" type="Texture" id=12]
+[ext_resource path="res://Assets/StarAnimation/10.png" type="Texture" id=13]
+[ext_resource path="res://Assets/StarAnimation/11.png" type="Texture" id=14]
+[ext_resource path="res://Assets/StarAnimation/12.png" type="Texture" id=15]
+[ext_resource path="res://Assets/StarAnimation/13.png" type="Texture" id=16]
+[ext_resource path="res://Assets/StarAnimation/14.png" type="Texture" id=17]
+[ext_resource path="res://Assets/StarAnimation/15.png" type="Texture" id=18]
+[ext_resource path="res://Assets/StarAnimation/16.png" type="Texture" id=19]
+[ext_resource path="res://Assets/StarAnimation/17.png" type="Texture" id=20]
+[ext_resource path="res://Assets/StarAnimation/18.png" type="Texture" id=21]
+[ext_resource path="res://Assets/StarAnimation/19.png" type="Texture" id=22]
+[ext_resource path="res://Assets/StarAnimation/20.png" type="Texture" id=23]
+[ext_resource path="res://Audio/Collect.wav" type="AudioStream" id=24]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 3 ) ],
+"frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ) ],
 "loop": true,
 "name": "default",
-"speed": 24.0
+"speed": 42.0
 } ]
 
 [sub_resource type="CircleShape2D" id=2]
@@ -35,7 +51,7 @@ range_layer_min = -1
 position = Vector2( 0, -1 )
 scale = Vector2( 1, 0.96875 )
 frames = SubResource( 1 )
-frame = 5
+frame = 15
 speed_scale = 0.75
 playing = true
 
@@ -47,4 +63,4 @@ shape = SubResource( 2 )
 
 [node name="CollectSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 8 )
+stream = ExtResource( 24 )

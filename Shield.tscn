@@ -1,20 +1,28 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Shield.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Light.png" type="Texture" id=2]
-[ext_resource path="res://Assets/StarAnimation/1.png" type="Texture" id=3]
-[ext_resource path="res://Assets/StarAnimation/2.png" type="Texture" id=4]
-[ext_resource path="res://Assets/StarAnimation/3.png" type="Texture" id=5]
-[ext_resource path="res://Assets/StarAnimation/4.png" type="Texture" id=6]
-[ext_resource path="res://Assets/StarAnimation/5.png" type="Texture" id=7]
-[ext_resource path="res://Audio/Collect.wav" type="AudioStream" id=8]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/0.png" type="Texture" id=3]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/1.png" type="Texture" id=4]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/2.png" type="Texture" id=5]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/3.png" type="Texture" id=6]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/4.png" type="Texture" id=7]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/5.png" type="Texture" id=8]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/6.png" type="Texture" id=9]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/7.png" type="Texture" id=10]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/8.png" type="Texture" id=11]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/9.png" type="Texture" id=12]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/10.png" type="Texture" id=13]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/11.png" type="Texture" id=14]
+[ext_resource path="res://Assets/ShieldPowerupAnimation/12.png" type="Texture" id=15]
+[ext_resource path="res://Audio/Collect.wav" type="AudioStream" id=16]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
-"frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 3 ) ],
+"frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ) ],
 "loop": true,
 "name": "default",
-"speed": 24.0
+"speed": 26.0
 } ]
 
 [sub_resource type="CircleShape2D" id=2]
@@ -35,7 +43,7 @@ range_layer_min = -1
 position = Vector2( 0, -1 )
 scale = Vector2( 1, 0.96875 )
 frames = SubResource( 1 )
-frame = 6
+frame = 10
 speed_scale = 0.75
 playing = true
 
@@ -47,4 +55,4 @@ shape = SubResource( 2 )
 
 [node name="CollectSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 8 )
+stream = ExtResource( 16 )

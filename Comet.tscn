@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://Comet.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Particle.png" type="Texture" id=2]
@@ -14,10 +14,14 @@
 [ext_resource path="res://Assets/ShieldAnimation/8.png" type="Texture" id=12]
 [ext_resource path="res://Assets/ShieldAnimation/9.png" type="Texture" id=13]
 [ext_resource path="res://Assets/ShieldAnimation/10.png" type="Texture" id=14]
-[ext_resource path="res://Assets/Light.png" type="Texture" id=15]
-[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=16]
-[ext_resource path="res://Camera2D.gd" type="Script" id=17]
-[ext_resource path="res://Audio/Power.wav" type="AudioStream" id=18]
+[ext_resource path="res://Assets/ShieldAnimation/11.png" type="Texture" id=15]
+[ext_resource path="res://Assets/ShieldAnimation/12.png" type="Texture" id=16]
+[ext_resource path="res://Assets/ShieldAnimation/13.png" type="Texture" id=17]
+[ext_resource path="res://Assets/ShieldAnimation/14.png" type="Texture" id=18]
+[ext_resource path="res://Assets/Light.png" type="Texture" id=19]
+[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=20]
+[ext_resource path="res://Camera2D.gd" type="Script" id=21]
+[ext_resource path="res://Audio/Power.wav" type="AudioStream" id=22]
 
 [sub_resource type="PhysicsMaterial" id=1]
 friction = 0.0
@@ -29,18 +33,18 @@ colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
 [sub_resource type="Gradient" id=3]
 colors = PoolColorArray( 0.368627, 0.741176, 0.92549, 0.027451, 1, 1, 1, 0 )
 
-[sub_resource type="CircleShape2D" id=5]
-radius = 108.969
+[sub_resource type="CircleShape2D" id=4]
+radius = 124.476
 
-[sub_resource type="SpriteFrames" id=6]
+[sub_resource type="SpriteFrames" id=5]
 animations = [ {
-"frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ) ],
+"frames": [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ) ],
 "loop": true,
 "name": "default",
-"speed": 24.0
+"speed": 30.0
 } ]
 
-[sub_resource type="CircleShape2D" id=4]
+[sub_resource type="CircleShape2D" id=6]
 radius = 40.0
 
 [node name="Comet" type="RigidBody2D" groups=[
@@ -87,19 +91,19 @@ gravity = Vector2( 0, 0 )
 color_ramp = SubResource( 3 )
 
 [node name="Shield" type="Area2D" parent="."]
+modulate = Color( 1, 1, 1, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Shield"]
 scale = Vector2( 0.6, 0.6 )
-shape = SubResource( 5 )
+shape = SubResource( 4 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Shield"]
-scale = Vector2( 0.6, 0.6 )
-frames = SubResource( 6 )
-frame = 9
+frames = SubResource( 5 )
+frame = 14
 playing = true
 
 [node name="Light2D" type="Light2D" parent="."]
-texture = ExtResource( 15 )
+texture = ExtResource( 19 )
 texture_scale = 0.5
 color = Color( 0.027451, 0.976471, 0.862745, 1 )
 range_layer_min = -1
@@ -112,13 +116,13 @@ texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2( 1.25, 1.25 )
-shape = SubResource( 4 )
+shape = SubResource( 6 )
 
 [node name="Tween" type="Tween" parent="."]
 
 [node name="BounceSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 16 )
+stream = ExtResource( 20 )
 volume_db = -20.0
 
 [node name="PitchTimer" type="Timer" parent="BounceSound"]
@@ -138,13 +142,13 @@ drag_margin_top = 0.0
 drag_margin_right = 1.0
 drag_margin_bottom = 1.0
 editor_draw_limits = true
-script = ExtResource( 17 )
+script = ExtResource( 21 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 
 [node name="PowerSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 18 )
+stream = ExtResource( 22 )
 [connection signal="body_entered" from="." to="." method="_on_Comet_body_entered"]
 [connection signal="area_entered" from="Shield" to="." method="_on_Shield_area_entered"]
 [connection signal="timeout" from="BounceSound/PitchTimer" to="." method="_on_PitchTimer_timeout"]

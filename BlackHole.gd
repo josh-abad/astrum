@@ -25,12 +25,15 @@ func appear(position: Vector2 = self.position) -> void:
     $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.start()
-    active = true
     $ActiveTimer.set_wait_time(rand_range(2, 5))
     $ActiveTimer.start()
     $TransitionSound.play()
     $AmbientSound.play()
     set_gravity_vector(position)
+    
+    # Make sure to set active to true after tween is finished
+    yield(get_tree().create_timer(1), "timeout")
+    active = true    
     
     
 func disappear() -> void:

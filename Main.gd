@@ -14,7 +14,8 @@ onready var ScoredPopup = load("res://ScoredPopup.tscn")
 var score: int = 0
 var high_score: int = 0
 var power: int = 0
-var shield: bool = true
+var shield: float = 0
+var shield_on: bool = false
 
 
 func _ready() -> void:
@@ -26,12 +27,16 @@ func _process(delta: float) -> void:
     if delta:
         pass
     _set_planet_gravity($BlackHole.active)
+    if shield_on:
+        _update_shield(shield - 0.1)
+        if shield <= 0:
+            _disable_shield(true)
 
 
 func new_game() -> void:
     _update_power(0)
     _update_score(0)
-    _update_shield(false)
+    _update_shield(0)
     $StartTimer.start()
     $Comet.start()
     active = true
@@ -83,12 +88,20 @@ func _update_power(value: int) -> void:
     $HUD.update_power(power)
 
 
-func _update_shield(value: bool) -> void:
+func _update_shield(value: float) -> void:
     shield = value
-    $Comet.enable_shield(shield)
+    $HUD.update_shield(shield)
+    $Comet.enable_shield(shield_on)
+
+
+func _disable_shield(value: bool) -> void:
+    shield_on = not value
+    $HUD.update_shield_state(shield_on)
+    $Comet.enable_shield(shield_on)
 
 
 func _get_random_position(off_screen: bool = false) -> Vector2:
+    randomize()
     var x = $Comet.position.x + rand_range(-50, 50)
     var y = $Comet.position.y - (rand_range(640, 740) if off_screen else rand_range(250, 500))
     return Vector2(x, y)
@@ -169,7 +182,8 @@ func _on_Star_collect(star_position) -> void:
 func _on_Shield_collect() -> void:
     if not active:
         return
-    _update_shield(true)
+    if not shield_on:
+        _update_shield(shield + 25)
     $Comet.pulse()
     
 
@@ -181,11 +195,10 @@ func _on_HUD_activate_power() -> void:
 
 func _on_Comet_shielded() -> void:
     $BlackHole.disappear()
-    _update_shield(false)
 
 
 func _on_ShieldTimer_timeout() -> void:
-    if active and not shield:
+    if active and not shield_on:
         var shield: Object = Shield.instance()
         if shield.connect('collect', self, '_on_Shield_collect'):
             pass
@@ -193,3 +206,9 @@ func _on_ShieldTimer_timeout() -> void:
         shield.appear(_get_random_position())
         if $HUD.connect("start_game", shield, "_on_start_game"):
             pass
+
+
+func _on_HUD_activate_shield() -> void:
+    if shield > 0:
+        _disable_shield(false)
+        

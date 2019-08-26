@@ -82,7 +82,7 @@ position = Vector2( 120, 160 )
 speed = -500
 
 [node name="ShieldTimer" type="Timer" parent="."]
-wait_time = 12.0
+wait_time = 4.0
 
 [node name="StarTimer" type="Timer" parent="."]
 wait_time = 6.0
@@ -104,4 +104,5 @@ volume_db = -30.0
 [connection signal="timeout" from="ShieldTimer" to="." method="_on_ShieldTimer_timeout"]
 [connection signal="timeout" from="StarTimer" to="." method="_on_Timer_timeout"]
 [connection signal="activate_power" from="HUD" to="." method="_on_HUD_activate_power"]
+[connection signal="activate_shield" from="HUD" to="." method="_on_HUD_activate_shield"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
