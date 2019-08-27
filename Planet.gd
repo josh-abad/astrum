@@ -41,7 +41,7 @@ func disappear(to_position: Vector2 = get_position()) -> void:
     Freeze.freeze()    
     $CollisionShape2D.set_deferred('disabled', true)
     $Sprite/LightOccluder2D.set_deferred('visible', false)
-    $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 1, Tween.TRANS_CIRC, Tween.EASE_OUT)
+    $Tween.interpolate_property($Sprite, 'scale', $Sprite.scale, Vector2(0, 0), 1, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'position', get_position(), to_position, 1, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.5, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
