@@ -16,7 +16,7 @@ const TRANSPARENT = Color(1, 1, 1, 0)
 
 var power_disabled = false
 
-func _ready():
+func _ready() -> void:
     $ScoreLabel.modulate = TRANSPARENT
     $GameOverLabel.modulate = TRANSPARENT
     $HighScore/Label.modulate = TRANSPARENT
@@ -72,7 +72,7 @@ func update_shield(shield: float) -> void:
     $Tween.start()
     
     
-func _on_StartButton_pressed():
+func _on_StartButton_pressed() -> void:
     fade(false, $ScoreLabel)
     fade(false, $HighScore/Label)
     fade(false, $HighScore/HighScoreLabel)

@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-onready var planets = [
+onready var planets: Array = [
     load("res://Assets/Planets/Planet1.png"),
     load("res://Assets/Planets/Planet2.png"),
     load("res://Assets/Planets/Planet3.png"),
@@ -13,7 +13,7 @@ onready var planets = [
 ]
 
 
-func _ready():
+func _ready() -> void:
     $Sprite.set_texture(planets[randi() % planets.size()])
     _rand_scale()
     hide()
@@ -53,7 +53,7 @@ func set_gravity(on: bool) -> void:
     gravity_scale = 0.5 if on else 0.0
 
 
-func _on_Planet_body_entered(body):
+func _on_Planet_body_entered(body: PhysicsBody2D) -> void:
     if body.is_in_group('Balls'):
         $CollisionShape2D.set_deferred('disabled', true)
         disappear()

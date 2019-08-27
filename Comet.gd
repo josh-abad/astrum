@@ -13,12 +13,12 @@ signal scored(planet_position)
 signal shielded
 
 
-func _ready():
+func _ready() -> void:
     hide()
     $CollisionShape2D.set_deferred('disabled', true)
 
 
-func _integrate_forces(state):
+func _integrate_forces(state: Physics2DDirectBodyState) -> void:
     if reset_position:
         state.set_transform(Transform2D(0.0, $Camera2D.get_camera_screen_center()))
         state.set_linear_velocity(Vector2())
@@ -34,7 +34,7 @@ func start() -> void:
     $CollisionShape2D.disabled = false
         
 
-func _input_event(viewport, event, shape_idx):
+func _input_event(viewport: Object, event: InputEvent, shape_idx: int) -> void:
     if viewport and shape_idx:
         pass
     if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
@@ -44,7 +44,7 @@ func _input_event(viewport, event, shape_idx):
         _start_tween()
 
 
-func _on_Comet_body_entered(body: PhysicsBody2D):
+func _on_Comet_body_entered(body: PhysicsBody2D) -> void:
     play_sound()
     _start_tween()
     $Camera2D.shake(0.2, 15, 8)
@@ -52,7 +52,7 @@ func _on_Comet_body_entered(body: PhysicsBody2D):
         emit_signal('scored', body.get_position())
             
 
-func _on_VisibilityNotifier2D_screen_exited():
+func _on_VisibilityNotifier2D_screen_exited() -> void:
     if playing:
         $CollisionShape2D.set_deferred('disabled', true)
         set_light(false)
@@ -67,7 +67,7 @@ func play_sound() -> void:
     $BounceSound/PitchTimer.start()
 
 
-func _on_PitchTimer_timeout():
+func _on_PitchTimer_timeout() -> void:
     $BounceSound.pitch_scale = 1
     
     
@@ -104,7 +104,7 @@ func disappear() -> void:
     
               
 func use_power() -> void:
-    _tween($Light2D, 'color', $Light2D.color, Color("#fb2778"), Color("#07f9dc"), 0.8)
+    _tween($Light2D, 'color', $Light2D.color, Color("#fb2778"), Color("#07f9dc"), 1)
     $Tween.interpolate_property(self, 'linear_velocity', linear_velocity, Vector2(0, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
     $PowerSound.play()

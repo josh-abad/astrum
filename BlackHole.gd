@@ -6,7 +6,7 @@ signal inactive
 var active := false setget set_active, is_active
 
 
-func _physics_process(delta):
+func _physics_process(delta: float) -> void:
     if delta:
         pass
     var overlapping_bodies: Array = get_overlapping_bodies()
@@ -52,7 +52,7 @@ func expand() -> void:
     $Tween.start()
 
 
-func _on_ActiveTimer_timeout():
+func _on_ActiveTimer_timeout() -> void:
     disappear()
     
     

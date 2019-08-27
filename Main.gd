@@ -5,9 +5,7 @@ export (PackedScene) var Star
 export (PackedScene) var Shield
 
 var active := false
-onready var bg_modulate = $ParallaxBackground/ParallaxLayer/BackgroundModulate.color
-onready var stars_modulate = $ParallaxStars/ParallaxLayer/StarsModulate.color
-onready var main_modulate = $MainModulate.color
+
 onready var Spark = load("res://Spark.tscn")
 onready var ScoredPopup = load("res://ScoredPopup.tscn")
 
@@ -41,9 +39,6 @@ func new_game() -> void:
     $StartTimer.start()
     $Comet.start()
     active = true
-    $Tween.interpolate_property($ParallaxBackground/ParallaxLayer/BackgroundModulate, 'color', $ParallaxBackground/ParallaxLayer/BackgroundModulate.color, bg_modulate, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)    
-    $Tween.interpolate_property($ParallaxStars/ParallaxLayer/StarsModulate, 'color', $ParallaxStars/ParallaxLayer/StarsModulate.color, stars_modulate, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)    
-    $Tween.interpolate_property($MainModulate, 'color', $MainModulate.color, main_modulate, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)    
     $Tween.start()
 
 
@@ -54,7 +49,7 @@ func _on_Comet_dropped() -> void:
     active = false
 
 
-func _on_Comet_scored(planet_position) -> void:
+func _on_Comet_scored(planet_position: Vector2) -> void:
     if not active:
         return
     _update_score(score + 1)
@@ -134,7 +129,7 @@ func _set_planet_gravity(on: bool) -> void:
                 $Tween.start()
 
 
-func _on_BlackHole_absorb():
+func _on_BlackHole_absorb() -> void:
     $BlackHole.disappear()
     $Comet.disappear()
     $HUD.show_game_over()
@@ -169,7 +164,7 @@ func _on_Timer_timeout() -> void:
             pass
         
         
-func _on_Star_collect(star_position) -> void:
+func _on_Star_collect(star_position: Vector2) -> void:
     if not active:
         return
     _update_score(score + 2)

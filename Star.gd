@@ -19,7 +19,7 @@ func _rand_scale() -> void:
     $CollisionShape2D.set_scale(Vector2(scale, scale))
 
 
-func _physics_process(delta):
+func _physics_process(delta: float):
     if delta:
         pass
     var overlapping_bodies: Array = get_overlapping_bodies()

@@ -9,11 +9,13 @@ var _previous_x = 0.0
 var _previous_y = 0.0
 var _last_offset = Vector2(0, 0)
 
-func _ready():
+
+func _ready() -> void:
     set_process(true)
 
+
 # Shake with decreasing intensity while there's time remaining.
-func _process(delta):
+func _process(delta: float) -> void:
     # Only shake when there's shake time remaining.
     if _timer == 0:
         return
@@ -40,6 +42,7 @@ func _process(delta):
     if _timer <= 0:
         _timer = 0
         set_offset(get_offset() - _last_offset)
+
 
 # Kick off a new screenshake effect.
 func shake(duration: float, frequency: float, amplitude: float) -> void:
