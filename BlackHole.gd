@@ -42,6 +42,7 @@ func disappear() -> void:
         $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
         $Tween.start()
         active = false
+        emit_signal('inactive')
         $AmbientSound.stop()
         $TransitionSound.play()
     
@@ -53,7 +54,6 @@ func expand() -> void:
 
 func _on_ActiveTimer_timeout():
     disappear()
-    emit_signal('inactive')
     
     
 func is_active() -> bool:

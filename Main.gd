@@ -144,6 +144,7 @@ func _on_BlackHole_absorb():
 func _on_BlackHoleTimer_timeout() -> void:
     if score >= 10:
         $BlackHole.appear(_get_random_position())
+        $HUD.disable_warning(false)
     else:
         $BlackHoleTimer.start()
 
@@ -152,6 +153,7 @@ func _on_BlackHole_inactive() -> void:
     if active:
         $BlackHoleTimer.set_wait_time(rand_range(2, 8))
         $BlackHoleTimer.start()
+        $HUD.disable_warning(true)
 
 
 func _on_Timer_timeout() -> void:

@@ -18,6 +18,7 @@ func _ready():
     $HighScore/Label.modulate = TRANSPARENT
     $HighScore/HighScoreLabel.modulate = TRANSPARENT
     $Shield.modulate = TRANSPARENT
+    $Warning.modulate = TRANSPARENT
     $PowerButton.hide()
 
 
@@ -95,4 +96,9 @@ func update_shield_state(on: bool) -> void:
     else:
         $Shield.texture_over = over_off_texture
         $Shield.texture_progress = progress_off_texture
+        
+        
+func disable_warning(yes: bool) -> void:
+    fade(yes, $Warning)
+    $Tween.start()
                 
