@@ -114,10 +114,11 @@ func use_power() -> void:
     
 func enable_shield(yes: bool) -> void:
     shield_on = yes
-    $Tween.interpolate_property($Shield, "modulate", $Shield.modulate, Color(1, 1, 1, 1 if yes else 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property($Shield, "modulate", $Shield.modulate, Color(1, 1, 1, 1 if yes else 0), 1, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
+    Freeze.freeze()    
 
 
 func _on_Shield_area_entered(area: Area2D) -> void:
-    if $VisibilityNotifier2D.is_on_screen() and shield_on and area.is_in_group("Black Hole") and area.active:
+    if $VisibilityNotifier2D.is_on_screen() and shield_on and area.is_in_group("Black Hole"):
         emit_signal("shielded")

@@ -37,6 +37,7 @@ func new_game() -> void:
     _update_power(0)
     _update_score(0)
     _update_shield(0)
+    $HUD.hide_high_score(score >= high_score)
     $StartTimer.start()
     $Comet.start()
     active = true
@@ -58,6 +59,7 @@ func _on_Comet_scored(planet_position) -> void:
         return
     _update_score(score + 1)
     if score > high_score:
+        $HUD.hide_high_score(true)
         _update_high_score(score)
     _update_power(power + 5)
     
@@ -91,7 +93,6 @@ func _update_power(value: int) -> void:
 func _update_shield(value: float) -> void:
     shield = value
     $HUD.update_shield(shield)
-    $Comet.enable_shield(shield_on)
 
 
 func _disable_shield(value: bool) -> void:
@@ -143,8 +144,9 @@ func _on_BlackHole_absorb():
 
 func _on_BlackHoleTimer_timeout() -> void:
     if score >= 10:
-        $BlackHole.appear(_get_random_position())
         $HUD.disable_warning(false)
+        yield(get_tree().create_timer(1), "timeout")        
+        $BlackHole.appear(_get_random_position())
     else:
         $BlackHoleTimer.start()
 
@@ -196,7 +198,7 @@ func _on_HUD_activate_power() -> void:
 
 
 func _on_Comet_shielded() -> void:
-    $BlackHole.disappear()
+    $BlackHole.disappear(true)
 
 
 func _on_ShieldTimer_timeout() -> void:

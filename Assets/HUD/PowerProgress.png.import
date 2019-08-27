@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Power.png-d0aa6cd38df3fc67d54e0010c5f1213a.stex"
+path="res://.import/PowerProgress.png-38659a44f7c653a6d690a0a69a5784dc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/HUD/Power.png"
-dest_files=[ "res://.import/Power.png-d0aa6cd38df3fc67d54e0010c5f1213a.stex" ]
+source_file="res://Assets/HUD/PowerProgress.png"
+dest_files=[ "res://.import/PowerProgress.png-38659a44f7c653a6d690a0a69a5784dc.stex" ]
 
 [params]
 

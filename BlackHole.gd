@@ -36,8 +36,8 @@ func appear(position: Vector2 = self.position) -> void:
     active = true    
     
     
-func disappear() -> void:
-    if active:
+func disappear(shield: bool = false) -> void:
+    if active or shield:
         $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
         $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
         $Tween.start()
