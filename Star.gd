@@ -6,17 +6,12 @@ var collected := false
 
 
 func _ready() -> void:
-    hide()
+    $Light2D/AnimatedSprite.scale = Vector2(0, 0)
+    modulate = Color(1, 1, 1, 0)
 
 
 func _on_start_game() -> void:
     queue_free()
-
-
-func _rand_scale() -> void:
-    var scale: float = rand_range(0.5, 1.0)
-    $Light2D/AnimatedSprite.set_scale(Vector2(scale, scale))
-    $CollisionShape2D.set_scale(Vector2(scale, scale))
 
 
 func _physics_process(delta: float):
@@ -35,15 +30,15 @@ func _physics_process(delta: float):
 
 func appear(position: Vector2) -> void:
     self.position = position
-    $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
-    $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
-    $Tween.interpolate_property(self, 'modulate', Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
+    $Tween.interpolate_property($Light2D/AnimatedSprite, 'scale', $Light2D/AnimatedSprite.scale, Vector2(1, 1), 1, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 1), 1, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
 
 
 func disappear() -> void:
-    $Tween.interpolate_property(self, 'scale', scale, Vector2(0, 0), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
-    $Tween.interpolate_property(self, 'visible', visible, false, 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
+    $Light2D.set_deferred('enabled', false)
+    $CollisionShape2D.set_deferred('disabled', true)
+    $Tween.interpolate_property(self, 'visible', visible, false, 0.4, Tween.TRANS_CIRC, Tween.EASE_OUT)
     $Tween.start()
     yield(get_tree().create_timer(1), "timeout")
     queue_free()

@@ -99,17 +99,14 @@ shape = SubResource( 4 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Shield"]
 frames = SubResource( 5 )
-frame = 14
+frame = 4
 playing = true
 
 [node name="Light2D" type="Light2D" parent="."]
 texture = ExtResource( 19 )
-texture_scale = 0.5
+texture_scale = 0.25
 color = Color( 0.027451, 0.976471, 0.862745, 1 )
 range_layer_min = -1
-shadow_gradient_length = 30.0
-shadow_filter = 1
-shadow_filter_smooth = 60.0
 
 [node name="Sprite" type="Sprite" parent="Light2D"]
 texture = ExtResource( 3 )

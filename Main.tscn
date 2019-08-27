@@ -33,7 +33,7 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
 [node name="BackgroundModulate" type="CanvasModulate" parent="ParallaxBackground/ParallaxLayer"]
-color = Color( 0.501961, 0.501961, 0.501961, 1 )
+color = Color( 0.352941, 0.352941, 0.352941, 1 )
 
 [node name="ParallaxStars" type="ParallaxBackground" parent="."]
 
@@ -41,13 +41,14 @@ color = Color( 0.501961, 0.501961, 0.501961, 1 )
 motion_scale = Vector2( 0.75, 0.75 )
 
 [node name="Sprite" type="Sprite" parent="ParallaxStars/ParallaxLayer"]
+self_modulate = Color( 0.027451, 0.976471, 0.862745, 1 )
 position = Vector2( -1280, -96 )
 texture = ExtResource( 6 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
 [node name="StarsModulate" type="CanvasModulate" parent="ParallaxStars/ParallaxLayer"]
-color = Color( 0.0784314, 0.0784314, 0.0784314, 1 )
+color = Color( 0.352941, 0.352941, 0.352941, 1 )
 
 [node name="Walls" type="StaticBody2D" parent="."]
 
@@ -70,7 +71,7 @@ one_shot = true
 
 [node name="MainModulate" type="CanvasModulate" parent="."]
 material = SubResource( 1 )
-color = Color( 0.156863, 0.156863, 0.156863, 1 )
+color = Color( 0.352941, 0.352941, 0.352941, 1 )
 
 [node name="BlackHole" parent="." instance=ExtResource( 7 )]
 visible = false

@@ -40,12 +40,12 @@ func _input_event(viewport: Object, event: InputEvent, shape_idx: int) -> void:
     if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
         var direction: Vector2 = (self.get_position() - get_global_mouse_position()).normalized()
         self.set_linear_velocity(-direction * speed)
-        play_sound()
+        _play_sound()
         _start_tween()
 
 
 func _on_Comet_body_entered(body: PhysicsBody2D) -> void:
-    play_sound()
+    _play_sound()
     _start_tween()
     $Camera2D.shake(0.2, 15, 8)
     if $VisibilityNotifier2D.is_on_screen() and body.is_in_group('Planets'):
@@ -61,7 +61,7 @@ func _on_VisibilityNotifier2D_screen_exited() -> void:
         playing = false
 
 
-func play_sound() -> void:
+func _play_sound() -> void:
     $BounceSound.play()
     $BounceSound.pitch_scale += 1
     $BounceSound/PitchTimer.start()
@@ -89,7 +89,6 @@ func pulse() -> void:
     
 func _start_tween() -> void:
     _tween($Light2D/Sprite, 'scale', $Light2D/Sprite.get_transform().get_scale(), Vector2(TWEEN_SCALE, TWEEN_SCALE), Vector2(1, 1))
-    _tween($Light2D, 'texture_scale', $Light2D.texture_scale, 1.5, 1)
     _tween($Light2D, 'color', $Light2D.color, Color(1, 1, 1), Color("#07f9dc"))
     $Tween.start()
 

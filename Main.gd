@@ -15,7 +15,6 @@ var power: int = 0
 var shield: float = 0
 var shield_on: bool = false
 
-
 func _ready() -> void:
     randomize()
     $AmbientSound.play()
@@ -62,12 +61,14 @@ func _on_Comet_scored(planet_position: Vector2) -> void:
     add_child(popup)
     popup.display(planet_position, 1)
     
+    # """
     var spark = Spark.instance()
     add_child(spark)
     spark.set_position(planet_position)
     spark.set_emitting(true)
     yield(get_tree().create_timer(3), "timeout")
     spark.queue_free()
+    # """
     
 
 func _update_score(value: int) -> void:

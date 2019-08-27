@@ -44,14 +44,15 @@ __meta__ = {
 
 [node name="Light2D" type="Light2D" parent="."]
 texture = ExtResource( 2 )
-color = Color( 0.996078, 0.317647, 0.392157, 1 )
+texture_scale = 0.15
+color = Color( 0.980392, 0.121569, 0.47451, 1 )
 range_layer_min = -1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Light2D"]
 position = Vector2( 0, -1 )
 scale = Vector2( 1, 0.96875 )
 frames = SubResource( 1 )
-frame = 15
+frame = 6
 speed_scale = 0.75
 playing = true
 
