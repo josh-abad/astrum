@@ -156,13 +156,24 @@ func _on_BlackHole_inactive() -> void:
 
 func _on_Timer_timeout() -> void:
     if active:
-        var star: Object = Star.instance()
-        if star.connect('collect', self, '_on_Star_collect'):
-            pass
-        add_child(star)
-        star.appear(_get_random_position())
-        if $HUD.connect("start_game", star, "_on_start_game"):
-            pass
+        $StarTimer.set_wait_time(rand_range(6, 12))    
+        var choice = randi() % 2
+        if choice == 0:    
+            var star: Object = Star.instance()
+            if star.connect('collect', self, '_on_Star_collect'):
+                pass
+            add_child(star)
+            star.appear(_get_random_position())
+            if $HUD.connect("start_game", star, "_on_start_game"):
+                pass
+        else:
+            var shield: Object = Shield.instance()
+            if shield.connect('collect', self, '_on_Shield_collect'):
+                pass
+            add_child(shield)
+            shield.appear(_get_random_position())
+            if $HUD.connect("start_game", shield, "_on_start_game"):
+                pass
         
         
 func _on_Star_collect(star_position: Vector2) -> void:
@@ -198,7 +209,10 @@ func _on_Comet_shielded() -> void:
 
 
 func _on_ShieldTimer_timeout() -> void:
+    pass
+    """
     if active and not shield_on:
+        $ShieldTimer.set_wait_time(rand_range(6, 12))        
         var shield: Object = Shield.instance()
         if shield.connect('collect', self, '_on_Shield_collect'):
             pass
@@ -206,9 +220,10 @@ func _on_ShieldTimer_timeout() -> void:
         shield.appear(_get_random_position())
         if $HUD.connect("start_game", shield, "_on_start_game"):
             pass
+    """
 
 
 func _on_HUD_activate_shield() -> void:
-    if shield > 0:
+    if shield > 0 and not shield_on:
         _disable_shield(false)
         

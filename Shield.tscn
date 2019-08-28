@@ -22,7 +22,7 @@ animations = [ {
 "frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ) ],
 "loop": true,
 "name": "default",
-"speed": 26.0
+"speed": 24.0
 } ]
 
 [sub_resource type="CircleShape2D" id=2]
@@ -44,7 +44,7 @@ range_layer_min = -1
 position = Vector2( 0, -1 )
 scale = Vector2( 1, 0.96875 )
 frames = SubResource( 1 )
-frame = 12
+frame = 7
 speed_scale = 0.75
 playing = true
 

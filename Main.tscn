@@ -1,19 +1,106 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Star.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Shield.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Assets/Parallax/Background.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Parallax/icon.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=6]
 [ext_resource path="res://BlackHole.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Comet.tscn" type="PackedScene" id=8]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Audio/Ambient.wav" type="AudioStream" id=10]
+[ext_resource path="res://Audio/Ambient.ogg" type="AudioStream" id=10]
+[ext_resource path="res://icon.png" type="Texture" id=11]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
 [sub_resource type="CanvasItemMaterial" id=2]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform vec2 offset;
+uniform float scale:hint_range(0.5, 1000.0);
+
+// Description : Array and textureless GLSL 2D simplex noise function.
+//      Author : Ian McEwan, Ashima Arts.
+//  Maintainer : stegu
+//     Lastmod : 20110822 (ijm)
+//     License : Copyright (C) 2011 Ashima Arts. All rights reserved.
+//               Distributed under the MIT License. See LICENSE file.
+//               https://github.com/ashima/webgl-noise
+//               https://github.com/stegu/webgl-noise
+// 
+
+vec3 mod289_3(vec3 x) {
+    return x - floor(x * (1.0 / 289.0)) * 289.0;
+}
+
+vec2 mod289_2(vec2 x) {
+    return x - floor(x * (1.0 / 289.0)) * 289.0;
+}
+
+vec3 permute(vec3 x) {
+    return mod289_3(((x*34.0)+1.0)*x);
+}
+
+float snoise(vec2 v) {
+    vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0
+                  0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
+                 -0.577350269189626,  // -1.0 + 2.0 * C.x
+                  0.024390243902439); // 1.0 / 41.0
+    // First corner
+    vec2 i  = floor(v + dot(v, C.yy) );
+    vec2 x0 = v -   i + dot(i, C.xx);
+    
+    // Other corners
+    vec2 i1;
+    //i1.x = step( x0.y, x0.x ); // x0.x > x0.y ? 1.0 : 0.0
+    //i1.y = 1.0 - i1.x;
+    i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+    // x0 = x0 - 0.0 + 0.0 * C.xx ;
+    // x1 = x0 - i1 + 1.0 * C.xx ;
+    // x2 = x0 - 1.0 + 2.0 * C.xx ;
+    vec4 x12 = vec4(x0.xy, x0.xy) + C.xxzz;
+    x12.xy -= i1;
+    
+    // Permutations
+    i = mod289_2(i); // Avoid truncation effects in permutation
+    vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+    	+ i.x + vec3(0.0, i1.x, 1.0 ));
+    
+    vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), vec3(0.0));
+    m = m*m ;
+    m = m*m ;
+    
+    // Gradients: 41 points uniformly over a line, mapped onto a diamond.
+    // The ring size 17*17 = 289 is close to a multiple of 41 (41*7 = 287)
+    
+    vec3 x = 2.0 * fract(p * C.www) - 1.0;
+    vec3 h = abs(x) - 0.5;
+    vec3 ox = floor(x + 0.5);
+    vec3 a0 = x - ox;
+    
+    // Normalise gradients implicitly by scaling m
+    // Approximation of: m *= inversesqrt( a0*a0 + h*h );
+    m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+    
+    // Compute final noise value at P
+    vec3 g;
+    g.x  = a0.x  * x0.x  + h.x  * x0.y;
+    g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+    return 130.0 * dot(m, g);
+}
+
+void fragment() {
+    float n = snoise((UV + offset) * scale) * 0.5 + 0.5;
+    COLOR.rgb = vec3(n);
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/offset = null
+shader_param/scale = 1000.0
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
@@ -24,30 +111,38 @@ Shield = ExtResource( 4 )
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2( 0.5, 0.5 )
+motion_scale = Vector2( 0.75, 0.75 )
 
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+[node name="Background" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
 position = Vector2( -1280, -100 )
 texture = ExtResource( 5 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
-[node name="BackgroundModulate" type="CanvasModulate" parent="ParallaxBackground/ParallaxLayer"]
-color = Color( 0.352941, 0.352941, 0.352941, 1 )
-
-[node name="ParallaxStars" type="ParallaxBackground" parent="."]
-
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxStars"]
-motion_scale = Vector2( 0.75, 0.75 )
-
-[node name="Sprite" type="Sprite" parent="ParallaxStars/ParallaxLayer"]
+[node name="Stars" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
 self_modulate = Color( 0.027451, 0.976471, 0.862745, 1 )
 position = Vector2( -1280, -96 )
 texture = ExtResource( 6 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
-[node name="StarsModulate" type="CanvasModulate" parent="ParallaxStars/ParallaxLayer"]
+[node name="BackgroundModulate" type="CanvasModulate" parent="ParallaxBackground/ParallaxLayer"]
+color = Color( 0.352941, 0.352941, 0.352941, 1 )
+
+[node name="ParallaxForeground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxForeground"]
+motion_scale = Vector2( 0.5, 0.5 )
+
+[node name="Stars" type="Sprite" parent="ParallaxForeground/ParallaxLayer"]
+self_modulate = Color( 1, 0.309804, 0.419608, 1 )
+position = Vector2( -1280, -96 )
+rotation = -3.14159
+texture = ExtResource( 6 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 98304, 147456 )
+
+[node name="ForegroundModulate" type="CanvasModulate" parent="ParallaxForeground/ParallaxLayer"]
 color = Color( 0.352941, 0.352941, 0.352941, 1 )
 
 [node name="Walls" type="StaticBody2D" parent="."]
@@ -83,17 +178,23 @@ position = Vector2( 120, 160 )
 speed = -500
 
 [node name="ShieldTimer" type="Timer" parent="."]
-wait_time = 4.0
+wait_time = 6.0
 
 [node name="StarTimer" type="Timer" parent="."]
-wait_time = 6.0
+wait_time = 12.0
 
 [node name="HUD" parent="." instance=ExtResource( 9 )]
 
 [node name="AmbientSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
 stream = ExtResource( 10 )
-volume_db = -30.0
+
+[node name="Noise" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.196078 )
+material = SubResource( 4 )
+texture = ExtResource( 11 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 4000, 147456 )
 [connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]

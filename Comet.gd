@@ -106,8 +106,6 @@ func use_power() -> void:
     _tween($Light2D, 'color', $Light2D.color, Color("#fb2778"), Color("#07f9dc"), 1)
     $Tween.interpolate_property(self, 'linear_velocity', linear_velocity, Vector2(0, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
-    $PowerSound.play()
-    $Spark.set_emitting(true)
     Freeze.freeze()
     
     

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/ShieldOn.ogg-b7f957a3f04598d9883798656be22562.oggstr"
+
+[deps]
+
+source_file="res://Audio/ShieldOn.ogg"
+dest_files=[ "res://.import/ShieldOn.ogg-b7f957a3f04598d9883798656be22562.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0
