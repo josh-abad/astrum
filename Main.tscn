@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
@@ -12,11 +12,14 @@
 [ext_resource path="res://Audio/Ambient.ogg" type="AudioStream" id=10]
 [ext_resource path="res://icon.png" type="Texture" id=11]
 
-[sub_resource type="CanvasItemMaterial" id=1]
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 89088, 16 )
 
 [sub_resource type="CanvasItemMaterial" id=2]
 
-[sub_resource type="Shader" id=3]
+[sub_resource type="CanvasItemMaterial" id=3]
+
+[sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
 
 uniform vec2 offset;
@@ -97,8 +100,8 @@ void fragment() {
     COLOR.rgb = vec3(n);
 }"
 
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 3 )
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
 shader_param/offset = null
 shader_param/scale = 1000.0
 
@@ -151,6 +154,25 @@ color = Color( 0.352941, 0.352941, 0.352941, 1 )
 position = Vector2( 0, 40 )
 build_mode = 1
 polygon = PoolVector2Array( 0, 792, 320, 792, 320, -73800, 640, -73800, 640, 830, -150, 830, -160, -73792, 0, -73792 )
+disabled = true
+
+[node name="Top" type="CollisionShape2D" parent="Walls"]
+position = Vector2( -5024, -10000 )
+shape = SubResource( 1 )
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2( -40736, 10000 )
+shape = SubResource( 1 )
+
+[node name="Right" type="CollisionShape2D" parent="Walls"]
+position = Vector2( 10000, -15456 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="Left" type="CollisionShape2D" parent="Walls"]
+position = Vector2( -10000, -15008 )
+rotation = 1.5708
+shape = SubResource( 1 )
 
 [node name="PlanetTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -165,7 +187,7 @@ wait_time = 2.0
 one_shot = true
 
 [node name="MainModulate" type="CanvasModulate" parent="."]
-material = SubResource( 1 )
+material = SubResource( 2 )
 color = Color( 0.352941, 0.352941, 0.352941, 1 )
 
 [node name="BlackHole" parent="." instance=ExtResource( 7 )]
@@ -173,9 +195,10 @@ visible = false
 position = Vector2( 340, 90 )
 
 [node name="Comet" parent="." instance=ExtResource( 8 )]
-material = SubResource( 2 )
+material = SubResource( 3 )
 position = Vector2( 120, 160 )
-speed = -500
+gravity_scale = 0.0
+speed = -400
 
 [node name="ShieldTimer" type="Timer" parent="."]
 wait_time = 6.0
@@ -190,11 +213,12 @@ pause_mode = 2
 stream = ExtResource( 10 )
 
 [node name="Noise" type="Sprite" parent="."]
-modulate = Color( 1, 1, 1, 0.196078 )
-material = SubResource( 4 )
+visible = false
+modulate = Color( 1, 1, 1, 0.156863 )
+material = SubResource( 5 )
 texture = ExtResource( 11 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 4000, 147456 )
+region_rect = Rect2( 0, 0, 20000, 20000 )
 [connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]

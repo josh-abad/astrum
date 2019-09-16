@@ -18,7 +18,33 @@ var shield_on: bool = false
 func _ready() -> void:
     randomize()
     $AmbientSound.play()
+    load_game()
+    $HUD.hide_high_score(true)
 
+
+func save() -> Dictionary:
+    return {
+        "high_score" : high_score,
+    }
+
+
+func save_game():
+    var save_game = File.new()
+    save_game.open("user://savegame.save", File.WRITE)
+    save_game.store_line(to_json(save()))
+    save_game.close()
+    
+    
+func load_game():
+    var save_game = File.new()
+    if not save_game.file_exists("user://savegame.save"):
+        return
+    
+    save_game.open("user://savegame.save", File.READ)
+    var line = parse_json(save_game.get_line())
+    _update_high_score(line["high_score"])
+    save_game.close()
+        
 
 func _process(delta: float) -> void:
     if delta:
@@ -31,6 +57,7 @@ func _process(delta: float) -> void:
 
 
 func new_game() -> void:
+    print($Comet.position)
     _update_power(0)
     _update_score(0)
     _update_shield(0)
@@ -52,9 +79,11 @@ func _on_Comet_scored(planet_position: Vector2) -> void:
     if not active:
         return
     _update_score(score + 1)
+    $HUD.increment_achievement("score10Points", 1);    
     if score > high_score:
         $HUD.hide_high_score(true)
         _update_high_score(score)
+        save_game()
     _update_power(power + 5)
     
     var popup = ScoredPopup.instance()
@@ -99,7 +128,7 @@ func _disable_shield(value: bool) -> void:
 
 func _get_random_position(off_screen: bool = false) -> Vector2:
     randomize()
-    var x = $Comet.position.x + rand_range(-50, 50)
+    var x = $Comet.position.x + rand_range(-100, 100)
     var y = $Comet.position.y - (rand_range(640, 740) if off_screen else rand_range(250, 500))
     return Vector2(x, y)
 
@@ -202,6 +231,7 @@ func _on_HUD_activate_power() -> void:
     if power >= 10:
         $Comet.use_power()
         _update_power(power - 10)
+        $HUD.increment_achievement("freeze50Times", 1)
 
 
 func _on_Comet_shielded() -> void:
