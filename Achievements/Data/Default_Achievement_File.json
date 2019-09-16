@@ -1,0 +1,38 @@
+{
+    "score10Points": {
+        "name": {
+            "name": "Astrum!"
+        },
+        "desc": {
+            "desc": "Score 10 points in the game."
+        },
+        "progress": {
+            "progress": 0,
+            "userData": true
+        },
+        "total": {
+            "total": 10
+        },
+        "progress-bar-background-color": {
+            "progress-bar-background-color": "#0c8c7f"
+        },
+        "progress-bar-color": {
+            "progress-bar-color": "#12ccb9"
+        }
+    },    
+    "freeze50Times": {
+        "name": {
+            "name": "Slow Down"
+        },
+        "desc": {
+            "desc": "Use freeze 50 times."
+        },
+        "progress": {
+            "progress": 0,
+            "userData": true
+        },
+        "total": {
+            "total": 50
+        }
+    }
+}
