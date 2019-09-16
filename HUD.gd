@@ -25,10 +25,10 @@ func _ready() -> void:
     $Shield.modulate = TRANSPARENT
     $Warning.modulate = TRANSPARENT
     $Power.modulate = TRANSPARENT
-    # $PowerLight.energy = 0
-    # $HighScoreLight.energy = 0
-    # $ShieldLight.energy = 0
-    # $WarningLight.energy = 0
+
+
+func increment_achievement(achievement_name, amount):
+    $AchievementsInterface.increment_achievement(achievement_name, amount)
 
 
 func fade(out: bool, object: Object, duration: float = 0.4) -> void:
@@ -62,6 +62,7 @@ func show_game_over() -> void:
     $StartButton.set_button_icon(RESTART_ICON)
     $Tween.start()
     $StartButton.show()
+    $CheevoButton.show()    
     
 
 func update_power(power: int) -> void:
@@ -87,6 +88,7 @@ func _on_StartButton_pressed() -> void:
     fade(true, $StartLabel)
     $Tween.start()
     $StartButton.hide()
+    $CheevoButton.hide()
     $ButtonSound.play()
     emit_signal('start_game')
 
@@ -136,3 +138,7 @@ func _on_Power_gui_input(event: InputEvent) -> void:
         emit_signal("activate_power")
         $PowerSound.play()
         _disable_power()
+
+
+func _on_CheevoButton_pressed() -> void:
+    Input.action_press("achievement_interface_open_close")

@@ -38,10 +38,15 @@ func _input_event(viewport: Object, event: InputEvent, shape_idx: int) -> void:
     if viewport and shape_idx:
         pass
     if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed() and !event.is_echo():
-        var direction: Vector2 = (self.get_position() - get_global_mouse_position()).normalized()
-        self.set_linear_velocity(-direction * speed)
-        _play_sound()
-        _start_tween()
+        Freeze.freeze()
+        if event.doubleclick:
+            print("double click")
+            use_power()
+        else:
+            var direction: Vector2 = (self.get_position() - get_global_mouse_position()).normalized()
+            self.set_linear_velocity(-direction * speed)
+            _play_sound()
+            _start_tween()
 
 
 func _on_Comet_body_entered(body: PhysicsBody2D) -> void:
