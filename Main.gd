@@ -128,8 +128,8 @@ func _disable_shield(value: bool) -> void:
 
 func _get_random_position(off_screen: bool = false) -> Vector2:
     randomize()
-    var x = $Comet.position.x + rand_range(-100, 100)
-    var y = $Comet.position.y - (rand_range(640, 740) if off_screen else rand_range(250, 500))
+    var x = $Comet.position.x + rand_range(-250, 250)
+    var y = $Comet.position.y + ((1 if randi() % 2 == 1 else -1) * (rand_range(640, 740) if off_screen else rand_range(250, 500)))
     return Vector2(x, y)
 
 
@@ -168,7 +168,7 @@ func _on_BlackHole_absorb() -> void:
 
 
 func _on_BlackHoleTimer_timeout() -> void:
-    if score >= 10:
+    if score >= 10 or true:
         $HUD.disable_warning(false)
         yield(get_tree().create_timer(1), "timeout")        
         $BlackHole.appear(_get_random_position())
@@ -178,7 +178,7 @@ func _on_BlackHoleTimer_timeout() -> void:
 
 func _on_BlackHole_inactive() -> void:
     if active:
-        $BlackHoleTimer.set_wait_time(rand_range(2, 8))
+        $BlackHoleTimer.set_wait_time(rand_range(2, 4))
         $BlackHoleTimer.start()
         $HUD.disable_warning(true)
 
