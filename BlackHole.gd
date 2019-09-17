@@ -31,7 +31,7 @@ func appear(position: Vector2 = self.position) -> void:
     $AmbientSound.play()
     set_gravity_vector(position)
     
-    # Make sure to set active to true after tween is finished
+    # Wait for tween to finish before setting as active
     yield(get_tree().create_timer(1), "timeout")
     active = true    
     
