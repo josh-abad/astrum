@@ -1,21 +1,9 @@
 extends RigidBody2D
 
-onready var planets: Array = [
-    load("res://Assets/Planets/Planet1.png"),
-    load("res://Assets/Planets/Planet2.png"),
-    load("res://Assets/Planets/Planet3.png"),
-    load("res://Assets/Planets/Planet4.png"),
-    load("res://Assets/Planets/Planet5.png"),
-    load("res://Assets/Planets/Planet6.png"),
-    load("res://Assets/Planets/Planet7.png"),
-    load("res://Assets/Planets/Planet8.png"),
-    load("res://Assets/Planets/Planet9.png")
-]
-
 
 func _ready() -> void:
-    $Sprite.set_texture(planets[randi() % planets.size()])
-    _rand_scale()
+    # $Sprite.set_texture(planets[randi() % planets.size()])
+    # _rand_scale()
     hide()
 
 
@@ -38,12 +26,11 @@ func appear(position: Vector2) -> void:
 func disappear(to_position: Vector2 = get_position()) -> void:
     $HitSound.play()
     $CollisionShape2D.set_deferred('disabled', true)
-    $Sprite/LightOccluder2D.set_deferred('visible', false)
     # $Tween.interpolate_property($Sprite, 'scale', $Sprite.scale, Vector2(0, 0), 1, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'position', get_position(), to_position, 1, Tween.TRANS_QUAD, Tween.EASE_OUT)
-    $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.01, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
-    Freeze.freeze()        
+    # Freeze.freeze()        
     yield(get_tree().create_timer(1), 'timeout')
     queue_free()
     
@@ -54,4 +41,8 @@ func set_gravity(on: bool) -> void:
 
 func _on_Planet_body_entered(body: PhysicsBody2D) -> void:
     if body.is_in_group('Balls'):
+        body._on_Comet_body_entered(self)
         disappear()
+        Engine.time_scale = 0.125
+        yield(get_tree().create_timer(1), "timeout")
+        # Engine.time_scale = 1  
