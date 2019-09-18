@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Player.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Comet.png" type="Texture" id=2]
+[ext_resource path="res://Camera2D.gd" type="Script" id=3]
+[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 44.8486
+
+[sub_resource type="Gradient" id=2]
+colors = PoolColorArray( 0.027451, 0.976471, 0.862745, 0.0784314, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+flag_disable_z = true
+spread = 90.0
+gravity = Vector3( 0, 0, 0 )
+angular_velocity = 7.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color_ramp = SubResource( 3 )
+
+[node name="Player" type="KinematicBody2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+self_modulate = Color( 0.027451, 0.976471, 0.862745, 1 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=[
+"Balls",
+]]
+shape = SubResource( 1 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 1.75, 1.75 )
+process_mode = 0
+limit_left = -10000
+limit_top = -10000
+limit_right = 10000
+limit_bottom = 10000
+limit_smoothed = true
+smoothing_enabled = true
+smoothing_speed = 10.0
+drag_margin_left = 0.0
+drag_margin_top = 0.0
+drag_margin_right = 0.0
+drag_margin_bottom = 0.0
+script = ExtResource( 3 )
+
+[node name="Trail" type="Particles2D" parent="."]
+amount = 40
+speed_scale = 3.0
+local_coords = false
+process_material = SubResource( 4 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="BounceSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="PitchTimer" type="Timer" parent="BounceSound"]
+wait_time = 0.5
+one_shot = true
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
