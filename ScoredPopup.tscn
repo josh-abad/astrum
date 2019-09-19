@@ -6,7 +6,7 @@
 font_path = "res://Fonts/Kenney Future.ttf"
 
 [sub_resource type="DynamicFont" id=2]
-size = 32
+size = 50
 font_data = SubResource( 1 )
 
 [node name="ScoredPopup" type="Label"]
