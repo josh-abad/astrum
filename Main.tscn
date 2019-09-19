@@ -1,25 +1,40 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Star.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Shield.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Assets/Parallax/icon.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=6]
+[ext_resource path="res://Spike.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Parallax/icon.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=5]
+[ext_resource path="res://icon.png" type="Texture" id=6]
 [ext_resource path="res://BlackHole.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Comet.tscn" type="PackedScene" id=8]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Audio/Ambient.ogg" type="AudioStream" id=10]
-[ext_resource path="res://icon.png" type="Texture" id=11]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Audio/Ambient.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Audio/Hit.wav" type="AudioStream" id=10]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=11]
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+uniform int blurSize : hint_range(0,20);
+
+void fragment()
+{
+COLOR = textureLod(SCREEN_TEXTURE, SCREEN_UV, float(blurSize)/10.0);
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/blurSize = 0
+
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 89088, 16 )
 
-[sub_resource type="CanvasItemMaterial" id=2]
+[sub_resource type="CanvasItemMaterial" id=4]
 
-[sub_resource type="CanvasItemMaterial" id=3]
-
-[sub_resource type="Shader" id=4]
+[sub_resource type="Shader" id=5]
 code = "shader_type canvas_item;
 
 uniform vec2 offset;
@@ -100,135 +115,154 @@ void fragment() {
     COLOR.rgb = vec3(n);
 }"
 
-[sub_resource type="ShaderMaterial" id=5]
-shader = SubResource( 4 )
+[sub_resource type="ShaderMaterial" id=6]
+shader = SubResource( 5 )
 shader_param/offset = null
 shader_param/scale = 1000.0
+
+[sub_resource type="Environment" id=7]
+background_mode = 4
+dof_blur_far_enabled = true
+dof_blur_far_distance = 0.01
+glow_enabled = true
+glow_bloom = 0.25
+glow_blend_mode = 1
+glow_hdr_threshold = 0.75
+glow_hdr_scale = 4.0
+glow_bicubic_upscale = true
+adjustment_enabled = true
 
 [node name="Main" type="Node"]
 script = ExtResource( 1 )
 Planet = ExtResource( 2 )
-Star = ExtResource( 3 )
-Shield = ExtResource( 4 )
+Spike = ExtResource( 3 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+layer = -2
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2( 0.75, 0.75 )
+motion_scale = Vector2( 0.5, 0.5 )
 
 [node name="Background" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-position = Vector2( -1280, -100 )
-texture = ExtResource( 5 )
+self_modulate = Color( 0.396078, 0.0901961, 0.321569, 1 )
+position = Vector2( -1280, -96 )
+texture = ExtResource( 4 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
 [node name="Stars" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-self_modulate = Color( 0.027451, 0.976471, 0.862745, 1 )
+self_modulate = Color( 0.968627, 0.654902, 0.341176, 1 )
 position = Vector2( -1280, -96 )
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
 [node name="BackgroundModulate" type="CanvasModulate" parent="ParallaxBackground/ParallaxLayer"]
-color = Color( 0.352941, 0.352941, 0.352941, 1 )
+visible = false
+color = Color( 0.188235, 0.188235, 0.188235, 1 )
+
+[node name="BlurLayer" type="CanvasLayer" parent="ParallaxBackground/ParallaxLayer"]
+layer = -2
+
+[node name="Blur" type="Sprite" parent="ParallaxBackground/ParallaxLayer/BlurLayer"]
+material = SubResource( 2 )
+position = Vector2( 0, 144 )
+scale = Vector2( 19, 20.5 )
+texture = ExtResource( 6 )
 
 [node name="ParallaxForeground" type="ParallaxBackground" parent="."]
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxForeground"]
-motion_scale = Vector2( 0.5, 0.5 )
+motion_scale = Vector2( 0.75, 0.75 )
 
 [node name="Stars" type="Sprite" parent="ParallaxForeground/ParallaxLayer"]
-self_modulate = Color( 1, 0.309804, 0.419608, 1 )
+self_modulate = Color( 0.980392, 0.121569, 0.47451, 1 )
 position = Vector2( -1280, -96 )
 rotation = -3.14159
-texture = ExtResource( 6 )
+texture = ExtResource( 5 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
 [node name="ForegroundModulate" type="CanvasModulate" parent="ParallaxForeground/ParallaxLayer"]
-color = Color( 0.352941, 0.352941, 0.352941, 1 )
+visible = false
+self_modulate = Color( 0.94902, 0.203922, 0.482353, 1 )
+color = Color( 0.270588, 0.270588, 0.270588, 1 )
 
 [node name="Walls" type="StaticBody2D" parent="."]
 
-[node name="Collision" type="CollisionPolygon2D" parent="Walls"]
-position = Vector2( 0, 40 )
-build_mode = 1
-polygon = PoolVector2Array( 0, 792, 320, 792, 320, -73800, 640, -73800, 640, 830, -150, 830, -160, -73792, 0, -73792 )
-disabled = true
-
 [node name="Top" type="CollisionShape2D" parent="Walls"]
 position = Vector2( -5024, -10000 )
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="Bottom" type="CollisionShape2D" parent="Walls"]
 position = Vector2( -40736, 10000 )
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="Right" type="CollisionShape2D" parent="Walls"]
 position = Vector2( 10000, -15456 )
 rotation = 1.5708
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="Left" type="CollisionShape2D" parent="Walls"]
 position = Vector2( -10000, -15008 )
 rotation = 1.5708
-shape = SubResource( 1 )
-
-[node name="PlanetTimer" type="Timer" parent="."]
-wait_time = 2.0
+shape = SubResource( 3 )
 
 [node name="Tween" type="Tween" parent="."]
 
 [node name="StartTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="PlanetTimer" type="Timer" parent="."]
+
 [node name="BlackHoleTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
 
+[node name="SpikeTimer" type="Timer" parent="."]
+wait_time = 4.0
+
 [node name="MainModulate" type="CanvasModulate" parent="."]
-material = SubResource( 2 )
+visible = false
+material = SubResource( 4 )
 color = Color( 0.352941, 0.352941, 0.352941, 1 )
 
 [node name="BlackHole" parent="." instance=ExtResource( 7 )]
 visible = false
 position = Vector2( 340, 90 )
 
-[node name="Comet" parent="." instance=ExtResource( 8 )]
-material = SubResource( 3 )
-position = Vector2( 120, 160 )
-gravity_scale = 0.0
-speed = -400
-
-[node name="ShieldTimer" type="Timer" parent="."]
-wait_time = 6.0
-
-[node name="StarTimer" type="Timer" parent="."]
-wait_time = 12.0
-
-[node name="HUD" parent="." instance=ExtResource( 9 )]
+[node name="HUD" parent="." instance=ExtResource( 8 )]
 
 [node name="AmbientSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
+stream = ExtResource( 9 )
+volume_db = -0.5
+pitch_scale = 1.05
+bus = "Ambient"
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 10 )
 
 [node name="Noise" type="Sprite" parent="."]
 visible = false
-modulate = Color( 1, 1, 1, 0.156863 )
-material = SubResource( 5 )
-texture = ExtResource( 11 )
+modulate = Color( 1, 1, 1, 0.0784314 )
+material = SubResource( 6 )
+texture = ExtResource( 6 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 20000, 20000 )
-[connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
+
+[node name="Player" parent="." groups=[
+"Balls",
+] instance=ExtResource( 11 )]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 7 )
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
+[connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]
+[connection signal="timeout" from="SpikeTimer" to="." method="_on_SpikeTimer_timeout"]
 [connection signal="absorb" from="BlackHole" to="." method="_on_BlackHole_absorb"]
 [connection signal="inactive" from="BlackHole" to="." method="_on_BlackHole_inactive"]
-[connection signal="dropped" from="Comet" to="." method="_on_Comet_dropped"]
-[connection signal="scored" from="Comet" to="." method="_on_Comet_scored"]
-[connection signal="shielded" from="Comet" to="." method="_on_Comet_shielded"]
-[connection signal="timeout" from="ShieldTimer" to="." method="_on_ShieldTimer_timeout"]
-[connection signal="timeout" from="StarTimer" to="." method="_on_Timer_timeout"]
-[connection signal="activate_power" from="HUD" to="." method="_on_HUD_activate_power"]
-[connection signal="activate_shield" from="HUD" to="." method="_on_HUD_activate_shield"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="nor_mo" from="Player" to="." method="_on_Comet_nor_mo"]
+[connection signal="slo_mo" from="Player" to="." method="_on_Comet_slo_mo"]
