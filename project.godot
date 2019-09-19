@@ -22,6 +22,7 @@ config/icon="res://Assets/res/mipmap-xxxhdpi/astrum_launcher.png"
 [autoload]
 
 Freeze="*res://Freeze.gd"
+Palette="*res://Palette.gd"
 
 [display]
 
