@@ -1,9 +1,13 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Comet.png" type="Texture" id=2]
-[ext_resource path="res://Camera2D.gd" type="Script" id=3]
-[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=4]
+[ext_resource path="res://Trail.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Comet.png" type="Texture" id=3]
+[ext_resource path="res://Camera2D.gd" type="Script" id=4]
+[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=5]
+
+[sub_resource type="Gradient" id=5]
+colors = PoolColorArray( 0, 0, 0, 0, 0.027451, 0.976471, 0.862745, 0.313726 )
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 44.8486
@@ -15,12 +19,8 @@ colors = PoolColorArray( 0.027451, 0.976471, 0.862745, 0.0784314, 1, 1, 1, 0 )
 gradient = SubResource( 2 )
 
 [sub_resource type="ParticlesMaterial" id=4]
-flag_disable_z = true
 spread = 90.0
 gravity = Vector3( 0, 0, 0 )
-angular_velocity = 7.0
-orbit_velocity = 0.0
-orbit_velocity_random = 0.0
 color_ramp = SubResource( 3 )
 
 [node name="Player" type="KinematicBody2D"]
@@ -29,9 +29,18 @@ __meta__ = {
 "_edit_group_": true
 }
 
+[node name="Trail" type="Line2D" parent="."]
+modulate = Color( 2, 2, 2, 1 )
+width = 75.0
+gradient = SubResource( 5 )
+joint_mode = 2
+script = ExtResource( 2 )
+target_path = NodePath("..")
+trail_length = 20
+
 [node name="Sprite" type="Sprite" parent="."]
 self_modulate = Color( 0.027451, 0.976471, 0.862745, 1 )
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=[
 "Balls",
@@ -53,18 +62,19 @@ drag_margin_left = 0.0
 drag_margin_top = 0.0
 drag_margin_right = 0.0
 drag_margin_bottom = 0.0
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 
-[node name="Trail" type="Particles2D" parent="."]
-amount = 40
-speed_scale = 3.0
+[node name="Trail0" type="Particles2D" parent="."]
+visible = false
+emitting = false
+amount = 100
 local_coords = false
 process_material = SubResource( 4 )
 
 [node name="Tween" type="Tween" parent="."]
 
 [node name="BounceSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 4 )
+stream = ExtResource( 5 )
 
 [node name="PitchTimer" type="Timer" parent="BounceSound"]
 wait_time = 0.5
