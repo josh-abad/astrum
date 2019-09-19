@@ -22,6 +22,8 @@ func _input(event):
         if event.is_pressed():
             start_pos = event.position
             start_time = elapsed_time
+            $Tween.interpolate_property($Sprite, "scale", $Sprite.get_transform().get_scale(), Vector2(0.8, 1), 0.2, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+            $Tween.start()            
             Engine.time_scale = 0.25
             emit_signal("slo_mo")
         else:
@@ -38,6 +40,7 @@ func _input(event):
 #            $Trail.process_material.color_ramp.gradient.set_color(0, color)
             
             _play_sound()
+            # $Tween.interpolate_property($Sprite, "scale", $Sprite.get_transform().get_scale(), Vector2(1, 1), 0.2, Tween.TRANS_BOUNCE, Tween.EASE_OUT)            
             _start_tween()
 
 
