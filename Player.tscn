@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://Trail.gd" type="Script" id=2]
@@ -6,22 +6,11 @@
 [ext_resource path="res://Camera2D.gd" type="Script" id=4]
 [ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=5]
 
-[sub_resource type="Gradient" id=5]
+[sub_resource type="Gradient" id=1]
 colors = PoolColorArray( 0, 0, 0, 0, 0.027451, 0.976471, 0.862745, 0.313726 )
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id=2]
 radius = 44.8486
-
-[sub_resource type="Gradient" id=2]
-colors = PoolColorArray( 0.027451, 0.976471, 0.862745, 0.0784314, 1, 1, 1, 0 )
-
-[sub_resource type="GradientTexture" id=3]
-gradient = SubResource( 2 )
-
-[sub_resource type="ParticlesMaterial" id=4]
-spread = 90.0
-gravity = Vector3( 0, 0, 0 )
-color_ramp = SubResource( 3 )
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -32,7 +21,7 @@ __meta__ = {
 [node name="Trail" type="Line2D" parent="."]
 modulate = Color( 2, 2, 2, 1 )
 width = 75.0
-gradient = SubResource( 5 )
+gradient = SubResource( 1 )
 joint_mode = 2
 script = ExtResource( 2 )
 target_path = NodePath("..")
@@ -45,11 +34,11 @@ texture = ExtResource( 3 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=[
 "Balls",
 ]]
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 1.75, 1.75 )
+zoom = Vector2( 2, 2 )
 process_mode = 0
 limit_left = -10000
 limit_top = -10000
@@ -64,20 +53,13 @@ drag_margin_right = 0.0
 drag_margin_bottom = 0.0
 script = ExtResource( 4 )
 
-[node name="Trail0" type="Particles2D" parent="."]
-visible = false
-emitting = false
-amount = 100
-local_coords = false
-process_material = SubResource( 4 )
-
 [node name="Tween" type="Tween" parent="."]
 
 [node name="BounceSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
 
 [node name="PitchTimer" type="Timer" parent="BounceSound"]
-wait_time = 0.5
+wait_time = 0.1
 one_shot = true
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
