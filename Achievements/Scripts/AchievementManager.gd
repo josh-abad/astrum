@@ -15,9 +15,12 @@ func _ready():
     achievement_interface.init(achievement_data.get_achievements());
     achievement_interface.hide();
     add_child(achievement_interface);
-    self.connect("updated", achievement_interface, "_update_bar")
+    if self.connect("updated", achievement_interface, "_update_bar"):
+        pass
 
-func _process(deltatime):
+func _process(delta: float):
+    if delta:
+        pass
     if Input.is_action_just_pressed(INTERFACE_OPENCLOSE_ACTION):
         if achievement_interface.is_visible_in_tree():
             achievement_interface.hide();
