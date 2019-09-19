@@ -11,6 +11,8 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+    if delta:
+        pass
     global_position = Vector2(0, 0)
     global_rotation = 0
     point = target.global_position
