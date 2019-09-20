@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/BlackHoleTransition.wav-4451778c11617b200f3f25cab41d7659.sample"
+
+[deps]
+
+source_file="res://Audio/BlackHoleTransition.wav"
+dest_files=[ "res://.import/BlackHoleTransition.wav-4451778c11617b200f3f25cab41d7659.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0
