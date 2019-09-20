@@ -14,8 +14,11 @@ var score: int = 0
 var high_score: int = 0
 var multiplier: int = 1
 var multiplier_active: bool = false
-var music_on: bool = false
-var sfx_on: bool = false
+var music_on: bool = true
+var sfx_on: bool = true
+
+# HACK: prevent button sound from playing when first loading game. 
+var init_load: int = 2
 
 onready var sfx: Dictionary = {
     "black_hole_active": $BlackHoleActiveSound,
@@ -28,15 +31,16 @@ onready var sfx: Dictionary = {
 
 func _ready() -> void:
     randomize()
-    if music_on:
-        $AmbientSound.play()
-    load_game()
+    load_game()    
+    $AmbientSound.play()
     $HUD.hide_high_score(true)
 
 
 func save() -> Dictionary:
     return {
         "high_score" : high_score,
+        "music_on": music_on,
+        "sfx_on": sfx_on
     }
 
 
@@ -55,12 +59,13 @@ func load_game() -> void:
     save_game.open("user://savegame.save", File.READ)
     var line = parse_json(save_game.get_line())
     _update_high_score(line["high_score"])
+    _set_sfx_on(line["sfx_on"])
+    _set_music_on(line["music_on"])
     save_game.close()
 
 
 func new_game() -> void:
     _enable_background_blur(false)
-    $ParallaxBackground/ParallaxLayer/BlurLayer.layer = -2
     _play_sfx("button")
     _update_score(0)
     _update_multiplier(1)
@@ -69,12 +74,12 @@ func new_game() -> void:
     $Player.start()
     active = true
     $Tween.start()
+    _dampen_sfx(false)
     _dampen_ambient_music(false)
     
     
 func _play_sfx(key: String) -> void:
-    if sfx_on:
-        sfx.get(key).play()
+    sfx.get(key).play()
         
         
 func _stop_sfx(key: String) -> void:
@@ -130,6 +135,14 @@ func _update_multiplier(value: int) -> void:
         multiplier = value
         $HUD.update_multiplier(multiplier)
     
+    
+func _set_sfx_on(value: bool) -> void:
+    $HUD.set_sfx_on(value)
+    
+    
+func _set_music_on(value: bool) -> void:
+    $HUD.set_music_on(value)
+    
 
 func _get_random_position() -> Vector2:
     randomize()
@@ -159,15 +172,19 @@ func _on_BlackHole_absorb() -> void:
     $BlackHole.disappear()
     $Player.disappear()
     $HUD.show_game_over()
-    _enable_background_blur(true)    
-    $ParallaxBackground/ParallaxLayer/BlurLayer.layer = 0  
+    _enable_background_blur(true, 0)    
     active = false
+    _dampen_sfx(true)
     _dampen_ambient_music(true)
 
 
 func _dampen_ambient_music(yes: bool) -> void:
     AudioServer.set_bus_effect_enabled(1, 0, yes)
 
+
+func _dampen_sfx(yes: bool) -> void:
+    AudioServer.set_bus_effect_enabled(3, 0, yes)
+    
 
 func _on_BlackHoleTimer_timeout() -> void:
     if active and $Player.moving:
@@ -181,15 +198,15 @@ func _on_BlackHoleTimer_timeout() -> void:
 
 
 func _on_BlackHole_inactive() -> void:
+    _stop_sfx("black_hole_active")
     if active and $Player.moving:
-        _stop_sfx("black_hole_active")
         _play_sfx("black_hole_transition")
         $BlackHoleTimer.set_wait_time(rand_range(2, 4))
         $BlackHoleTimer.start()
         $HUD.disable_warning(true)
         
 
-func _enable_background_blur(yes: bool) -> void:
+func _enable_background_blur(yes: bool, layer: int = -2) -> void:
     $Tween.interpolate_property(
         $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material,
         "shader_param/blurSize",
@@ -200,6 +217,10 @@ func _enable_background_blur(yes: bool) -> void:
         Tween.EASE_OUT
     )
     $Tween.start()
+    $ParallaxBackground/ParallaxLayer/BlurLayer.layer = layer
+    $MainModulate.visible = layer == 0
+    $ParallaxForeground/ParallaxLayer/ForegroundModulate.visible = layer == 0
+    $ParallaxBackground/ParallaxLayer/BackgroundModulate.visible = layer == 0
 
 
 func _on_Comet_slo_mo(temporary: bool = true) -> void:
@@ -218,10 +239,10 @@ func _on_Comet_nor_mo() -> void:
 func on_Player_destroyed(player_position: Vector2) -> void:
     _play_sfx("hit")
     $HUD.show_game_over()
-    _enable_background_blur(true)    
-    $ParallaxBackground/ParallaxLayer/BlurLayer.layer = 0    
+    _enable_background_blur(true, 0)    
     active = false
     _dampen_ambient_music(true)
+    _dampen_sfx(true)
     _add_spark(Palette.BLUE, player_position)
 
 
@@ -246,3 +267,30 @@ func _on_SlowMotionTimer_timeout() -> void:
     if active:
         $Tween.interpolate_property($ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material, "shader_param/blurSize", $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material.get_shader_param("blurSize"), 0, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
         $Tween.start()
+
+
+func _on_HUD_sfx_toggled() -> void:
+    sfx_on = not sfx_on
+    AudioServer.set_bus_mute(3, not sfx_on)
+    AudioServer.set_bus_mute(2, not sfx_on)
+    
+    # HACK: read explanation above init_load declaration    
+    if init_load == 0:
+        _play_sfx("button")
+    else:
+        init_load -= 1
+        
+    save_game()
+
+
+func _on_HUD_music_toggled() -> void:
+    music_on = not music_on
+    AudioServer.set_bus_mute(1, not music_on)
+    
+    # HACK: read explanation above init_load declaration
+    if init_load == 0:
+        _play_sfx("button")
+    else:
+        init_load -= 1
+        
+    save_game()

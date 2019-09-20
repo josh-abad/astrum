@@ -3,7 +3,7 @@
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Spike.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Parallax/icon.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Parallax/Background.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=5]
 [ext_resource path="res://icon.png" type="Texture" id=6]
 [ext_resource path="res://BlackHole.tscn" type="PackedScene" id=7]
@@ -122,7 +122,7 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id=6]
 shader = SubResource( 5 )
 shader_param/offset = null
-shader_param/scale = 1000.0
+shader_param/scale = 500.0
 
 [sub_resource type="Environment" id=7]
 background_mode = 4
@@ -148,14 +148,14 @@ layer = -2
 motion_scale = Vector2( 0.5, 0.5 )
 
 [node name="Background" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-self_modulate = Color( 0.396078, 0.0901961, 0.321569, 1 )
+self_modulate = Color( 0.52549, 0.14902, 0.486275, 1 )
 position = Vector2( -1280, -96 )
+scale = Vector2( 15, 15 )
 texture = ExtResource( 4 )
-region_enabled = true
 region_rect = Rect2( 0, 0, 98304, 147456 )
 
 [node name="Stars" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-self_modulate = Color( 0.968627, 0.654902, 0.341176, 1 )
+self_modulate = Color( 0.980392, 0.121569, 0.47451, 1 )
 position = Vector2( -1280, -96 )
 texture = ExtResource( 5 )
 region_enabled = true
@@ -163,24 +163,24 @@ region_rect = Rect2( 0, 0, 98304, 147456 )
 
 [node name="BackgroundModulate" type="CanvasModulate" parent="ParallaxBackground/ParallaxLayer"]
 visible = false
-color = Color( 0.188235, 0.188235, 0.188235, 1 )
+color = Color( 0.588235, 0.588235, 0.588235, 1 )
 
 [node name="BlurLayer" type="CanvasLayer" parent="ParallaxBackground/ParallaxLayer"]
 layer = -2
 
 [node name="Blur" type="Sprite" parent="ParallaxBackground/ParallaxLayer/BlurLayer"]
 material = SubResource( 2 )
-position = Vector2( 0, 144 )
+position = Vector2( 0, 154 )
 scale = Vector2( 19, 20.5 )
 texture = ExtResource( 6 )
 
 [node name="ParallaxForeground" type="ParallaxBackground" parent="."]
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxForeground"]
-motion_scale = Vector2( 0.75, 0.75 )
+motion_scale = Vector2( 0.7, 0.7 )
 
 [node name="Stars" type="Sprite" parent="ParallaxForeground/ParallaxLayer"]
-self_modulate = Color( 0.980392, 0.121569, 0.47451, 1 )
+self_modulate = Color( 0.968627, 0.654902, 0.341176, 1 )
 position = Vector2( -1280, -96 )
 rotation = -3.14159
 texture = ExtResource( 5 )
@@ -190,7 +190,7 @@ region_rect = Rect2( 0, 0, 98304, 147456 )
 [node name="ForegroundModulate" type="CanvasModulate" parent="ParallaxForeground/ParallaxLayer"]
 visible = false
 self_modulate = Color( 0.94902, 0.203922, 0.482353, 1 )
-color = Color( 0.270588, 0.270588, 0.270588, 1 )
+color = Color( 0.588235, 0.588235, 0.588235, 1 )
 
 [node name="Walls" type="StaticBody2D" parent="."]
 
@@ -238,7 +238,7 @@ one_shot = true
 [node name="MainModulate" type="CanvasModulate" parent="."]
 visible = false
 material = SubResource( 4 )
-color = Color( 0.352941, 0.352941, 0.352941, 1 )
+color = Color( 0.589844, 0.589844, 0.589844, 1 )
 
 [node name="BlackHole" parent="." instance=ExtResource( 7 )]
 visible = false
@@ -255,22 +255,27 @@ bus = "Ambient"
 
 [node name="BlackHoleActiveSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 10 )
+bus = "SFX"
 
 [node name="BlackHoleTransitionSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
+bus = "SFX"
 
 [node name="HitSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 12 )
+bus = "SFX"
 
 [node name="BounceSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 13 )
+bus = "SFX"
 
 [node name="ButtonSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 14 )
+bus = "HUD"
 
 [node name="Noise" type="Sprite" parent="."]
 visible = false
-modulate = Color( 1, 1, 1, 0.0784314 )
+modulate = Color( 1, 1, 1, 0.0392157 )
 material = SubResource( 6 )
 texture = ExtResource( 6 )
 region_enabled = true
@@ -290,6 +295,8 @@ environment = SubResource( 7 )
 [connection signal="timeout" from="SlowMotionTimer" to="." method="_on_SlowMotionTimer_timeout"]
 [connection signal="absorb" from="BlackHole" to="." method="_on_BlackHole_absorb"]
 [connection signal="inactive" from="BlackHole" to="." method="_on_BlackHole_inactive"]
+[connection signal="music_toggled" from="HUD" to="." method="_on_HUD_music_toggled"]
+[connection signal="sfx_toggled" from="HUD" to="." method="_on_HUD_sfx_toggled"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
 [connection signal="nor_mo" from="Player" to="." method="_on_Comet_nor_mo"]
 [connection signal="slo_mo" from="Player" to="." method="_on_Comet_slo_mo"]

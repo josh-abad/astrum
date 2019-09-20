@@ -1,9 +1,18 @@
 extends CanvasLayer
 
 signal start_game
+signal sfx_toggled
+signal music_toggled
 
 const RESTART_ICON: Resource = preload("res://Assets/HUD/Restart.png")
+const AUDIO_ON_ICON: Resource = preload("res://Assets/HUD/AudioOn.png")
+const AUDIO_OFF_ICON: Resource = preload("res://Assets/HUD/AudioOff.png")
+const MUSIC_ON_ICON: Resource = preload("res://Assets/HUD/MusicOn.png")
+const MUSIC_OFF_ICON: Resource = preload("res://Assets/HUD/MusicOff.png")
 const TRANSPARENT = Color(1, 1, 1, 0)
+
+var sfx_on := true
+var music_on := true
 
 
 func _ready() -> void:
@@ -48,6 +57,16 @@ func update_multiplier(multiplier: int) -> void:
         $MultiplierLabel.add_color_override("font_color", Palette.randomize())
     
     
+func set_sfx_on(value: bool) -> void:
+    if sfx_on != value:
+        _on_SFXToggle_pressed()
+    
+    
+func set_music_on(value: bool) -> void:
+    if music_on != value:
+        _on_MusicToggle_pressed()
+    
+    
 func hide_high_score(yes: bool) -> void:
     fade(yes, $HighScore)
     
@@ -62,7 +81,8 @@ func show_game_over() -> void:
     $Tween.start()
     $StartButton.show()
     $CheevoButton.show()
-    $SettingsButton.show() 
+    $SFXToggle.show() 
+    $MusicToggle.show() 
     
     
 func _on_StartButton_pressed() -> void:
@@ -74,7 +94,8 @@ func _on_StartButton_pressed() -> void:
     $Tween.start()
     $StartButton.hide()
     $CheevoButton.hide()
-    $SettingsButton.hide()
+    $SFXToggle.hide()
+    $MusicToggle.hide()
     emit_signal('start_game')
     
         
@@ -91,3 +112,17 @@ func disable_warning(yes: bool) -> void:
 
 func _on_CheevoButton_pressed() -> void:
     Input.action_press("achievement_interface_open_close")
+
+
+func _on_SFXToggle_pressed() -> void:    
+    emit_signal("sfx_toggled")
+    sfx_on = not sfx_on
+    $SFXToggle.icon = AUDIO_ON_ICON if sfx_on else AUDIO_OFF_ICON
+    $SFXToggle.modulate = Color(1, 1, 1, 1.0 if sfx_on else 0.5)
+
+
+func _on_MusicToggle_pressed() -> void:
+    emit_signal("music_toggled")
+    music_on = not music_on
+    $MusicToggle.icon = MUSIC_ON_ICON if music_on else MUSIC_OFF_ICON
+    $MusicToggle.modulate = Color(1, 1, 1, 1.0 if music_on else 0.5)    
