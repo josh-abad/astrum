@@ -12,11 +12,21 @@ var score: int = 0
 var high_score: int = 0
 var multiplier: int = 1
 var multiplier_active: bool = false
+var music_on: bool = false
+var sfx_on: bool = false
 
+onready var sfx: Dictionary = {
+    "black_hole_active": $BlackHoleActiveSound,
+    "black_hole_transition": $BlackHoleTransitionSound,
+    "hit": $HitSound,
+    "bounce": $BounceSound,
+    "button": $ButtonSound    
+}
 
 func _ready() -> void:
     randomize()
-    $AmbientSound.play()
+    if music_on:
+        $AmbientSound.play()
     load_game()
     $HUD.hide_high_score(true)
 
@@ -46,6 +56,7 @@ func load_game() -> void:
 
 
 func new_game() -> void:
+    _play_sfx("button")
     _update_score(0)
     _update_multiplier(1)
     $HUD.hide_high_score(score >= high_score)
@@ -56,9 +67,19 @@ func new_game() -> void:
     _dampen_ambient_music(false)
     
     
+func _play_sfx(key: String) -> void:
+    if sfx_on:
+        sfx.get(key).play()
+        
+        
+func _stop_sfx(key: String) -> void:
+    sfx.get(key).stop()
+    
+    
 func scored(special: bool, position: Vector2) -> void:
     if not active:
         return
+    Engine.time_scale = 0.125
     _update_score(score + (2 if special else 1) * multiplier)
     if multiplier_active:
         _update_multiplier(multiplier + 1)
@@ -70,6 +91,8 @@ func scored(special: bool, position: Vector2) -> void:
         _update_high_score(score)
         save_game()
 
+    _play_sfx("hit")
+    _play_sfx("bounce")
     var popup = ScoredPopup.instance()
     add_child(popup)
     popup.display(position, (2 if special else 1) * multiplier)
@@ -141,7 +164,9 @@ func _dampen_ambient_music(yes: bool) -> void:
 func _on_BlackHoleTimer_timeout() -> void:
     if active and $Player.moving:
         $HUD.disable_warning(false)
-        yield(get_tree().create_timer(1), "timeout")        
+        yield(get_tree().create_timer(1), "timeout")
+        _play_sfx("black_hole_transition")
+        _play_sfx("black_hole_active")
         $BlackHole.appear(_get_random_position())
     else:
         $BlackHoleTimer.start()
@@ -149,27 +174,31 @@ func _on_BlackHoleTimer_timeout() -> void:
 
 func _on_BlackHole_inactive() -> void:
     if active and $Player.moving:
+        _stop_sfx("black_hole_active")
+        _play_sfx("black_hole_transition")
         $BlackHoleTimer.set_wait_time(rand_range(2, 4))
         $BlackHoleTimer.start()
         $HUD.disable_warning(true)
         
 
 func _on_Comet_slo_mo() -> void:
+    Engine.time_scale = 0.25
     $Tween.interpolate_property($ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material, "shader_param/blurSize", $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material.get_shader_param("blurSize"), 15, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
 
 
 func _on_Comet_nor_mo() -> void:
+    _play_sfx("bounce")
+    Engine.time_scale = 1
     $Tween.interpolate_property($ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material, "shader_param/blurSize", $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material.get_shader_param("blurSize"), 0, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
 
 
 func on_Player_destroyed(player_position) -> void:
-    $HitSound.play()
+    _play_sfx("hit")
     $HUD.show_game_over()
     active = false
     _dampen_ambient_music(true)
-    
     _add_spark(Palette.BLUE, player_position)
 
 

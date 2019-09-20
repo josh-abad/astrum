@@ -21,7 +21,6 @@ func appear(position: Vector2) -> void:
 
 
 func disappear(to_position: Vector2 = get_position()) -> void:
-    $HitSound.play()
     $CollisionShape2D.set_deferred('disabled', true)
     # $Tween.interpolate_property($Sprite, 'scale', $Sprite.scale, Vector2(0, 0), 1, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'position', get_position(), to_position, 1, Tween.TRANS_QUAD, Tween.EASE_OUT)
@@ -36,4 +35,4 @@ func _on_Planet_body_entered(body: PhysicsBody2D) -> void:
         emit_signal("scored", special, position)
         body.play_effect()
         disappear()
-        Engine.time_scale = 0.125
+        

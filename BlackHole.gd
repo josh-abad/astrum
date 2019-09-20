@@ -27,8 +27,6 @@ func appear(position: Vector2 = self.position) -> void:
     $Tween.start()
     $ActiveTimer.set_wait_time(rand_range(2, 5))
     $ActiveTimer.start()
-    $TransitionSound.play()
-    $AmbientSound.play()
     set_gravity_vector(position)
     
     # Wait for tween to finish before setting as active
@@ -43,8 +41,6 @@ func disappear() -> void:
         $Tween.start()
         active = false
         emit_signal('inactive')
-        $AmbientSound.stop()
-        $TransitionSound.play()
     
 
 func expand() -> void:

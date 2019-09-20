@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://BlackHole.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Particle.png" type="Texture" id=2]
@@ -11,8 +11,6 @@
 [ext_resource path="res://Assets/BlackHoleAnimation/7.png" type="Texture" id=9]
 [ext_resource path="res://Assets/BlackHoleAnimation/8.png" type="Texture" id=10]
 [ext_resource path="res://Assets/Light.png" type="Texture" id=11]
-[ext_resource path="res://Audio/BlackHole.ogg" type="AudioStream" id=12]
-[ext_resource path="res://Audio/BlackHoleClose.wav" type="AudioStream" id=13]
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.372093, 1 )
@@ -67,7 +65,7 @@ texture = ExtResource( 2 )
 [node name="AnimatedSprite2" type="AnimatedSprite" parent="."]
 visible = false
 frames = SubResource( 4 )
-frame = 3
+frame = 6
 playing = true
 
 [node name="Light2D" type="Light2D" parent="."]
@@ -81,7 +79,7 @@ shadow_filter_smooth = 60.0
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Light2D"]
 frames = SubResource( 4 )
-frame = 3
+frame = 6
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -93,15 +91,4 @@ shape = SubResource( 5 )
 [node name="ActiveTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
-
-[node name="AmbientSound" type="AudioStreamPlayer2D" parent="."]
-pause_mode = 2
-stream = ExtResource( 12 )
-area_mask = 0
-
-[node name="TransitionSound" type="AudioStreamPlayer2D" parent="."]
-pause_mode = 2
-stream = ExtResource( 13 )
-attenuation = 0.63728
-area_mask = 0
 [connection signal="timeout" from="ActiveTimer" to="." method="_on_ActiveTimer_timeout"]

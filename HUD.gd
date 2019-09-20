@@ -72,7 +72,6 @@ func _on_StartButton_pressed() -> void:
     $Tween.start()
     $StartButton.hide()
     $CheevoButton.hide()
-    $ButtonSound.play()
     emit_signal('start_game')
     
         

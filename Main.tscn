@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
@@ -9,8 +9,12 @@
 [ext_resource path="res://BlackHole.tscn" type="PackedScene" id=7]
 [ext_resource path="res://HUD.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Audio/Ambient.ogg" type="AudioStream" id=9]
-[ext_resource path="res://Audio/Hit.wav" type="AudioStream" id=10]
-[ext_resource path="res://Player.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Audio/BlackHoleActive.ogg" type="AudioStream" id=10]
+[ext_resource path="res://Audio/BlackHoleTransition.wav" type="AudioStream" id=11]
+[ext_resource path="res://Audio/Hit.wav" type="AudioStream" id=12]
+[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=13]
+[ext_resource path="res://Audio/Button.ogg" type="AudioStream" id=14]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=15]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -245,8 +249,20 @@ volume_db = -0.5
 pitch_scale = 1.05
 bus = "Ambient"
 
-[node name="HitSound" type="AudioStreamPlayer" parent="."]
+[node name="BlackHoleActiveSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 10 )
+
+[node name="BlackHoleTransitionSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+
+[node name="BounceSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+
+[node name="ButtonSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
 
 [node name="Noise" type="Sprite" parent="."]
 visible = false
@@ -258,7 +274,7 @@ region_rect = Rect2( 0, 0, 20000, 20000 )
 
 [node name="Player" parent="." groups=[
 "Balls",
-] instance=ExtResource( 11 )]
+] instance=ExtResource( 15 )]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 7 )

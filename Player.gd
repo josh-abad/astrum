@@ -23,8 +23,7 @@ func _input(event: InputEvent) -> void:
             start_pos = event.position
             start_time = elapsed_time
             $Tween.interpolate_property($Sprite, "scale", $Sprite.get_transform().get_scale(), Vector2(0.9, 0.9), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-            $Tween.start()            
-            Engine.time_scale = 0.25
+            $Tween.start()
             emit_signal("slo_mo")
         else:
             direction = event.position - start_pos
@@ -34,9 +33,7 @@ func _input(event: InputEvent) -> void:
             # speed = (direction.length()) / (delta if delta != 0 else 1)
             
             direction = direction.normalized() * speed
-            Engine.time_scale = 1
             emit_signal("nor_mo")
-            $BounceSound.play()
             _start_tween()
 
 
@@ -67,20 +64,9 @@ func start() -> void:
         
 
 func play_effect() -> void:
-    $BounceSound.play()
     _start_tween()
     $Camera2D.shake(0.2, 15, 8)
     emit_signal("slo_mo")
-
-
-func _play_sound() -> void:
-    $BounceSound.play()
-    $BounceSound.pitch_scale += 1
-    $BounceSound/PitchTimer.start()
-
-
-func _on_PitchTimer_timeout() -> void:
-    $BounceSound.pitch_scale = 1
 
 
 func _tween(node: Object, property: NodePath, before, after, final, duration: float = 0.4):
