@@ -10,6 +10,8 @@ onready var ScoredPopup = load("res://ScoredPopup.tscn")
 
 var score: int = 0
 var high_score: int = 0
+var multiplier: int = 1
+var multiplier_active: bool = false
 
 
 func _ready() -> void:
@@ -45,6 +47,7 @@ func load_game() -> void:
 
 func new_game() -> void:
     _update_score(0)
+    _update_multiplier(1)
     $HUD.hide_high_score(score >= high_score)
     $StartTimer.start()
     $Player.start()
@@ -56,7 +59,12 @@ func new_game() -> void:
 func scored(special: bool, position: Vector2) -> void:
     if not active:
         return
-    _update_score(score + (2 if special else 1))
+    _update_score(score + (2 if special else 1) * multiplier)
+    if multiplier_active:
+        _update_multiplier(multiplier + 1)
+    else:
+        multiplier_active = true
+    $ComboTimer.start()
     if score > high_score:
         $HUD.hide_high_score(true)
         _update_high_score(score)
@@ -64,7 +72,7 @@ func scored(special: bool, position: Vector2) -> void:
 
     var popup = ScoredPopup.instance()
     add_child(popup)
-    popup.display(position, 2 if special else 1)
+    popup.display(position, (2 if special else 1) * multiplier)
     
     var spark = Spark.instance()
     add_child(spark)
@@ -84,6 +92,11 @@ func _update_high_score(value: int) -> void:
     high_score = value
     $HUD.update_high_score(high_score)
 
+
+func _update_multiplier(value: int) -> void:
+    multiplier = value
+    $HUD.update_multiplier(multiplier)
+    
 
 func _get_random_position() -> Vector2:
     randomize()
@@ -173,3 +186,8 @@ func _on_SpikeTimer_timeout() -> void:
             pass
         if $HUD.connect("start_game", spike, "_on_start_game"):
             pass
+
+
+func _on_ComboTimer_timeout() -> void:
+    _update_multiplier(1)
+    multiplier_active = false

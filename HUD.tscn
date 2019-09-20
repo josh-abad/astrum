@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://Audio/Button.ogg" type="AudioStream" id=2]
@@ -23,15 +23,24 @@ font_path = "res://Fonts/Kenney Future.ttf"
 size = 28
 font_data = SubResource( 3 )
 
+[sub_resource type="DynamicFontData" id=14]
+font_path = "res://Fonts/Comfortaa-Regular.ttf"
+
+[sub_resource type="DynamicFont" id=15]
+size = 24
+use_mipmaps = true
+use_filter = true
+font_data = SubResource( 14 )
+
 [sub_resource type="DynamicFontData" id=5]
-font_path = "res://Fonts/Kenney Future.ttf"
+font_path = "res://Fonts/Kenney Future Narrow.ttf"
 
 [sub_resource type="DynamicFont" id=6]
 size = 14
 font_data = SubResource( 5 )
 
 [sub_resource type="DynamicFontData" id=7]
-font_path = "res://Fonts/Kenney Future.ttf"
+font_path = "res://Fonts/Kenney Future Narrow.ttf"
 
 [sub_resource type="DynamicFont" id=8]
 size = 19
@@ -116,6 +125,16 @@ text = "0"
 align = 1
 valign = 1
 uppercase = true
+
+[node name="MultiplierLabel" type="Label" parent="."]
+margin_left = 180.0
+margin_top = 90.0
+margin_right = 220.0
+margin_bottom = 108.0
+rect_rotation = 20.0
+custom_fonts/font = SubResource( 15 )
+custom_colors/font_color = Color( 1, 1, 1, 0.501961 )
+text = "1x"
 
 [node name="HighScore" type="Control" parent="."]
 margin_left = 200.0
