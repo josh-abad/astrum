@@ -61,7 +61,8 @@ func show_game_over() -> void:
     $StartButton.set_button_icon(RESTART_ICON)
     $Tween.start()
     $StartButton.show()
-    $CheevoButton.show()    
+    $CheevoButton.show()
+    $SettingsButton.show() 
     
     
 func _on_StartButton_pressed() -> void:
@@ -73,6 +74,7 @@ func _on_StartButton_pressed() -> void:
     $Tween.start()
     $StartButton.hide()
     $CheevoButton.hide()
+    $SettingsButton.hide()
     emit_signal('start_game')
     
         
