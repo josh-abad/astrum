@@ -231,6 +231,10 @@ wait_time = 4.0
 wait_time = 1.75
 one_shot = true
 
+[node name="SlowMotionTimer" type="Timer" parent="."]
+wait_time = 0.75
+one_shot = true
+
 [node name="MainModulate" type="CanvasModulate" parent="."]
 visible = false
 material = SubResource( 4 )
@@ -283,6 +287,7 @@ environment = SubResource( 7 )
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]
 [connection signal="timeout" from="SpikeTimer" to="." method="_on_SpikeTimer_timeout"]
 [connection signal="timeout" from="ComboTimer" to="." method="_on_ComboTimer_timeout"]
+[connection signal="timeout" from="SlowMotionTimer" to="." method="_on_SlowMotionTimer_timeout"]
 [connection signal="absorb" from="BlackHole" to="." method="_on_BlackHole_absorb"]
 [connection signal="inactive" from="BlackHole" to="." method="_on_BlackHole_inactive"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
