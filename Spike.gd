@@ -4,7 +4,7 @@ signal destroyed_player(player_position)
 
 
 func _ready() -> void:
-    $Tween.interpolate_property(self, "rotation_degrees", rotation_degrees, 360, 1, Tween.TRANS_QUAD, Tween.EASE_IN)
+    $Tween.interpolate_property(self, "rotation_degrees", rotation_degrees, 360, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
     $Tween.start()
     
 
