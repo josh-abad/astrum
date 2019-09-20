@@ -181,11 +181,12 @@ func _on_BlackHole_inactive() -> void:
         $HUD.disable_warning(true)
         
 
-func _on_Comet_slo_mo() -> void:
+func _on_Comet_slo_mo(temporary: bool) -> void:
     Engine.time_scale = 0.25
-    $Tween.interpolate_property($ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material, "shader_param/blurSize", $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material.get_shader_param("blurSize"), 15, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property($ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material, "shader_param/blurSize", $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material.get_shader_param("blurSize"), 20, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
-    $SlowMotionTimer.start()
+    if temporary:
+        $SlowMotionTimer.start()
 
 
 func _on_Comet_nor_mo() -> void:
@@ -220,5 +221,6 @@ func _on_ComboTimer_timeout() -> void:
 
 
 func _on_SlowMotionTimer_timeout() -> void:
-    print('sanity check')
     Engine.time_scale = 1
+    $Tween.interpolate_property($ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material, "shader_param/blurSize", $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material.get_shader_param("blurSize"), 0, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()

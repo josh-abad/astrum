@@ -7,7 +7,7 @@ onready var special: bool = rand_range(0, 100) <= 30
 
 func _ready() -> void:
     $Sprite.self_modulate = Palette.PINK if special else Palette.ORANGE
-    hide()
+    # hide()
 
 
 func _on_start_game() -> void:
@@ -16,7 +16,8 @@ func _on_start_game() -> void:
 
 func appear(position: Vector2) -> void:
     self.position = position
-    $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
+    $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(1, 1), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    # $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.start()
 
 
