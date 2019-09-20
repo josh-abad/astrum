@@ -59,6 +59,8 @@ func load_game() -> void:
 
 
 func new_game() -> void:
+    _enable_background_blur(false)
+    $ParallaxBackground/ParallaxLayer/BlurLayer.layer = -2
     _play_sfx("button")
     _update_score(0)
     _update_multiplier(1)
@@ -157,6 +159,8 @@ func _on_BlackHole_absorb() -> void:
     $BlackHole.disappear()
     $Player.disappear()
     $HUD.show_game_over()
+    _enable_background_blur(true)    
+    $ParallaxBackground/ParallaxLayer/BlurLayer.layer = 0  
     active = false
     _dampen_ambient_music(true)
 
@@ -214,6 +218,8 @@ func _on_Comet_nor_mo() -> void:
 func on_Player_destroyed(player_position: Vector2) -> void:
     _play_sfx("hit")
     $HUD.show_game_over()
+    _enable_background_blur(true)    
+    $ParallaxBackground/ParallaxLayer/BlurLayer.layer = 0    
     active = false
     _dampen_ambient_music(true)
     _add_spark(Palette.BLUE, player_position)
@@ -237,5 +243,6 @@ func _on_ComboTimer_timeout() -> void:
 
 func _on_SlowMotionTimer_timeout() -> void:
     Engine.time_scale = 1
-    $Tween.interpolate_property($ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material, "shader_param/blurSize", $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material.get_shader_param("blurSize"), 0, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
-    $Tween.start()
+    if active:
+        $Tween.interpolate_property($ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material, "shader_param/blurSize", $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material.get_shader_param("blurSize"), 0, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
+        $Tween.start()
