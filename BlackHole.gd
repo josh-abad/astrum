@@ -14,10 +14,7 @@ func _physics_process(delta: float) -> void:
         for body in overlapping_bodies:
             if body.is_in_group('Balls'):
                 emit_signal("absorb")
-            elif body.is_in_group('Planets'):
-                body.disappear(get_position())
-                expand()
-                
+
 
 func appear(position: Vector2 = self.position) -> void:
     self.position = position
@@ -42,11 +39,6 @@ func disappear() -> void:
         active = false
         emit_signal('inactive')
     
-
-func expand() -> void:
-    $Tween.interpolate_property(self, 'scale', scale, scale + Vector2(0.25, 0.25), 0.8, Tween.TRANS_CIRC, Tween.EASE_OUT)
-    $Tween.start()
-
 
 func _on_ActiveTimer_timeout() -> void:
     disappear()
