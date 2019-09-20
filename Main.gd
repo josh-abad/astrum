@@ -74,9 +74,13 @@ func scored(special: bool, position: Vector2) -> void:
     add_child(popup)
     popup.display(position, (2 if special else 1) * multiplier)
     
+    _add_spark(Palette.PINK if special else Palette.ORANGE, position)
+    
+    
+func _add_spark(color: Color, position: Vector2) -> void:
     var spark = Spark.instance()
     add_child(spark)
-    spark.set_color(Palette.PINK if special else Palette.ORANGE)
+    spark.set_color(color)
     spark.set_position(position)
     spark.set_emitting(true)
     yield(get_tree().create_timer(6), "timeout")
@@ -166,15 +170,7 @@ func on_Player_destroyed(player_position) -> void:
     active = false
     _dampen_ambient_music(true)
     
-    var spark = Spark.instance()
-    add_child(spark)
-    spark.set_color(Palette.BLUE)
-    spark.set_position(player_position)
-    spark.set_emitting(true)
-    Engine.time_scale = 0.125
-    yield(get_tree().create_timer(6), "timeout")
-    Engine.time_scale = 1
-    spark.queue_free()
+    _add_spark(Palette.BLUE, player_position)
 
 
 func _on_SpikeTimer_timeout() -> void:

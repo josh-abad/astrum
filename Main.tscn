@@ -214,6 +214,7 @@ shape = SubResource( 3 )
 one_shot = true
 
 [node name="PlanetTimer" type="Timer" parent="."]
+wait_time = 0.5
 
 [node name="BlackHoleTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -223,7 +224,7 @@ one_shot = true
 wait_time = 4.0
 
 [node name="ComboTimer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 1.75
 one_shot = true
 
 [node name="MainModulate" type="CanvasModulate" parent="."]

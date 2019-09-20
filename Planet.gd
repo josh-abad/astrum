@@ -27,7 +27,7 @@ func disappear(to_position: Vector2 = get_position()) -> void:
     $Tween.interpolate_property(self, 'position', get_position(), to_position, 1, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.01, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
-    yield(get_tree().create_timer(1), 'timeout')
+    yield(get_tree().create_timer(0.8), 'timeout')
     queue_free()
 
 
