@@ -3,7 +3,7 @@ extends Area2D
 signal absorb
 signal inactive
 
-var active := false setget set_active, is_active
+var active := false
 
 
 func _physics_process(delta: float) -> void:
@@ -43,10 +43,3 @@ func disappear() -> void:
 func _on_ActiveTimer_timeout() -> void:
     disappear()
     
-    
-func is_active() -> bool:
-    return active
-    
-    
-func set_active(value: bool) -> void:
-    active = value

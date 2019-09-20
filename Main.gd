@@ -3,6 +3,8 @@ extends Node
 export (PackedScene) var Planet
 export (PackedScene) var Spike
 
+const MAX_MULTIPLIER: int = 5
+
 var active := false
 
 onready var Spark = load("res://Spark.tscn")
@@ -22,6 +24,7 @@ onready var sfx: Dictionary = {
     "bounce": $BounceSound,
     "button": $ButtonSound    
 }
+
 
 func _ready() -> void:
     randomize()
@@ -121,8 +124,9 @@ func _update_high_score(value: int) -> void:
 
 
 func _update_multiplier(value: int) -> void:
-    multiplier = value
-    $HUD.update_multiplier(multiplier)
+    if value <= MAX_MULTIPLIER:
+        multiplier = value
+        $HUD.update_multiplier(multiplier)
     
 
 func _get_random_position() -> Vector2:
@@ -181,10 +185,22 @@ func _on_BlackHole_inactive() -> void:
         $HUD.disable_warning(true)
         
 
-func _on_Comet_slo_mo(temporary: bool) -> void:
-    Engine.time_scale = 0.25
-    $Tween.interpolate_property($ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material, "shader_param/blurSize", $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material.get_shader_param("blurSize"), 20, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
+func _enable_background_blur(yes: bool) -> void:
+    $Tween.interpolate_property(
+        $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material,
+        "shader_param/blurSize",
+        $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material.get_shader_param("blurSize"),
+        20 if yes else 0,
+        0.2,
+        Tween.TRANS_QUAD,
+        Tween.EASE_OUT
+    )
     $Tween.start()
+
+
+func _on_Comet_slo_mo(temporary: bool = true) -> void:
+    Engine.time_scale = 0.25
+    _enable_background_blur(true)
     if temporary:
         $SlowMotionTimer.start()
 
@@ -192,11 +208,10 @@ func _on_Comet_slo_mo(temporary: bool) -> void:
 func _on_Comet_nor_mo() -> void:
     _play_sfx("bounce")
     Engine.time_scale = 1
-    $Tween.interpolate_property($ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material, "shader_param/blurSize", $ParallaxBackground/ParallaxLayer/BlurLayer/Blur.material.get_shader_param("blurSize"), 0, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
-    $Tween.start()
+    _enable_background_blur(false)
 
 
-func on_Player_destroyed(player_position) -> void:
+func on_Player_destroyed(player_position: Vector2) -> void:
     _play_sfx("hit")
     $HUD.show_game_over()
     active = false

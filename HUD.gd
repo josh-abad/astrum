@@ -44,7 +44,8 @@ func update_multiplier(multiplier: int) -> void:
         $Tween.interpolate_property($MultiplierLabel, 'modulate', $MultiplierLabel.modulate, Color(1, 1, 1, 0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
         $Tween.interpolate_property($MultiplierLabel, 'modulate', Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
         $Tween.start()
-        $MultiplierLabel.set_text(str(multiplier) + 'x')
+        $MultiplierLabel.set_text('×' + str(multiplier))
+        $MultiplierLabel.add_color_override("font_color", Palette.randomize())
     
     
 func hide_high_score(yes: bool) -> void:
