@@ -37,5 +37,3 @@ func _on_Planet_body_entered(body: PhysicsBody2D) -> void:
         body.play_effect()
         disappear()
         Engine.time_scale = 0.125
-        yield(get_tree().create_timer(1), "timeout")
-        # Engine.time_scale = 1  
