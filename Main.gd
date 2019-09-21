@@ -4,7 +4,7 @@ export (PackedScene) var Planet
 export (PackedScene) var Spike
 
 const MAX_MULTIPLIER: int = 5
-const MAX_ENEMIES: int = 50
+const MAX_ENEMIES: int = 20
 
 var active := false
 
@@ -21,6 +21,7 @@ var enemies_spawned: int = 0
 
 # HACK: prevent button sound from playing when first loading game. 
 var init_load: int = 2
+
 
 onready var sfx: Dictionary = {
     "black_hole_active": $BlackHoleActiveSound,
@@ -93,6 +94,7 @@ func scored(special: bool, position: Vector2) -> void:
     if not active:
         return
     enemies_spawned -= 1
+    print('enemies: ', enemies_spawned)    
     Engine.time_scale = 0.125
     _update_score(score + (2 if special else 1) * multiplier)
     if multiplier_active:
@@ -158,13 +160,21 @@ func _get_random_position() -> Vector2:
 func _on_PlanetTimer_timeout() -> void:
     if active and $Player.moving and enemies_spawned <= MAX_ENEMIES:
         enemies_spawned += 1
+        print('enemies: ', enemies_spawned)
         var planet = Planet.instance()
         add_child(planet)
         planet.appear(_get_random_position())
         if planet.connect("scored", self, "scored"):
             pass
+        if planet.connect("disappeared", self, "_planet_disappeared"):
+            pass
         if $HUD.connect("start_game", planet, "_on_start_game"):
             pass
+
+
+func _planet_disappeared() -> void:
+    enemies_spawned -= 1
+    print('enemies: ', enemies_spawned)
 
 
 func _on_StartTimer_timeout():

@@ -1,6 +1,7 @@
 extends RigidBody2D
 
 signal scored(special, position)
+signal disappeared
 
 onready var special: bool = rand_range(0, 100) <= 30
 
@@ -19,6 +20,7 @@ func appear(position: Vector2) -> void:
     $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(1, 1), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     # $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.start()
+    $VisibilityTimer.start()
 
 
 func disappear() -> void:
@@ -37,3 +39,15 @@ func _on_Planet_body_entered(body: PhysicsBody2D) -> void:
         body.play_effect()
         disappear()
         
+
+func _on_VisibilityTimer_timeout() -> void:
+    emit_signal("disappeared")
+    queue_free()
+
+
+func _on_VisibilityNotifier2D_screen_exited() -> void:
+    $VisibilityTimer.start()
+
+
+func _on_VisibilityNotifier2D_screen_entered() -> void:
+    $VisibilityTimer.stop()
