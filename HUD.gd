@@ -29,6 +29,10 @@ func increment_achievement(achievement_name, amount):
     $AchievementsInterface.increment_achievement(achievement_name, amount)
 
 
+func reset_achievement(achievement_name):
+    $AchievementsInterface.reset_achievement(achievement_name)
+
+
 func fade(out: bool, object: Object, duration: float = 0.4) -> void:
     $Tween.interpolate_property(object, 'modulate', object.modulate, Color(1, 1, 1, 0 if out else 1), duration, Tween.TRANS_QUAD, Tween.EASE_OUT)
     

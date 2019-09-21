@@ -6,10 +6,10 @@
 [ext_resource path="res://Assets/HUD/AudioOn.png" type="Texture" id=4]
 [ext_resource path="res://Assets/HUD/MusicOn.png" type="Texture" id=5]
 [ext_resource path="res://Assets/HUD/Warning.png" type="Texture" id=6]
-[ext_resource path="res://icon.png" type="Texture" id=7]
-[ext_resource path="res://Achievements/Scripts/AchievementManager.gd" type="Script" id=8]
-[ext_resource path="res://Assets/HealthBar/Under.png" type="Texture" id=9]
-[ext_resource path="res://Assets/HealthBar/Progress.png" type="Texture" id=10]
+[ext_resource path="res://Assets/HealthBar/Under.png" type="Texture" id=7]
+[ext_resource path="res://Assets/HealthBar/Progress.png" type="Texture" id=8]
+[ext_resource path="res://Achievements/Scripts/AchievementManager.gd" type="Script" id=9]
+[ext_resource path="res://icon.png" type="Texture" id=10]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Fonts/Kenney Future.ttf"
@@ -81,7 +81,7 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id=15]
 shader = SubResource( 14 )
 shader_param/apply = true
-shader_param/amount = 0.2
+shader_param/amount = 0.1
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -239,16 +239,6 @@ texture = ExtResource( 6 )
 repeat = true
 playback/repeat = true
 
-[node name="ChromaticAberration" type="Sprite" parent="."]
-visible = false
-material = SubResource( 15 )
-position = Vector2( 610, 460 )
-scale = Vector2( 31.4062, 28.9063 )
-texture = ExtResource( 7 )
-
-[node name="AchievementsInterface" type="Node" parent="."]
-script = ExtResource( 8 )
-
 [node name="HealthBar" type="TextureProgress" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
@@ -257,8 +247,17 @@ margin_right = 80.0
 margin_bottom = 35.0
 step = 0.01
 value = 75.0
-texture_under = ExtResource( 9 )
-texture_progress = ExtResource( 10 )
+texture_under = ExtResource( 7 )
+texture_progress = ExtResource( 8 )
+
+[node name="AchievementsInterface" type="Node" parent="."]
+script = ExtResource( 9 )
+
+[node name="ChromaticAberration" type="Sprite" parent="."]
+material = SubResource( 15 )
+position = Vector2( 610, 460 )
+scale = Vector2( 31.4062, 28.9063 )
+texture = ExtResource( 10 )
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="pressed" from="CheevoButton" to="." method="_on_CheevoButton_pressed"]
 [connection signal="pressed" from="SFXToggle" to="." method="_on_SFXToggle_pressed"]

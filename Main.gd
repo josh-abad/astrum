@@ -38,6 +38,7 @@ func _ready() -> void:
     load_game()    
     $AmbientSound.play()
     $HUD.hide_high_score(true)
+    _reset_achievements()
 
 
 func _process(delta: float) -> void:
@@ -47,11 +48,7 @@ func _process(delta: float) -> void:
     if round(health) == 0:
         $BlackHole.disappear()
         $Player.disappear()
-        $HUD.show_game_over()
-        _enable_background_blur(true, 0)    
-        active = false
-        _dampen_sfx(true)
-        _dampen_ambient_music(true)
+        _game_over()
 
 
 func save() -> Dictionary:
@@ -105,15 +102,42 @@ func _stop_sfx(key: String) -> void:
     sfx.get(key).stop()
     
     
+func _reset_achievements() -> void:
+    """ These achievements must be completed in one round """
+    $HUD.reset_achievement("score10Points")    
+    $HUD.reset_achievement("score100Points")
+    $HUD.reset_achievement("score1000Points")
+    
+    
+func _game_over() -> void:
+    $HUD.show_game_over()
+    _enable_background_blur(true, 0)    
+    active = false
+    _dampen_sfx(true)
+    _dampen_ambient_music(true)
+    
+    $HUD.increment_achievement("stella_mortem", 1)
+    
+    # These achievements must be completed in one round
+    _reset_achievements()
+
+    
 func scored(special: bool, position: Vector2) -> void:
     if not active:
         return
+        
+    $HUD.increment_achievement("score10Points", (2 if special else 1) * multiplier)
+    $HUD.increment_achievement("score100Points", (2 if special else 1) * multiplier)
+    $HUD.increment_achievement("score1000Points", (2 if special else 1) * multiplier)
+    
     _update_health(health + (30 if special else 10))
     enemies_spawned -= 1
     Engine.time_scale = 0.125
     _update_score(score + (2 if special else 1) * multiplier)
     if multiplier_active:
         _update_multiplier(multiplier + 1)
+        if multiplier == 5:
+            $HUD.increment_achievement("sequentia", 1)
     else:
         multiplier_active = true
     $ComboTimer.start()
@@ -207,11 +231,7 @@ func _on_StartTimer_timeout():
 func _on_BlackHole_absorb() -> void:
     $BlackHole.disappear()
     $Player.disappear()
-    $HUD.show_game_over()
-    _enable_background_blur(true, 0)    
-    active = false
-    _dampen_sfx(true)
-    _dampen_ambient_music(true)
+    _game_over()
 
 
 func _dampen_ambient_music(yes: bool) -> void:
@@ -274,12 +294,8 @@ func _on_Comet_nor_mo() -> void:
 
 func on_Player_destroyed(player_position: Vector2) -> void:
     _play_sfx("hit")
-    $HUD.show_game_over()
-    _enable_background_blur(true, 0)    
-    active = false
-    _dampen_ambient_music(true)
-    _dampen_sfx(true)
-    _add_spark(Palette.BLUE, player_position)
+    _add_spark(Palette.BLUE, player_position)    
+    _game_over()
 
 
 func _on_SpikeTimer_timeout() -> void:

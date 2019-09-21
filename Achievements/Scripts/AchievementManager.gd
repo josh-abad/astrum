@@ -33,3 +33,15 @@ func increment_achievement(achievement_name, amount):
         achievements[achievement_name].increment(amount);
         achievement_data.save();
         emit_signal("updated", achievement_name, achievements[achievement_name]);
+        
+        
+func reset_achievement(achievement_name: String) -> void:
+    var achievements = achievement_data.get_achievements()
+    if achievements.has(achievement_name):
+        var achievement = achievements[achievement_name]
+        var progress = achievement.get_progress()
+        var total = achievement.get_total()
+        if progress < total:
+            achievement.set_value("progress", 0)
+            emit_signal("updated", achievement_name, achievements[achievement_name]);
+            
