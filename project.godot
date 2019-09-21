@@ -17,7 +17,7 @@ _global_script_class_icons={
 
 config/name="Astrum"
 run/main_scene="res://Main.tscn"
-config/icon="res://Assets/res/mipmap-xxxhdpi/astrum_launcher.png"
+config/icon="res://Assets/res/drawable-xxxhdpi/ic_launcher.png"
 
 [autoload]
 
