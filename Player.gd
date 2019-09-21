@@ -87,5 +87,4 @@ func disappear() -> void:
     reset_position = true
     $CollisionShape2D.set_deferred('disabled', true)
     $Camera2D.current = false
-    $Tween.interpolate_property(self, 'visible', visible, false, 0.01, Tween.TRANS_QUAD, Tween.EASE_OUT)
-    $Tween.start()
+    hide()
