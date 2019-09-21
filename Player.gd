@@ -11,7 +11,7 @@ signal nor_mo
 
 var elapsed_time: float = 0    
 var start_pos: Vector2
-var speed := 1500
+export var speed := 1500
 var start_time: float
 var direction := Vector2()
 
@@ -22,8 +22,11 @@ func _input(event: InputEvent) -> void:
             moving = false
             start_pos = event.position
             start_time = elapsed_time
-            $Tween.interpolate_property($Sprite, "scale", $Sprite.get_transform().get_scale(), Vector2(0.9, 0.9), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
-            $Tween.start()
+            
+            # TODO: stretch sprite towards direction
+            # $Tween.interpolate_property($Sprite, "scale", $Sprite.get_transform().get_scale(), Vector2(0.9, 0.9), 0.2, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
+            #$Tween.start()
+            
             emit_signal("slo_mo", false)
         else:
             direction = event.position - start_pos

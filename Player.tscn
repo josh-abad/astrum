@@ -12,6 +12,7 @@ colors = PoolColorArray( 0, 0, 0, 0, 0.027451, 0.976471, 0.862745, 0.313726 )
 radius = 44.8486
 
 [node name="Player" type="KinematicBody2D"]
+input_pickable = true
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
@@ -21,7 +22,6 @@ __meta__ = {
 modulate = Color( 2, 2, 2, 1 )
 width = 75.0
 gradient = SubResource( 1 )
-texture_mode = 0
 joint_mode = 2
 script = ExtResource( 2 )
 target_path = NodePath("..")
@@ -38,7 +38,7 @@ shape = SubResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 2, 2 )
+zoom = Vector2( 2.5, 2.5 )
 process_mode = 0
 limit_left = -10000
 limit_top = -10000
