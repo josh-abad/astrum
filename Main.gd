@@ -15,6 +15,7 @@ var score: int = 0
 var high_score: int = 0
 var multiplier: int = 1
 var multiplier_active: bool = false
+var health: float = 100
 var music_on: bool = true
 var sfx_on: bool = true
 var enemies_spawned: int = 0
@@ -39,6 +40,20 @@ func _ready() -> void:
     $HUD.hide_high_score(true)
 
 
+func _process(delta: float) -> void:
+    if active:
+        _update_health(health - (10 if $Player.moving else 30) * delta)
+    
+    if round(health) == 0:
+        $BlackHole.disappear()
+        $Player.disappear()
+        $HUD.show_game_over()
+        _enable_background_blur(true, 0)    
+        active = false
+        _dampen_sfx(true)
+        _dampen_ambient_music(true)
+
+
 func save() -> Dictionary:
     return {
         "high_score" : high_score,
@@ -48,7 +63,7 @@ func save() -> Dictionary:
 
 
 func save_game() -> void:
-    var save_game = File.new()
+    var save_game := File.new()
     save_game.open("user://savegame.save", File.WRITE)
     save_game.store_line(to_json(save()))
     save_game.close()
@@ -72,11 +87,11 @@ func new_game() -> void:
     _enable_background_blur(false)
     _play_sfx("button")
     _update_score(0)
+    _update_health(100)
     _update_multiplier(1)
     $HUD.hide_high_score(score >= high_score)
     $StartTimer.start()
     $Player.start()
-    active = true
     $Tween.start()
     _dampen_sfx(false)
     _dampen_ambient_music(false)
@@ -93,8 +108,8 @@ func _stop_sfx(key: String) -> void:
 func scored(special: bool, position: Vector2) -> void:
     if not active:
         return
+    _update_health(health + (30 if special else 10))
     enemies_spawned -= 1
-    print('enemies: ', enemies_spawned)    
     Engine.time_scale = 0.125
     _update_score(score + (2 if special else 1) * multiplier)
     if multiplier_active:
@@ -136,6 +151,13 @@ func _update_high_score(value: int) -> void:
     $HUD.update_high_score(high_score)
 
 
+func _update_health(value: float) -> void:
+    if value < 0 or value > 100:
+        return 
+    health = value
+    $HUD.update_health_bar(health)
+
+
 func _update_multiplier(value: int) -> void:
     if value <= MAX_MULTIPLIER:
         multiplier = value
@@ -160,7 +182,6 @@ func _get_random_position() -> Vector2:
 func _on_PlanetTimer_timeout() -> void:
     if active and $Player.moving and enemies_spawned <= MAX_ENEMIES:
         enemies_spawned += 1
-        print('enemies: ', enemies_spawned)
         var planet = Planet.instance()
         add_child(planet)
         planet.appear(_get_random_position())
@@ -174,10 +195,10 @@ func _on_PlanetTimer_timeout() -> void:
 
 func _planet_disappeared() -> void:
     enemies_spawned -= 1
-    print('enemies: ', enemies_spawned)
 
 
 func _on_StartTimer_timeout():
+    active = true    
     $PlanetTimer.start()
     $BlackHoleTimer.start()
     $SpikeTimer.start()
@@ -292,9 +313,9 @@ func _on_HUD_sfx_toggled() -> void:
     # HACK: read explanation above init_load declaration    
     if init_load == 0:
         _play_sfx("button")
-        save_game()
     else:
         init_load -= 1
+    save_game()    
         
 
 func _on_HUD_music_toggled() -> void:
@@ -304,6 +325,6 @@ func _on_HUD_music_toggled() -> void:
     # HACK: read explanation above init_load declaration
     if init_load == 0:
         _play_sfx("button")
-        save_game()
     else:
-        init_load -= 1 
+        init_load -= 1
+    save_game()        

@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://Assets/HUD/Start.png" type="Texture" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://Assets/HUD/Warning.png" type="Texture" id=6]
 [ext_resource path="res://icon.png" type="Texture" id=7]
 [ext_resource path="res://Achievements/Scripts/AchievementManager.gd" type="Script" id=8]
+[ext_resource path="res://Assets/HealthBar/Under.png" type="Texture" id=9]
+[ext_resource path="res://Assets/HealthBar/Progress.png" type="Texture" id=10]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Fonts/Kenney Future.ttf"
@@ -129,13 +131,11 @@ uppercase = true
 
 [node name="MultiplierLabel" type="Label" parent="."]
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
 margin_left = 20.0
-margin_top = -150.0
+margin_top = 90.0
 margin_right = 60.0
-margin_bottom = -132.0
+margin_bottom = 108.0
 rect_rotation = 20.0
 custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 0.501961 )
@@ -248,6 +248,17 @@ texture = ExtResource( 7 )
 
 [node name="AchievementsInterface" type="Node" parent="."]
 script = ExtResource( 8 )
+
+[node name="HealthBar" type="TextureProgress" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -80.0
+margin_right = 80.0
+margin_bottom = 35.0
+step = 0.01
+value = 75.0
+texture_under = ExtResource( 9 )
+texture_progress = ExtResource( 10 )
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="pressed" from="CheevoButton" to="." method="_on_CheevoButton_pressed"]
 [connection signal="pressed" from="SFXToggle" to="." method="_on_SFXToggle_pressed"]

@@ -22,6 +22,7 @@ func _ready() -> void:
     $HighScore/HighScoreLabel.modulate = TRANSPARENT
     $Warning.modulate = TRANSPARENT
     $MultiplierLabel.modulate = TRANSPARENT
+    $HealthBar.modulate = TRANSPARENT
 
 
 func increment_achievement(achievement_name, amount):
@@ -45,6 +46,11 @@ func update_high_score(high_score: int) -> void:
     $Tween.start()
     $HighScore/HighScoreLabel.set_text(str(high_score))
     
+    
+func update_health_bar(health: float) -> void:
+    $Tween.interpolate_property($HealthBar, 'value', $HealthBar.value, health, 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()
+
     
 func update_multiplier(multiplier: int) -> void:
     if multiplier == 1:
@@ -75,6 +81,7 @@ func show_game_over() -> void:
     hide_high_score(false)
     fade(true, $ScoreLabel)
     fade(true, $MultiplierLabel)
+    fade(true, $HealthBar)
     fade(false, $GameOverLabel)
     fade(true, $Warning)    
     $StartButton.set_button_icon(RESTART_ICON)
@@ -89,6 +96,7 @@ func _on_StartButton_pressed() -> void:
     fade(false, $ScoreLabel)
     fade(false, $HighScore/Label)
     fade(false, $HighScore/HighScoreLabel)
+    fade(false, $HealthBar)
     fade(true, $GameOverLabel)
     fade(true, $StartLabel)
     $Tween.start()
