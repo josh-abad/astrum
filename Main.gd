@@ -4,6 +4,7 @@ export (PackedScene) var Planet
 export (PackedScene) var Spike
 
 const MAX_MULTIPLIER: int = 5
+const MAX_ENEMIES: int = 50
 
 var active := false
 
@@ -16,6 +17,7 @@ var multiplier: int = 1
 var multiplier_active: bool = false
 var music_on: bool = true
 var sfx_on: bool = true
+var enemies_spawned: int = 0
 
 # HACK: prevent button sound from playing when first loading game. 
 var init_load: int = 2
@@ -65,6 +67,7 @@ func load_game() -> void:
 
 
 func new_game() -> void:
+    enemies_spawned = 0
     _enable_background_blur(false)
     _play_sfx("button")
     _update_score(0)
@@ -89,6 +92,7 @@ func _stop_sfx(key: String) -> void:
 func scored(special: bool, position: Vector2) -> void:
     if not active:
         return
+    enemies_spawned -= 1
     Engine.time_scale = 0.125
     _update_score(score + (2 if special else 1) * multiplier)
     if multiplier_active:
@@ -152,7 +156,8 @@ func _get_random_position() -> Vector2:
 
 
 func _on_PlanetTimer_timeout() -> void:
-    if active and $Player.moving:
+    if active and $Player.moving and enemies_spawned <= MAX_ENEMIES:
+        enemies_spawned += 1
         var planet = Planet.instance()
         add_child(planet)
         planet.appear(_get_random_position())
@@ -277,11 +282,10 @@ func _on_HUD_sfx_toggled() -> void:
     # HACK: read explanation above init_load declaration    
     if init_load == 0:
         _play_sfx("button")
+        save_game()
     else:
         init_load -= 1
         
-    save_game()
-
 
 func _on_HUD_music_toggled() -> void:
     music_on = not music_on
@@ -290,7 +294,6 @@ func _on_HUD_music_toggled() -> void:
     # HACK: read explanation above init_load declaration
     if init_load == 0:
         _play_sfx("button")
+        save_game()
     else:
-        init_load -= 1
-        
-    save_game()
+        init_load -= 1 

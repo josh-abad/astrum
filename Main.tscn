@@ -16,7 +16,7 @@
 [ext_resource path="res://Audio/Button.ogg" type="AudioStream" id=14]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=15]
 
-[sub_resource type="Shader" id=8]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 render_mode unshaded;
 
@@ -30,7 +30,7 @@ COLOR = textureLod(SCREEN_TEXTURE, SCREEN_UV, float(blurSize)/10.0);
 "
 
 [sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 8 )
+shader = SubResource( 1 )
 shader_param/blurSize = 0
 
 [sub_resource type="RectangleShape2D" id=3]
@@ -126,7 +126,7 @@ shader_param/scale = 500.0
 
 [sub_resource type="Environment" id=7]
 background_mode = 4
-dof_blur_far_enabled = true
+tonemap_mode = 2
 dof_blur_far_distance = 0.01
 glow_enabled = true
 glow_bloom = 0.25
@@ -149,7 +149,7 @@ motion_scale = Vector2( 0.5, 0.5 )
 
 [node name="Background" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
 self_modulate = Color( 0.52549, 0.14902, 0.486275, 1 )
-position = Vector2( -1280, -96 )
+position = Vector2( -1152, -64 )
 scale = Vector2( 15, 15 )
 texture = ExtResource( 4 )
 region_rect = Rect2( 0, 0, 98304, 147456 )
@@ -218,7 +218,7 @@ shape = SubResource( 3 )
 one_shot = true
 
 [node name="PlanetTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.25
 
 [node name="BlackHoleTimer" type="Timer" parent="."]
 wait_time = 2.0
@@ -284,6 +284,7 @@ region_rect = Rect2( 0, 0, 20000, 20000 )
 [node name="Player" parent="." groups=[
 "Balls",
 ] instance=ExtResource( 15 )]
+speed = 1250
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 7 )
