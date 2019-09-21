@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/astrum_launcher.png-125867f094ccb48845e9ca2e3aa59831.stex"
+path="res://.import/ic_launcher.png-30c64912caa868b12c2c4bca0148df2f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/res/mipmap-mdpi/astrum_launcher.png"
-dest_files=[ "res://.import/astrum_launcher.png-125867f094ccb48845e9ca2e3aa59831.stex" ]
+source_file="res://Assets/res/drawable-xhdpi/ic_launcher.png"
+dest_files=[ "res://.import/ic_launcher.png-30c64912caa868b12c2c4bca0148df2f.stex" ]
 
 [params]
 
