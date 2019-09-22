@@ -3,6 +3,7 @@ extends Node
 const BLUE = Color("#07f9dc")
 const PINK = Color("#fa1f79")
 const ORANGE = Color("#f7a757")
+const PURPLE = Color("#7233ee")
 
 const COLORS: Array = [PINK, ORANGE]
 
