@@ -81,7 +81,7 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id=15]
 shader = SubResource( 14 )
 shader_param/apply = true
-shader_param/amount = 0.1
+shader_param/amount = 0.15
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -96,6 +96,7 @@ margin_top = -17.5
 margin_right = 92.0
 margin_bottom = 17.5
 custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.968627, 0.654902, 0.341176, 1 )
 text = "Astrum"
 align = 1
 valign = 1
@@ -111,6 +112,7 @@ margin_top = -17.5
 margin_right = 141.0
 margin_bottom = 17.5
 custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.980392, 0.121569, 0.47451, 1 )
 text = "Game Over"
 align = 1
 valign = 1
@@ -124,6 +126,7 @@ margin_top = 60.0
 margin_right = 60.0
 margin_bottom = 95.0
 custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.027451, 0.976471, 0.862745, 1 )
 text = "0"
 align = 1
 valign = 1
@@ -138,7 +141,7 @@ margin_right = 60.0
 margin_bottom = 108.0
 rect_rotation = 20.0
 custom_fonts/font = SubResource( 6 )
-custom_colors/font_color = Color( 1, 1, 1, 0.501961 )
+custom_colors/font_color = Color( 0.980392, 0.121569, 0.47451, 1 )
 text = "1x"
 
 [node name="HighScore" type="Control" parent="."]
@@ -190,7 +193,7 @@ icon = ExtResource( 2 )
 flat = true
 
 [node name="CheevoButton" type="Button" parent="."]
-self_modulate = Color( 0.980392, 0.121569, 0.47451, 1 )
+self_modulate = Color( 0.447059, 0.2, 0.933333, 1 )
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 30.0
