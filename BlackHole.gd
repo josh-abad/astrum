@@ -18,7 +18,7 @@ func _physics_process(delta: float) -> void:
 
 func appear(position: Vector2 = self.position) -> void:
     self.position = position
-    $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(3, 3), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
+    $Tween.interpolate_property(self, 'scale', Vector2(0, 0), Vector2(5, 5), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.interpolate_property(self, 'visible', visible, true, 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 1), 0.8, Tween.TRANS_CIRC, Tween.EASE_IN)
     $Tween.start()
