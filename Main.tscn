@@ -157,14 +157,15 @@ self_modulate = Color( 0.52549, 0.14902, 0.486275, 1 )
 position = Vector2( -1152, -64 )
 scale = Vector2( 15, 15 )
 texture = ExtResource( 4 )
-region_rect = Rect2( 0, 0, 98304, 147456 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
 
 [node name="Stars" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
 self_modulate = Color( 0.980392, 0.121569, 0.47451, 1 )
 position = Vector2( -1280, -96 )
 texture = ExtResource( 5 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 98304, 147456 )
+region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
 
 [node name="BackgroundModulate" type="CanvasModulate" parent="ParallaxBackground/ParallaxLayer"]
 visible = false
@@ -190,7 +191,7 @@ position = Vector2( -1280, -96 )
 rotation = -3.14159
 texture = ExtResource( 5 )
 region_enabled = true
-region_rect = Rect2( 0, 0, 98304, 147456 )
+region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
 
 [node name="ForegroundModulate" type="CanvasModulate" parent="ParallaxForeground/ParallaxLayer"]
 visible = false
@@ -202,20 +203,24 @@ color = Color( 0.588235, 0.588235, 0.588235, 1 )
 [node name="Top" type="CollisionShape2D" parent="Walls"]
 position = Vector2( -5024, -10000 )
 shape = SubResource( 3 )
+disabled = true
 
 [node name="Bottom" type="CollisionShape2D" parent="Walls"]
 position = Vector2( -40736, 10000 )
 shape = SubResource( 3 )
+disabled = true
 
 [node name="Right" type="CollisionShape2D" parent="Walls"]
 position = Vector2( 10000, -15456 )
 rotation = 1.5708
 shape = SubResource( 3 )
+disabled = true
 
 [node name="Left" type="CollisionShape2D" parent="Walls"]
 position = Vector2( -10000, -15008 )
 rotation = 1.5708
 shape = SubResource( 3 )
+disabled = true
 
 [node name="Tween" type="Tween" parent="."]
 
