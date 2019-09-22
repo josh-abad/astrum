@@ -4,7 +4,12 @@ export (PackedScene) var Planet
 export (PackedScene) var Spike
 
 const MAX_MULTIPLIER: int = 8
-const MAX_ENEMIES: int = 20
+const MAX_ENEMIES: int = 15
+const COUNTDOWN_RATE_FAST: float = 40.0
+const COUNTDOWN_RATE_NORMAL: float = 20.0
+
+var bh_wait_time_upper: int = 6
+var bh_wait_time_lower: int = 3
 
 var active := false
 
@@ -19,10 +24,10 @@ var music_on: bool = true
 var sfx_on: bool = true
 var enemies_spawned: int = 0
 var combo: bool = false
+var ignorata: bool = false
 
 # HACK: prevent button sound from playing when first loading game. 
 var init_load: int = 2
-
 
 onready var sfx: Dictionary = {
     "black_hole_active": $BlackHoleActiveSound,
@@ -43,7 +48,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
     if active:
-        _update_health(health - (10 if $Player.moving else 30) * delta)
+        _update_health(health - (COUNTDOWN_RATE_NORMAL if $Player.moving else COUNTDOWN_RATE_FAST) * delta)
     
     if round(health) == 0:
         $BlackHole.disappear()
@@ -107,6 +112,8 @@ func _reset_achievements() -> void:
     $HUD.reset_achievement("score10Points")    
     $HUD.reset_achievement("score100Points")
     $HUD.reset_achievement("score1000Points")
+    $HUD.reset_achievement("rosea")
+    $HUD.reset_achievement("ignorata")
     
     
 func _game_over() -> void:
@@ -126,15 +133,26 @@ func scored(special: bool, position: Vector2) -> void:
     if not active:
         return
         
+    if special:
+        $HUD.increment_achievement("rosea", 1)
+    else:
+        $HUD.reset_achievement("rosea")
+        
     var points = (2 if special else 1) * (multiplier if multiplier != 0 else 1)
     $HUD.increment_achievement("score10Points", points)
     $HUD.increment_achievement("score100Points", points)
     $HUD.increment_achievement("score1000Points", points)
     
-    _update_health(health + (30 if special else 10))
+    if ignorata:
+        $HUD.increment_achievement("ignorata", 1)
+    else:
+        $HUD.reset_achievement("ignorata")
+        ignorata = true
+    
+    _update_health(health + (COUNTDOWN_RATE_FAST / 1.5 if special else COUNTDOWN_RATE_NORMAL / 1.5))
     enemies_spawned -= 1
     combo = true
-    Engine.time_scale = 0.125
+    Engine.time_scale = 0.25
     _update_score(score + points)
     _update_multiplier(multiplier + 1)
     if multiplier == 5:
@@ -149,8 +167,7 @@ func scored(special: bool, position: Vector2) -> void:
     _play_sfx("bounce")
     var popup = ScoredPopup.instance()
     add_child(popup)
-    popup.display(position, points)
-    
+    popup.display(position, points, Palette.PINK if special else Palette.ORANGE)
     _add_spark(Palette.PINK if special else Palette.ORANGE, position)
     
     
@@ -256,10 +273,21 @@ func _on_BlackHole_inactive() -> void:
     _stop_sfx("black_hole_active")
     if active and $Player.moving:
         _play_sfx("black_hole_transition")
-        $BlackHoleTimer.set_wait_time(rand_range(2, 4))
+        $BlackHoleTimer.set_wait_time(_update_bh_wait_time())
         $BlackHoleTimer.start()
         $HUD.disable_warning(true)
         
+
+func _update_bh_wait_time() -> float:
+    var modifier: int = 0
+    if score > 50:
+        modifier += 1
+        if score > 100:
+            modifier += 1
+            if score > 150:
+                modifier += 1
+    return rand_range(bh_wait_time_lower - modifier, bh_wait_time_upper - modifier)
+
 
 func _enable_background_blur(yes: bool, layer: int = -2) -> void:
     $Tween.interpolate_property(
@@ -289,7 +317,7 @@ func _on_Comet_nor_mo() -> void:
     _play_sfx("bounce")
     Engine.time_scale = 1
     _enable_background_blur(false)
-    print('here')
+    ignorata = false
     if combo:
         combo = false
     else:
