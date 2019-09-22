@@ -33,9 +33,9 @@ COLOR = textureLod(SCREEN_TEXTURE, SCREEN_UV, float(blurSize)/10.0);
 shader = SubResource( 1 )
 shader_param/blurSize = 0
 
-[sub_resource type="CanvasItemMaterial" id=4]
+[sub_resource type="CanvasItemMaterial" id=3]
 
-[sub_resource type="Shader" id=5]
+[sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
 
 uniform vec2 offset;
@@ -116,24 +116,25 @@ void fragment() {
     COLOR.rgb = vec3(n);
 }"
 
-[sub_resource type="ShaderMaterial" id=6]
-shader = SubResource( 5 )
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
 shader_param/offset = null
 shader_param/scale = 500.0
 
-[sub_resource type="Environment" id=7]
+[sub_resource type="Environment" id=6]
 background_mode = 4
+background_canvas_max_layer = 1
 tonemap_mode = 2
 auto_exposure_scale = 0.1
 auto_exposure_max_luma = 4.0
 dof_blur_far_distance = 0.01
 glow_enabled = true
-glow_strength = 1.13
-glow_bloom = 0.25
+glow_levels/2 = true
+glow_levels/7 = true
+glow_bloom = 0.2
 glow_blend_mode = 1
-glow_hdr_threshold = 0.75
+glow_hdr_threshold = 2.0
 glow_hdr_luminance_cap = 24.0
-glow_hdr_scale = 4.0
 glow_bicubic_upscale = true
 adjustment_enabled = true
 adjustment_saturation = 1.25
@@ -150,7 +151,7 @@ layer = -2
 motion_scale = Vector2( 0.5, 0.5 )
 
 [node name="Background" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-self_modulate = Color( 0.52549, 0.14902, 0.486275, 1 )
+self_modulate = Color( 0.796078, 0.156863, 0.639216, 1 )
 position = Vector2( -1152, -64 )
 scale = Vector2( 5, 5 )
 texture = ExtResource( 4 )
@@ -166,7 +167,7 @@ region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
 
 [node name="BackgroundModulate" type="CanvasModulate" parent="ParallaxBackground/ParallaxLayer"]
 visible = false
-color = Color( 0.588235, 0.588235, 0.588235, 1 )
+color = Color( 0.666667, 0.666667, 0.666667, 1 )
 
 [node name="BlurLayer" type="CanvasLayer" parent="ParallaxBackground/ParallaxLayer"]
 layer = -2
@@ -219,8 +220,8 @@ one_shot = true
 
 [node name="MainModulate" type="CanvasModulate" parent="."]
 visible = false
-material = SubResource( 4 )
-color = Color( 0.589844, 0.589844, 0.589844, 1 )
+material = SubResource( 3 )
+color = Color( 0.176471, 0.176471, 0.176471, 1 )
 
 [node name="BlackHole" parent="." instance=ExtResource( 7 )]
 visible = false
@@ -258,7 +259,7 @@ bus = "HUD"
 [node name="Noise" type="Sprite" parent="."]
 visible = false
 modulate = Color( 1, 1, 1, 0.0392157 )
-material = SubResource( 6 )
+material = SubResource( 5 )
 texture = ExtResource( 6 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 20000, 20000 )
@@ -269,7 +270,7 @@ region_rect = Rect2( 0, 0, 20000, 20000 )
 speed = 1250
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 7 )
+environment = SubResource( 6 )
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]
