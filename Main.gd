@@ -3,7 +3,7 @@ extends Node
 export (PackedScene) var Planet
 export (PackedScene) var Spike
 
-const MAX_MULTIPLIER: int = 5
+const MAX_MULTIPLIER: int = 8
 const MAX_ENEMIES: int = 20
 
 var active := false
@@ -14,11 +14,11 @@ onready var ScoredPopup = load("res://ScoredPopup.tscn")
 var score: int = 0
 var high_score: int = 0
 var multiplier: int = 1
-var multiplier_active: bool = false
 var health: float = 100
 var music_on: bool = true
 var sfx_on: bool = true
 var enemies_spawned: int = 0
+var combo: bool = false
 
 # HACK: prevent button sound from playing when first loading game. 
 var init_load: int = 2
@@ -85,7 +85,7 @@ func new_game() -> void:
     _play_sfx("button")
     _update_score(0)
     _update_health(100)
-    _update_multiplier(1)
+    _update_multiplier(0)
     $HUD.hide_high_score(score >= high_score)
     $StartTimer.start()
     $Player.start()
@@ -126,20 +126,19 @@ func scored(special: bool, position: Vector2) -> void:
     if not active:
         return
         
-    $HUD.increment_achievement("score10Points", (2 if special else 1) * multiplier)
-    $HUD.increment_achievement("score100Points", (2 if special else 1) * multiplier)
-    $HUD.increment_achievement("score1000Points", (2 if special else 1) * multiplier)
+    var points = (2 if special else 1) * (multiplier if multiplier != 0 else 1)
+    $HUD.increment_achievement("score10Points", points)
+    $HUD.increment_achievement("score100Points", points)
+    $HUD.increment_achievement("score1000Points", points)
     
     _update_health(health + (30 if special else 10))
     enemies_spawned -= 1
+    combo = true
     Engine.time_scale = 0.125
-    _update_score(score + (2 if special else 1) * multiplier)
-    if multiplier_active:
-        _update_multiplier(multiplier + 1)
-        if multiplier == 5:
-            $HUD.increment_achievement("sequentia", 1)
-    else:
-        multiplier_active = true
+    _update_score(score + points)
+    _update_multiplier(multiplier + 1)
+    if multiplier == 5:
+        $HUD.increment_achievement("sequentia", 1)
     $ComboTimer.start()
     if score > high_score:
         $HUD.hide_high_score(true)
@@ -150,7 +149,7 @@ func scored(special: bool, position: Vector2) -> void:
     _play_sfx("bounce")
     var popup = ScoredPopup.instance()
     add_child(popup)
-    popup.display(position, (2 if special else 1) * multiplier)
+    popup.display(position, points)
     
     _add_spark(Palette.PINK if special else Palette.ORANGE, position)
     
@@ -290,6 +289,15 @@ func _on_Comet_nor_mo() -> void:
     _play_sfx("bounce")
     Engine.time_scale = 1
     _enable_background_blur(false)
+    print('here')
+    if combo:
+        combo = false
+    else:
+        _reset_combo()
+        
+        
+func _reset_combo() -> void:
+    _update_multiplier(0)
 
 
 func on_Player_destroyed(player_position: Vector2) -> void:
@@ -310,8 +318,7 @@ func _on_SpikeTimer_timeout() -> void:
 
 
 func _on_ComboTimer_timeout() -> void:
-    _update_multiplier(1)
-    multiplier_active = false
+    _reset_combo()
 
 
 func _on_SlowMotionTimer_timeout() -> void:

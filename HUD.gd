@@ -57,7 +57,7 @@ func update_health_bar(health: float) -> void:
 
     
 func update_multiplier(multiplier: int) -> void:
-    if multiplier == 1:
+    if multiplier <= 1:
         fade(true, $MultiplierLabel, 0.1)
     else:
         $Tween.interpolate_property($MultiplierLabel, 'modulate', $MultiplierLabel.modulate, Color(1, 1, 1, 0), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
