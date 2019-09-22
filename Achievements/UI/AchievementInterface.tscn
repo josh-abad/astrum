@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Achievements/UI/AchievementInterface.gd" type="Script" id=1]
 
@@ -9,11 +9,21 @@ bg_color = Color( 0.136719, 0.134867, 0.132446, 1 )
 border_color = Color( 0, 0, 0, 1 )
 shadow_color = Color( 0.00390625, 0.00390625, 0.00390625, 0.6 )
 
-[sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0.800781, 0.22522, 0.22522, 1 )
+[sub_resource type="DynamicFontData" id=3]
+font_path = "res://Fonts/Kenney Future.ttf"
 
-[sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0.74902, 0.215686, 0.121569, 1 )
+[sub_resource type="DynamicFont" id=4]
+font_data = SubResource( 3 )
+
+[sub_resource type="StyleBoxEmpty" id=9]
+
+[sub_resource type="StyleBoxEmpty" id=10]
+
+[sub_resource type="DynamicFontData" id=7]
+font_path = "res://Fonts/Kenney Rocket Square.ttf"
+
+[sub_resource type="DynamicFont" id=8]
+font_data = SubResource( 7 )
 
 [node name="Achievement System" type="MarginContainer"]
 anchor_right = 1.0
@@ -37,6 +47,7 @@ anchor_bottom = 1.0
 custom_constants/separation = 0
 
 [node name="TitleBar" type="Panel" parent="Background/Layout"]
+self_modulate = Color( 0, 0, 0, 1 )
 margin_right = 260.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
@@ -59,12 +70,13 @@ custom_constants/margin_bottom = 0
 
 [node name="Label" type="Label" parent="Background/Layout/TitleBar/HBoxContainer/MarginContainer"]
 margin_left = 5.0
-margin_top = 8.0
+margin_top = 14.0
 margin_right = 226.0
-margin_bottom = 22.0
+margin_bottom = 16.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
-custom_colors/font_color = Color( 1, 1, 1, 0.762431 )
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 0.447059, 0.2, 0.933333, 1 )
 text = "Achievements"
 valign = 1
 
@@ -74,13 +86,16 @@ margin_right = 260.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 30, 0 )
 size_flags_vertical = 3
-custom_styles/hover = SubResource( 3 )
-custom_styles/normal = SubResource( 4 )
+custom_styles/pressed = SubResource( 9 )
+custom_styles/focus = SubResource( 10 )
+flat = true
 
 [node name="Label" type="Label" parent="Background/Layout/TitleBar/HBoxContainer/Button"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-text = "x"
+custom_fonts/font = SubResource( 8 )
+custom_colors/font_color = Color( 0.8, 0.223529, 0.223529, 1 )
+text = "×"
 align = 1
 valign = 1
 
@@ -96,6 +111,7 @@ custom_constants/margin_left = 0
 custom_constants/margin_bottom = 0
 
 [node name="Panel" type="Panel" parent="Background/Layout/MarginContainer"]
+self_modulate = Color( 0, 0, 0, 1 )
 margin_right = 260.0
 margin_bottom = 390.0
 
@@ -108,6 +124,7 @@ custom_constants/margin_left = 5
 custom_constants/margin_bottom = 5
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Background/Layout/MarginContainer/Panel/MarginContainer"]
+self_modulate = Color( 0, 0, 0, 1 )
 margin_left = 5.0
 margin_top = 5.0
 margin_right = 255.0
