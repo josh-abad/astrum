@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
@@ -32,9 +32,6 @@ COLOR = textureLod(SCREEN_TEXTURE, SCREEN_UV, float(blurSize)/10.0);
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
 shader_param/blurSize = 0
-
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 89088, 16 )
 
 [sub_resource type="CanvasItemMaterial" id=4]
 
@@ -155,7 +152,7 @@ motion_scale = Vector2( 0.5, 0.5 )
 [node name="Background" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
 self_modulate = Color( 0.52549, 0.14902, 0.486275, 1 )
 position = Vector2( -1152, -64 )
-scale = Vector2( 15, 15 )
+scale = Vector2( 5, 5 )
 texture = ExtResource( 4 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
@@ -197,30 +194,6 @@ region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
 visible = false
 self_modulate = Color( 0.94902, 0.203922, 0.482353, 1 )
 color = Color( 0.588235, 0.588235, 0.588235, 1 )
-
-[node name="Walls" type="StaticBody2D" parent="."]
-
-[node name="Top" type="CollisionShape2D" parent="Walls"]
-position = Vector2( -5024, -10000 )
-shape = SubResource( 3 )
-disabled = true
-
-[node name="Bottom" type="CollisionShape2D" parent="Walls"]
-position = Vector2( -40736, 10000 )
-shape = SubResource( 3 )
-disabled = true
-
-[node name="Right" type="CollisionShape2D" parent="Walls"]
-position = Vector2( 10000, -15456 )
-rotation = 1.5708
-shape = SubResource( 3 )
-disabled = true
-
-[node name="Left" type="CollisionShape2D" parent="Walls"]
-position = Vector2( -10000, -15008 )
-rotation = 1.5708
-shape = SubResource( 3 )
-disabled = true
 
 [node name="Tween" type="Tween" parent="."]
 
