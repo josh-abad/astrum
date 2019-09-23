@@ -4,6 +4,7 @@ signal start_game
 signal sfx_toggled
 signal music_toggled
 signal achievement_complete(achievement_name)
+signal upgraded(upgrade_name, level, upgrade_cost)
 
 const RESTART_ICON: Resource = preload("res://Assets/HUD/Restart.png")
 const AUDIO_ON_ICON: Resource = preload("res://Assets/HUD/AudioOn.png")
@@ -51,6 +52,7 @@ func update_credits(credits: int) -> void:
     $Tween.interpolate_property($Credits/Label, 'modulate', Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
     $Credits/Label.set_text(str(credits))
+    $UpgradeInterface.update_credits(credits)
     
     
 func update_high_score(high_score: int) -> void:
@@ -112,6 +114,7 @@ func show_game_over() -> void:
     $Tween.start()
     $StartButton.show()
     $CheevoButton.show()
+    $UpgradesButton.show()
     $SFXToggle.show() 
     $MusicToggle.show() 
     
@@ -126,8 +129,10 @@ func _on_StartButton_pressed() -> void:
     $Tween.start()
     $StartButton.hide()
     $CheevoButton.hide()
+    $UpgradesButton.hide()
     $SFXToggle.hide()
     $MusicToggle.hide()
+    $ButtonSound.play()
     emit_signal('start_game')
     
         
@@ -144,6 +149,7 @@ func disable_warning(yes: bool) -> void:
 
 func _on_CheevoButton_pressed() -> void:
     Input.action_press("achievement_interface_open_close")
+    $ButtonSound.play()
 
 
 func _on_SFXToggle_pressed() -> void:    
@@ -151,6 +157,7 @@ func _on_SFXToggle_pressed() -> void:
     sfx_on = not sfx_on
     $SFXToggle.icon = AUDIO_ON_ICON if sfx_on else AUDIO_OFF_ICON
     $SFXToggle.modulate = Color(1, 1, 1, 1.0 if sfx_on else 0.25)
+    $ButtonSound.play()
 
 
 func _on_MusicToggle_pressed() -> void:
@@ -158,7 +165,26 @@ func _on_MusicToggle_pressed() -> void:
     music_on = not music_on
     $MusicToggle.icon = MUSIC_ON_ICON if music_on else MUSIC_OFF_ICON
     $MusicToggle.modulate = Color(1, 1, 1, 1.0 if music_on else 0.25)    
+    $ButtonSound.play()
 
 
 func _on_AchievementsInterface_achievement_complete(achievement_name: String) -> void:
     emit_signal("achievement_complete", achievement_name)
+
+
+func _on_UpgradesButton_pressed() -> void:
+    Input.action_press("upgrade_interface_open_close")
+    $ButtonSound.play()
+
+
+func _on_UpgradeInterface_upgraded(upgrade_name: String, level: float, upgrade_cost: int) -> void:
+    emit_signal("upgraded", upgrade_name, level, upgrade_cost)
+    $ButtonSound.play()
+
+
+func load_upgrades(upgrades: Dictionary) -> void:
+    $UpgradeInterface.load_upgrades(upgrades)
+
+
+func _on_interface_closed() -> void:
+    $ButtonSound.play()

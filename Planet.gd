@@ -8,6 +8,7 @@ onready var special: bool = rand_range(0, 100) <= 30
 
 func _ready() -> void:
     $Sprite.self_modulate = Palette.PINK if special else Palette.ORANGE
+    gravity_scale = 1 if randi() % 2 == 1 else -1
     # hide()
 
 
@@ -29,8 +30,7 @@ func disappear() -> void:
     $Tween.interpolate_property(self, 'position', get_position(), get_position(), 1, Tween.TRANS_QUAD, Tween.EASE_OUT)
     # $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
-    yield(get_tree().create_timer(0.8), 'timeout')
-    queue_free()
+    $DisappearTimer.start()
 
 
 func _on_Planet_body_entered(body: PhysicsBody2D) -> void:
@@ -51,3 +51,7 @@ func _on_VisibilityNotifier2D_screen_exited() -> void:
 
 func _on_VisibilityNotifier2D_screen_entered() -> void:
     $VisibilityTimer.stop()
+
+
+func _on_DisappearTimer_timeout() -> void:
+    queue_free()

@@ -1,14 +1,15 @@
 extends Node
 
 const ACHIEVEMENT_DATA_SCRIPT = "res://Achievements/Scripts/AchievementData.gd";
-const INTERFACE_SCREEN = "res://Achievements/UI/AchievementInterface.tscn";
-const INTERFACE_OPENCLOSE_ACTION = "achievement_interface_open_close";
+const INTERFACE_SCREEN = "res://Achievements/UI/AchievementInterface.tscn"
+const INTERFACE_OPENCLOSE_ACTION = "achievement_interface_open_close"
 
-var achievement_data = null;
-var achievement_interface = null;
+var achievement_data = null
+var achievement_interface = null
 
-signal updated;
+signal updated
 signal achievement_complete(achievement_name)
+signal closed
 
 func _ready():
     achievement_data = load(ACHIEVEMENT_DATA_SCRIPT).new();
@@ -20,6 +21,13 @@ func _ready():
         pass
     if achievement_interface.connect("achievement_complete", self, "_on_achievement_complete"):
         pass
+    if achievement_interface.connect("closed", self, "_on_AchievementInterface_closed"):
+        pass
+    
+    
+func _on_AchievementInterface_closed() -> void:
+    emit_signal("closed")
+    
     
 func _on_achievement_complete(achievement_name: String) -> void:
     

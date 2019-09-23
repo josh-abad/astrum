@@ -11,7 +11,7 @@ signal nor_mo
 
 var elapsed_time: float = 0    
 var start_pos: Vector2
-export var speed := 1500
+var speed := 1000
 var start_time: float
 var direction := Vector2()
 

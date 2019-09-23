@@ -1,16 +1,19 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://Assets/HUD/Start.png" type="Texture" id=2]
 [ext_resource path="res://Assets/HUD/Trophy.png" type="Texture" id=3]
-[ext_resource path="res://Assets/HUD/AudioOn.png" type="Texture" id=4]
-[ext_resource path="res://Assets/HUD/MusicOn.png" type="Texture" id=5]
-[ext_resource path="res://Assets/HUD/Warning.png" type="Texture" id=6]
-[ext_resource path="res://Assets/HealthBar/Under.png" type="Texture" id=7]
-[ext_resource path="res://Assets/HealthBar/Progress.png" type="Texture" id=8]
-[ext_resource path="res://Achievements/Scripts/AchievementManager.gd" type="Script" id=9]
-[ext_resource path="res://icon.png" type="Texture" id=10]
+[ext_resource path="res://Assets/HUD/Upgrades.png" type="Texture" id=4]
+[ext_resource path="res://Assets/HUD/AudioOn.png" type="Texture" id=5]
+[ext_resource path="res://Assets/HUD/MusicOn.png" type="Texture" id=6]
+[ext_resource path="res://Assets/HUD/Warning.png" type="Texture" id=7]
+[ext_resource path="res://Assets/HealthBar/Under.png" type="Texture" id=8]
+[ext_resource path="res://Assets/HealthBar/Progress.png" type="Texture" id=9]
+[ext_resource path="res://UpgradeInterface.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/Credit.png" type="Texture" id=11]
+[ext_resource path="res://Achievements/Scripts/AchievementManager.gd" type="Script" id=12]
+[ext_resource path="res://icon.png" type="Texture" id=13]
+[ext_resource path="res://Audio/Button.ogg" type="AudioStream" id=14]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://Fonts/Kenney Future.ttf"
@@ -73,6 +76,13 @@ font_path = "res://Fonts/Kenney Future Narrow.ttf"
 size = 11
 font_data = SubResource( 18 )
 
+[sub_resource type="DynamicFontData" id=20]
+font_path = "res://Fonts/Kenney Future Narrow.ttf"
+
+[sub_resource type="DynamicFont" id=21]
+size = 18
+font_data = SubResource( 20 )
+
 [sub_resource type="Shader" id=14]
 code = "shader_type canvas_item;
 
@@ -98,13 +108,6 @@ shader = SubResource( 14 )
 shader_param/apply = true
 shader_param/amount = 0.15
 
-[sub_resource type="DynamicFontData" id=20]
-font_path = "res://Fonts/Kenney Future Narrow.ttf"
-
-[sub_resource type="DynamicFont" id=21]
-size = 18
-font_data = SubResource( 20 )
-
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 1 )
 
@@ -118,7 +121,7 @@ margin_top = -17.5
 margin_right = 92.0
 margin_bottom = 17.5
 custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 0.968627, 0.654902, 0.341176, 1 )
+custom_colors/font_color = Color( 0.4, 0.501961, 1, 1 )
 text = "Astrum"
 align = 1
 valign = 1
@@ -192,7 +195,7 @@ margin_top = 16.0
 margin_right = 55.0
 margin_bottom = 38.0
 custom_fonts/font = SubResource( 10 )
-custom_colors/font_color = Color( 0.027451, 0.976471, 0.862745, 1 )
+custom_colors/font_color = Color( 0.4, 0.501961, 1, 1 )
 text = "0"
 align = 2
 
@@ -228,6 +231,22 @@ custom_fonts/font = SubResource( 13 )
 icon = ExtResource( 3 )
 flat = true
 
+[node name="UpgradesButton" type="Button" parent="."]
+self_modulate = Color( 0.447059, 0.2, 0.933333, 1 )
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -82.0
+margin_top = -130.0
+margin_right = 30.0
+margin_bottom = -24.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_styles/focus = SubResource( 11 )
+custom_fonts/font = SubResource( 13 )
+icon = ExtResource( 4 )
+flat = true
+
 [node name="SFXToggle" type="Button" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -238,7 +257,7 @@ margin_bottom = 56.0
 rect_scale = Vector2( 0.25, 0.25 )
 custom_styles/focus = SubResource( 11 )
 custom_fonts/font = SubResource( 13 )
-icon = ExtResource( 4 )
+icon = ExtResource( 5 )
 flat = true
 
 [node name="MusicToggle" type="Button" parent="."]
@@ -251,14 +270,14 @@ margin_bottom = 56.0
 rect_scale = Vector2( 0.25, 0.25 )
 custom_styles/focus = SubResource( 11 )
 custom_fonts/font = SubResource( 13 )
-icon = ExtResource( 5 )
+icon = ExtResource( 6 )
 flat = true
 
 [node name="Warning" type="Sprite" parent="."]
 self_modulate = Color( 0.968627, 0.654902, 0.341176, 1 )
 position = Vector2( 280, 440 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 6 )
+texture = ExtResource( 7 )
 
 [node name="Tween" type="Tween" parent="Warning"]
 repeat = true
@@ -272,13 +291,11 @@ margin_right = 80.0
 margin_bottom = 35.0
 step = 0.01
 value = 75.0
-texture_under = ExtResource( 7 )
-texture_progress = ExtResource( 8 )
-
-[node name="AchievementsInterface" type="Node" parent="."]
-script = ExtResource( 9 )
+texture_under = ExtResource( 8 )
+texture_progress = ExtResource( 9 )
 
 [node name="CheevoUnlocked" type="Control" parent="."]
+editor/display_folded = true
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 55.0
@@ -316,16 +333,14 @@ self_modulate = Color( 0.447059, 0.2, 0.933333, 1 )
 scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 3 )
 
-[node name="ChromaticAberration" type="Sprite" parent="."]
-material = SubResource( 15 )
-position = Vector2( 610, 460 )
-scale = Vector2( 31.4062, 28.9063 )
-texture = ExtResource( 10 )
+[node name="UpgradeInterface" parent="." instance=ExtResource( 10 )]
+visible = false
 
 [node name="Credits" type="Control" parent="."]
-margin_left = 40.0
+editor/display_folded = true
+margin_left = 30.0
 margin_top = 30.0
-margin_right = 80.0
+margin_right = 70.0
 margin_bottom = 70.0
 
 [node name="Label" type="Label" parent="Credits"]
@@ -345,8 +360,25 @@ self_modulate = Color( 0.027451, 0.976471, 0.862745, 1 )
 position = Vector2( 0, 16 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 11 )
+
+[node name="AchievementsInterface" type="Node" parent="."]
+script = ExtResource( 12 )
+
+[node name="ChromaticAberration" type="Sprite" parent="."]
+material = SubResource( 15 )
+position = Vector2( 610, 460 )
+scale = Vector2( 31.4062, 28.9063 )
+texture = ExtResource( 13 )
+
+[node name="ButtonSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
+bus = "HUD"
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="pressed" from="CheevoButton" to="." method="_on_CheevoButton_pressed"]
+[connection signal="pressed" from="UpgradesButton" to="." method="_on_UpgradesButton_pressed"]
 [connection signal="pressed" from="SFXToggle" to="." method="_on_SFXToggle_pressed"]
 [connection signal="pressed" from="MusicToggle" to="." method="_on_MusicToggle_pressed"]
+[connection signal="closed" from="UpgradeInterface" to="." method="_on_interface_closed"]
+[connection signal="upgraded" from="UpgradeInterface" to="." method="_on_UpgradeInterface_upgraded"]
 [connection signal="achievement_complete" from="AchievementsInterface" to="." method="_on_AchievementsInterface_achievement_complete"]
+[connection signal="closed" from="AchievementsInterface" to="." method="_on_interface_closed"]

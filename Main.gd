@@ -2,12 +2,12 @@ extends Node
 
 export (PackedScene) var Planet
 export (PackedScene) var Spike
-export (PackedScene) var Credit
+export (PackedScene) var Collectible
 
-const MAX_MULTIPLIER: int = 8
+var MAX_MULTIPLIER: int = 2
 const MAX_ENEMIES: int = 15
-const COUNTDOWN_RATE_FAST: float = 40.0
-const COUNTDOWN_RATE_NORMAL: float = 20.0
+var COUNTDOWN_RATE_FAST: float = 50.0
+var COUNTDOWN_RATE_NORMAL: float = 30.0
 
 var bh_wait_time_upper: int = 6
 var bh_wait_time_lower: int = 3
@@ -30,21 +30,20 @@ var enemies_spawned: int = 0
 var combo: bool = false
 var ignorata: bool = false
 
-# HACK: prevent button sound from playing when first loading game. 
-var init_load: int = 2
 
 onready var sfx: Dictionary = {
     "black_hole_active": $BlackHoleActiveSound,
     "black_hole_transition": $BlackHoleTransitionSound,
     "hit": $HitSound,
-    "bounce": $BounceSound,
-    "button": $ButtonSound    
+    "bounce": $BounceSound
 }
 
 
 func _ready() -> void:
     randomize()
     load_game()    
+    $HUD.load_upgrades($UpgradeManager.upgrades)
+    _apply_upgrades()
     $AmbientSound.play()
     $HUD.hide_high_score(true)
     _reset_achievements()
@@ -66,13 +65,15 @@ func save() -> Dictionary:
         "high_score": high_score,
         "music_on": music_on,
         "sfx_on": sfx_on,
-        "completed_achievements": completed_achievements
+        "completed_achievements": completed_achievements,
+        "upgrades": $UpgradeManager.upgrades
     }
 
 
 func save_game() -> void:
     var save_game := File.new()
-    save_game.open("user://savegame.save", File.WRITE)
+    if save_game.open("user://savegame.save", File.WRITE):
+        pass
     save_game.store_line(to_json(save()))
     save_game.close()
     
@@ -94,6 +95,8 @@ func load_game() -> void:
         _set_music_on(line["music_on"])
     if line.has("completed_achievements"):
         completed_achievements = line["completed_achievements"]
+    if line.has("upgrades"):
+        $UpgradeManager.upgrades = line["upgrades"]
     save_game.close()
 
 
@@ -107,7 +110,6 @@ func _update_completed_achievements(achievement_name: String) -> void:
 func new_game() -> void:
     enemies_spawned = 0
     _enable_background_blur(false)
-    _play_sfx("button")
     _update_score(0)
     _update_health(100)
     _update_multiplier(0)
@@ -268,7 +270,7 @@ func _on_StartTimer_timeout():
     $PlanetTimer.start()
     $BlackHoleTimer.start()
     $SpikeTimer.start()
-    $CreditTimer.start()
+    $CollectibleTimer.start()
 
 
 func _on_BlackHole_absorb() -> void:
@@ -387,24 +389,12 @@ func _on_HUD_sfx_toggled() -> void:
     sfx_on = not sfx_on
     AudioServer.set_bus_mute(3, not sfx_on)
     AudioServer.set_bus_mute(2, not sfx_on)
-    
-    # HACK: read explanation above init_load declaration    
-    if init_load == 0:
-        _play_sfx("button")
-    else:
-        init_load -= 1
     save_game()    
         
 
 func _on_HUD_music_toggled() -> void:
     music_on = not music_on
     AudioServer.set_bus_mute(1, not music_on)
-    
-    # HACK: read explanation above init_load declaration
-    if init_load == 0:
-        _play_sfx("button")
-    else:
-        init_load -= 1
     save_game()        
 
 
@@ -412,18 +402,61 @@ func _on_HUD_achievement_complete(achievement_name: String) -> void:
     _update_completed_achievements(achievement_name)
 
 
-func _on_CreditTimer_timeout() -> void:
+func _on_CollectibleTimer_timeout() -> void:
     if active and $Player.moving and enemies_spawned <= MAX_ENEMIES:
-        var credit = Credit.instance()
-        add_child(credit)
-        credit.appear(_get_random_position())
-        if credit.connect("collected", self, "_on_Credit_collected"):
+        var collectible = Collectible.instance()
+        add_child(collectible)
+        collectible.appear(_get_random_position())
+        if collectible.connect("collected", self, "_on_Collectible_collected"):
             pass
-        if $HUD.connect("start_game", credit, "_on_start_game"):
+        if $HUD.connect("start_game", collectible, "_on_start_game"):
             pass
-    $CreditTimer.set_wait_time(rand_range(3, 5))
-    $CreditTimer.start()
+    $CollectibleTimer.set_wait_time(rand_range(2, 4))
+    $CollectibleTimer.start()
 
 
-func _on_Credit_collected() -> void:
-    _update_credits(credits + 100)
+func _on_Collectible_collected(is_health: bool) -> void:
+    $CollectibleSound.play()
+    if is_health:
+        _update_health(100)
+    else:
+        _update_credits(credits + 100)
+
+
+func _on_HUD_upgraded(upgrade_name: String, level: float, upgrade_cost: int) -> void:
+    $UpgradeManager.update_upgrade(upgrade_name, level)
+    _update_credits(credits - upgrade_cost)
+    _apply_upgrades()
+
+
+func _apply_upgrades() -> void:
+    var speed_level: float = $UpgradeManager.get_level("speed")
+    match speed_level:
+        1.0:
+            $Player.speed = 1250
+        2.0:
+            $Player.speed = 1500
+        3.0:
+            $Player.speed = 1750
+            
+    var health_level: float = $UpgradeManager.get_level("health")            
+    match health_level:
+        1.0:
+            COUNTDOWN_RATE_FAST = 40
+            COUNTDOWN_RATE_NORMAL = 20
+        2.0:
+            COUNTDOWN_RATE_FAST = 30
+            COUNTDOWN_RATE_NORMAL = 10
+        3.0:
+            COUNTDOWN_RATE_FAST = 20
+            COUNTDOWN_RATE_NORMAL = 0
+            
+    var combo_level: float = $UpgradeManager.get_level("combo")            
+    match combo_level:
+        1.0:
+            MAX_MULTIPLIER = 4
+        2.0:
+            MAX_MULTIPLIER = 6
+        3.0:
+            MAX_MULTIPLIER = 8
+            

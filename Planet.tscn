@@ -15,7 +15,7 @@ radius = 45.2196
 position = Vector2( 571.578, 149.473 )
 mode = 2
 physics_material_override = SubResource( 1 )
-gravity_scale = 0.0
+gravity_scale = -1.0
 contacts_reported = 3
 contact_monitor = true
 script = ExtResource( 1 )
@@ -37,7 +37,12 @@ shape = SubResource( 2 )
 [node name="VisibilityTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
+
+[node name="DisappearTimer" type="Timer" parent="."]
+wait_time = 0.8
+one_shot = true
 [connection signal="body_entered" from="." to="." method="_on_Planet_body_entered"]
 [connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 [connection signal="timeout" from="VisibilityTimer" to="." method="_on_VisibilityTimer_timeout"]
+[connection signal="timeout" from="DisappearTimer" to="." method="_on_DisappearTimer_timeout"]

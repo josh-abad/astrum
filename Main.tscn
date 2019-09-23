@@ -1,9 +1,9 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Spike.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Credit.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Collectible.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Parallax/Background.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=6]
 [ext_resource path="res://icon.png" type="Texture" id=7]
@@ -13,9 +13,10 @@
 [ext_resource path="res://Audio/BlackHoleActive.ogg" type="AudioStream" id=11]
 [ext_resource path="res://Audio/BlackHoleTransition.wav" type="AudioStream" id=12]
 [ext_resource path="res://Audio/Hit.wav" type="AudioStream" id=13]
-[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=14]
-[ext_resource path="res://Audio/Button.ogg" type="AudioStream" id=15]
+[ext_resource path="res://Audio/stuff/Data_Point_05.ogg" type="AudioStream" id=14]
+[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=15]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=16]
+[ext_resource path="res://UpgradeManager.tscn" type="PackedScene" id=17]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -144,7 +145,7 @@ adjustment_saturation = 1.25
 script = ExtResource( 1 )
 Planet = ExtResource( 2 )
 Spike = ExtResource( 3 )
-Credit = ExtResource( 4 )
+Collectible = ExtResource( 4 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 layer = -2
@@ -205,7 +206,7 @@ color = Color( 0.490196, 0.490196, 0.490196, 1 )
 [node name="StartTimer" type="Timer" parent="."]
 one_shot = true
 
-[node name="CreditTimer" type="Timer" parent="."]
+[node name="CollectibleTimer" type="Timer" parent="."]
 wait_time = 5.0
 one_shot = true
 
@@ -256,13 +257,13 @@ bus = "SFX"
 stream = ExtResource( 13 )
 bus = "SFX"
 
-[node name="BounceSound" type="AudioStreamPlayer" parent="."]
+[node name="CollectibleSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 14 )
 bus = "SFX"
 
-[node name="ButtonSound" type="AudioStreamPlayer" parent="."]
+[node name="BounceSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 15 )
-bus = "HUD"
+bus = "SFX"
 
 [node name="Noise" type="Sprite" parent="."]
 visible = false
@@ -275,12 +276,13 @@ region_rect = Rect2( 0, 0, 20000, 20000 )
 [node name="Player" parent="." groups=[
 "Balls",
 ] instance=ExtResource( 16 )]
-speed = 1250
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 6 )
+
+[node name="UpgradeManager" parent="." instance=ExtResource( 17 )]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
-[connection signal="timeout" from="CreditTimer" to="." method="_on_CreditTimer_timeout"]
+[connection signal="timeout" from="CollectibleTimer" to="." method="_on_CollectibleTimer_timeout"]
 [connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
 [connection signal="timeout" from="BlackHoleTimer" to="." method="_on_BlackHoleTimer_timeout"]
 [connection signal="timeout" from="SpikeTimer" to="." method="_on_SpikeTimer_timeout"]
@@ -292,5 +294,6 @@ environment = SubResource( 6 )
 [connection signal="music_toggled" from="HUD" to="." method="_on_HUD_music_toggled"]
 [connection signal="sfx_toggled" from="HUD" to="." method="_on_HUD_sfx_toggled"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="upgraded" from="HUD" to="." method="_on_HUD_upgraded"]
 [connection signal="nor_mo" from="Player" to="." method="_on_Comet_nor_mo"]
 [connection signal="slo_mo" from="Player" to="." method="_on_Comet_slo_mo"]

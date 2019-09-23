@@ -1,6 +1,7 @@
 extends MarginContainer
 
 signal achievement_complete(achievement_name)
+signal closed
 
 const ACHIEVEMENT_ITEM = "res://Achievements/UI/AchievementItem.tscn";
 
@@ -24,6 +25,7 @@ func _on_achievement_complete(achievement_name: String) -> void:
 
 
 func _on_Button_pressed():
+    emit_signal("closed")
     hide();
 
 func _update_bar(achievement_name, achievement):

@@ -5,6 +5,7 @@ const PINK = Color("#fa1f79")
 const ORANGE = Color("#f7a757")
 const PURPLE = Color("#7233ee")
 const GREEN = Color("#4bee34")
+const REVO = Color("#6680ff")
 
 const COLORS: Array = [PINK, ORANGE]
 

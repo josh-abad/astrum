@@ -14,10 +14,10 @@
             "total": 10
         },
         "progress-bar-background-color": {
-            "progress-bar-background-color": "#024a41"
+            "progress-bar-background-color": "#1f2b65"
         },
         "progress-bar-color": {
-            "progress-bar-color": "#07f9dc"
+            "progress-bar-color": "#6680ff"
         }
     },    
     "score100Points": {
@@ -35,10 +35,10 @@
             "total": 100
         },
         "progress-bar-background-color": {
-            "progress-bar-background-color": "#024a41"
+            "progress-bar-background-color": "#1f2b65"
         },
         "progress-bar-color": {
-            "progress-bar-color": "#07f9dc"
+            "progress-bar-color": "#6680ff"
         }
     },    
     "score1000Points": {
@@ -56,10 +56,10 @@
             "total": 1000
         },
         "progress-bar-background-color": {
-            "progress-bar-background-color": "#024a41"
+            "progress-bar-background-color": "#1f2b65"
         },
         "progress-bar-color": {
-            "progress-bar-color": "#07f9dc"
+            "progress-bar-color": "#6680ff"
         }
     },    
     "stella_mortem": {
@@ -77,10 +77,10 @@
             "total": 100
         },
         "progress-bar-background-color": {
-            "progress-bar-background-color": "#024a41"
+            "progress-bar-background-color": "#1f2b65"
         },
         "progress-bar-color": {
-            "progress-bar-color": "#07f9dc"
+            "progress-bar-color": "#6680ff"
         }
     },
     "ad_astra": {
@@ -98,10 +98,10 @@
             "total": 50
         },
         "progress-bar-background-color": {
-            "progress-bar-background-color": "#024a41"
+            "progress-bar-background-color": "#1f2b65"
         },
         "progress-bar-color": {
-            "progress-bar-color": "#07f9dc"
+            "progress-bar-color": "#6680ff"
         }
     },
     "sequentia": {
@@ -119,10 +119,10 @@
             "total": 1
         },
         "progress-bar-background-color": {
-            "progress-bar-background-color": "#024a41"
+            "progress-bar-background-color": "#1f2b65"
         },
         "progress-bar-color": {
-            "progress-bar-color": "#07f9dc"
+            "progress-bar-color": "#6680ff"
         }
     },
     "rosea": {
@@ -140,10 +140,10 @@
             "total": 10
         },
         "progress-bar-background-color": {
-            "progress-bar-background-color": "#024a41"
+            "progress-bar-background-color": "#1f2b65"
         },
         "progress-bar-color": {
-            "progress-bar-color": "#07f9dc"
+            "progress-bar-color": "#6680ff"
         }
     },
     "ignorata": {
@@ -161,10 +161,10 @@
             "total": 10
         },
         "progress-bar-background-color": {
-            "progress-bar-background-color": "#024a41"
+            "progress-bar-background-color": "#1f2b65"
         },
         "progress-bar-color": {
-            "progress-bar-color": "#07f9dc"
+            "progress-bar-color": "#6680ff"
         }
     }
 }
