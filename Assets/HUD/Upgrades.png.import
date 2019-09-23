@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Vignette.jpeg-9410971dc6a6a833cc7db2a89ab58717.stex"
+path="res://.import/Upgrades.png-912cdb3a1dbc37858a4f4c10b236f2f9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Vignette.jpeg"
-dest_files=[ "res://.import/Vignette.jpeg-9410971dc6a6a833cc7db2a89ab58717.stex" ]
+source_file="res://Assets/HUD/Upgrades.png"
+dest_files=[ "res://.import/Upgrades.png-912cdb3a1dbc37858a4f4c10b236f2f9.stex" ]
 
 [params]
 

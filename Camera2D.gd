@@ -45,7 +45,7 @@ func _process(delta: float) -> void:
 
 
 # Kick off a new screenshake effect.
-func shake(duration: float, frequency: float, amplitude: float) -> void:
+func shake(duration: float = 0.2, frequency: float = 15, amplitude: float = 8) -> void:
     # Initialize variables.
     _duration = duration
     _timer = duration

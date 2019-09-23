@@ -75,7 +75,13 @@ func update_multiplier(multiplier: int) -> void:
         $Tween.interpolate_property($MultiplierLabel, 'modulate', Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.4, Tween.TRANS_ELASTIC, Tween.EASE_OUT)
         $Tween.start()
         $MultiplierLabel.set_text('×' + str(multiplier))
-        # $MultiplierLabel.add_color_override("font_color", Palette.randomize())
+    
+    
+func init_toggles(sfx: bool, music: bool) -> void:
+    sfx_on = sfx
+    music_on = music
+    _disable_toggle($SFXToggle, AUDIO_ON_ICON if sfx_on else AUDIO_OFF_ICON, not sfx_on)
+    _disable_toggle($MusicToggle, MUSIC_ON_ICON if music_on else MUSIC_OFF_ICON, not music_on)
     
     
 func set_sfx_on(value: bool) -> void:
@@ -155,17 +161,20 @@ func _on_CheevoButton_pressed() -> void:
 func _on_SFXToggle_pressed() -> void:    
     emit_signal("sfx_toggled")
     sfx_on = not sfx_on
-    $SFXToggle.icon = AUDIO_ON_ICON if sfx_on else AUDIO_OFF_ICON
-    $SFXToggle.modulate = Color(1, 1, 1, 1.0 if sfx_on else 0.25)
+    _disable_toggle($SFXToggle, AUDIO_ON_ICON if sfx_on else AUDIO_OFF_ICON, not sfx_on)
     $ButtonSound.play()
 
 
 func _on_MusicToggle_pressed() -> void:
     emit_signal("music_toggled")
     music_on = not music_on
-    $MusicToggle.icon = MUSIC_ON_ICON if music_on else MUSIC_OFF_ICON
-    $MusicToggle.modulate = Color(1, 1, 1, 1.0 if music_on else 0.25)    
+    _disable_toggle($MusicToggle, MUSIC_ON_ICON if music_on else MUSIC_OFF_ICON, not music_on)
     $ButtonSound.play()
+
+
+func _disable_toggle(toggle: Button, icon: Resource, yes: bool) -> void:
+    toggle.icon = icon
+    toggle.modulate = Color(1, 1, 1, 0.25 if yes else 1.0)
 
 
 func _on_AchievementsInterface_achievement_complete(achievement_name: String) -> void:

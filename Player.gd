@@ -30,11 +30,6 @@ func _input(event: InputEvent) -> void:
             emit_signal("slo_mo", false)
         else:
             direction = event.position - start_pos
-            
-            """ Determines speed based on player's gesture """
-            # var delta = elapsed_time - start_time 
-            # speed = (direction.length()) / (delta if delta != 0 else 1)
-            
             direction = direction.normalized() * speed
             emit_signal("nor_mo")
             _start_tween()
@@ -68,7 +63,7 @@ func start() -> void:
 
 func play_effect() -> void:
     _start_tween()
-    $Camera2D.shake(0.2, 15, 8)
+    $Camera2D.shake(0.35, 15, 8)
     emit_signal("slo_mo", true)
 
 

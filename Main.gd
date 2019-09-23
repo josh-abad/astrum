@@ -3,9 +3,12 @@ extends Node
 export (PackedScene) var Planet
 export (PackedScene) var Spike
 export (PackedScene) var Collectible
+export (PackedScene) var Spark
+export (PackedScene) var ScoredPopup
 
-var MAX_MULTIPLIER: int = 2
 const MAX_ENEMIES: int = 15
+
+var max_multiplier: int = 2
 var COUNTDOWN_RATE_FAST: float = 50.0
 var COUNTDOWN_RATE_NORMAL: float = 30.0
 
@@ -13,9 +16,6 @@ var bh_wait_time_upper: int = 6
 var bh_wait_time_lower: int = 3
 
 var active := false
-
-onready var Spark = load("res://Spark.tscn")
-onready var ScoredPopup = load("res://ScoredPopup.tscn")
 
 var completed_achievements: Array
 
@@ -29,14 +29,6 @@ var sfx_on: bool = true
 var enemies_spawned: int = 0
 var combo: bool = false
 var ignorata: bool = false
-
-
-onready var sfx: Dictionary = {
-    "black_hole_active": $BlackHoleActiveSound,
-    "black_hole_transition": $BlackHoleTransitionSound,
-    "hit": $HitSound,
-    "bounce": $BounceSound
-}
 
 
 func _ready() -> void:
@@ -86,13 +78,11 @@ func load_game() -> void:
     save_game.open("user://savegame.save", File.READ)
     var line = parse_json(save_game.get_line())
     if line.has("credits"):
-        _update_credits(line["credits"])
+        _update_credits(line["credits"], false)
     if line.has("high_score"):
         _update_high_score(line["high_score"])
-    if line.has("sfx_on"):
-        _set_sfx_on(line["sfx_on"])
-    if line.has("music_on"):
-        _set_music_on(line["music_on"])
+    if line.has("music_on") and line.has("sfx_on"):
+        _init_audio(line["sfx_on"], line["music_on"])
     if line.has("completed_achievements"):
         completed_achievements = line["completed_achievements"]
     if line.has("upgrades"):
@@ -120,15 +110,7 @@ func new_game() -> void:
     _dampen_sfx(false)
     _dampen_ambient_music(false)
     
-    
-func _play_sfx(key: String) -> void:
-    sfx.get(key).play()
-        
-        
-func _stop_sfx(key: String) -> void:
-    sfx.get(key).stop()
-    
-    
+   
 func _reset_achievements() -> void:
     """ These achievements must be completed in one round """
     $HUD.reset_achievement("score10Points")    
@@ -185,8 +167,7 @@ func scored(special: bool, position: Vector2) -> void:
         _update_high_score(score)
         save_game()
 
-    _play_sfx("hit")
-    _play_sfx("bounce")
+    $HitSound.play()
     var popup = ScoredPopup.instance()
     add_child(popup)
     popup.display(position, points, Palette.PINK if special else Palette.ORANGE)
@@ -208,10 +189,11 @@ func _update_score(value: int) -> void:
     $HUD.update_score(score)
 
 
-func _update_credits(value: int) -> void:
+func _update_credits(value: int, save: bool = true) -> void:
     credits = value
     $HUD.update_credits(credits)
-    save_game()
+    if save:
+        save_game()
 
 
 func _update_high_score(value: int) -> void:
@@ -227,9 +209,17 @@ func _update_health(value: float) -> void:
 
 
 func _update_multiplier(value: int) -> void:
-    if value <= MAX_MULTIPLIER:
+    if value <= max_multiplier:
         multiplier = value
         $HUD.update_multiplier(multiplier)
+    
+    
+func _init_audio(sfx: bool, music: bool) -> void:
+    sfx_on = sfx
+    music_on = music
+    _mute_sfx(not sfx_on)
+    _mute_music(not music_on)
+    $HUD.init_toggles(sfx, music)
     
     
 func _set_sfx_on(value: bool) -> void:
@@ -291,17 +281,17 @@ func _on_BlackHoleTimer_timeout() -> void:
     if active and $Player.moving:
         $HUD.disable_warning(false)
         yield(get_tree().create_timer(1), "timeout")
-        _play_sfx("black_hole_transition")
-        _play_sfx("black_hole_active")
+        $BlackHoleTransitionSound.play()
+        $BlackHoleActiveSound.play()
         $BlackHole.appear(_get_random_position())
     else:
         $BlackHoleTimer.start()
 
 
 func _on_BlackHole_inactive() -> void:
-    _stop_sfx("black_hole_active")
+    $BlackHoleActiveSound.stop()
     if active and $Player.moving:
-        _play_sfx("black_hole_transition")
+        $BlackHoleTransitionSound.play()
         $BlackHoleTimer.set_wait_time(_update_bh_wait_time())
         $BlackHoleTimer.start()
         $HUD.disable_warning(true)
@@ -343,7 +333,7 @@ func _on_Comet_slo_mo(temporary: bool = true) -> void:
 
 
 func _on_Comet_nor_mo() -> void:
-    _play_sfx("bounce")
+    $BounceSound.play()
     Engine.time_scale = 1
     _enable_background_blur(false)
     ignorata = false
@@ -358,7 +348,7 @@ func _reset_combo() -> void:
 
 
 func on_Player_destroyed(player_position: Vector2) -> void:
-    _play_sfx("hit")
+    $HitSound.play()
     _add_spark(Palette.BLUE, player_position)    
     _game_over()
 
@@ -385,16 +375,24 @@ func _on_SlowMotionTimer_timeout() -> void:
         $Tween.start()
 
 
+func _mute_sfx(yes: bool) -> void:
+    AudioServer.set_bus_mute(3, yes)
+    AudioServer.set_bus_mute(2, yes)
+
+
+func _mute_music(yes: bool) -> void:
+    AudioServer.set_bus_mute(1, yes)    
+
+
 func _on_HUD_sfx_toggled() -> void:
     sfx_on = not sfx_on
-    AudioServer.set_bus_mute(3, not sfx_on)
-    AudioServer.set_bus_mute(2, not sfx_on)
+    _mute_sfx(not sfx_on)
     save_game()    
         
 
 func _on_HUD_music_toggled() -> void:
     music_on = not music_on
-    AudioServer.set_bus_mute(1, not music_on)
+    _mute_music(not music_on)
     save_game()        
 
 
@@ -454,9 +452,9 @@ func _apply_upgrades() -> void:
     var combo_level: float = $UpgradeManager.get_level("combo")            
     match combo_level:
         1.0:
-            MAX_MULTIPLIER = 4
+            max_multiplier = 4
         2.0:
-            MAX_MULTIPLIER = 6
+            max_multiplier = 6
         3.0:
-            MAX_MULTIPLIER = 8
+            max_multiplier = 8
             

@@ -1,0 +1,90 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://UpgradeItem.gd" type="Script" id=1]
+[ext_resource path="res://Assets/UpgradeBar/Under.png" type="Texture" id=2]
+[ext_resource path="res://Assets/UpgradeBar/Progress.png" type="Texture" id=3]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://Fonts/Kenney Future Narrow.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 20
+font_data = SubResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.4, 0.501961, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.4, 0.501961, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.4, 0.501961, 1, 0.392157 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.4, 0.501961, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="DynamicFontData" id=6]
+font_path = "res://Fonts/Kenney Future Narrow.ttf"
+
+[sub_resource type="DynamicFont" id=7]
+size = 17
+font_data = SubResource( 6 )
+
+[node name="UpgradeItem" type="Control"]
+margin_left = 20.0
+margin_top = 80.0
+margin_right = 60.0
+margin_bottom = 120.0
+script = ExtResource( 1 )
+
+[node name="UpgradeName" type="Label" parent="."]
+margin_right = 70.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 0.447059, 0.2, 0.933333, 1 )
+text = "SPEED"
+
+[node name="UpdateProgress" type="TextureProgress" parent="."]
+margin_top = 30.0
+margin_right = 280.0
+margin_bottom = 70.0
+max_value = 3.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 3 )
+
+[node name="UpgradeButton" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 170.0
+margin_top = -20.0
+margin_right = 240.0
+grow_horizontal = 0
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/disabled = SubResource( 8 )
+custom_styles/normal = SubResource( 5 )
+custom_fonts/font = SubResource( 7 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "100"
+[connection signal="pressed" from="UpgradeButton" to="." method="_on_UpgradeButton_pressed"]
