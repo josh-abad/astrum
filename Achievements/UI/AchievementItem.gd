@@ -1,5 +1,7 @@
 extends Panel
 
+signal achievement_complete(achievement_name)
+
 var progress_bar = null;
 var progress_text = null;
 var picture_parent = null;
@@ -28,6 +30,10 @@ func update_progress_bar(achievement):
 func update_progress_bar_text(achievement):
     if achievement.get_progress() >= achievement.get_total():
         progress_text.set_text("Completed!");
+        
+        # Signal emitted to AchievementInterface
+        emit_signal("achievement_complete", achievement.get_name())
+        
         return;
 
     progress_text.set_text("%s / %s" % [achievement.get_progress(), achievement.get_total()]);

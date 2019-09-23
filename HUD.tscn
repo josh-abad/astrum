@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://Assets/HUD/Start.png" type="Texture" id=2]
@@ -57,6 +57,20 @@ font_path = "res://Fonts/Comfortaa-Regular.ttf"
 [sub_resource type="DynamicFont" id=13]
 size = 20
 font_data = SubResource( 12 )
+
+[sub_resource type="DynamicFontData" id=16]
+font_path = "res://Fonts/Kenney Future Narrow.ttf"
+
+[sub_resource type="DynamicFont" id=17]
+size = 20
+font_data = SubResource( 16 )
+
+[sub_resource type="DynamicFontData" id=18]
+font_path = "res://Fonts/Kenney Future Narrow.ttf"
+
+[sub_resource type="DynamicFont" id=19]
+size = 11
+font_data = SubResource( 18 )
 
 [sub_resource type="Shader" id=14]
 code = "shader_type canvas_item;
@@ -256,6 +270,44 @@ texture_progress = ExtResource( 8 )
 [node name="AchievementsInterface" type="Node" parent="."]
 script = ExtResource( 9 )
 
+[node name="CheevoUnlocked" type="Control" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 55.0
+margin_top = -40.0
+margin_right = 95.0
+
+[node name="CheevoLabel" type="Label" parent="CheevoUnlocked"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = -54.0
+margin_right = 156.0
+margin_bottom = -29.0
+custom_fonts/font = SubResource( 17 )
+custom_colors/font_color = Color( 0.447059, 0.2, 0.933333, 1 )
+text = "ACHIEVEMENT"
+
+[node name="UnlockedLabel" type="Label" parent="CheevoUnlocked"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = -35.0
+margin_right = 156.0
+margin_bottom = -10.0
+custom_fonts/font = SubResource( 19 )
+custom_colors/font_color = Color( 0.447059, 0.2, 0.933333, 1 )
+text = "UNLOCKED"
+
+[node name="CheevoIcon" type="Sprite" parent="CheevoUnlocked"]
+self_modulate = Color( 0.447059, 0.2, 0.933333, 1 )
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 3 )
+
 [node name="ChromaticAberration" type="Sprite" parent="."]
 material = SubResource( 15 )
 position = Vector2( 610, 460 )
@@ -265,3 +317,4 @@ texture = ExtResource( 10 )
 [connection signal="pressed" from="CheevoButton" to="." method="_on_CheevoButton_pressed"]
 [connection signal="pressed" from="SFXToggle" to="." method="_on_SFXToggle_pressed"]
 [connection signal="pressed" from="MusicToggle" to="." method="_on_MusicToggle_pressed"]
+[connection signal="achievement_complete" from="AchievementsInterface" to="." method="_on_AchievementsInterface_achievement_complete"]

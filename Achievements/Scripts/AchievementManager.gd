@@ -8,6 +8,7 @@ var achievement_data = null;
 var achievement_interface = null;
 
 signal updated;
+signal achievement_complete(achievement_name)
 
 func _ready():
     achievement_data = load(ACHIEVEMENT_DATA_SCRIPT).new();
@@ -17,6 +18,13 @@ func _ready():
     add_child(achievement_interface);
     if self.connect("updated", achievement_interface, "_update_bar"):
         pass
+    if achievement_interface.connect("achievement_complete", self, "_on_achievement_complete"):
+        pass
+    
+func _on_achievement_complete(achievement_name: String) -> void:
+    
+    # Signal emitted to HUD
+    emit_signal("achievement_complete", achievement_name)
 
 func _process(delta: float):
     if delta:

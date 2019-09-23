@@ -16,6 +16,8 @@ var active := false
 onready var Spark = load("res://Spark.tscn")
 onready var ScoredPopup = load("res://ScoredPopup.tscn")
 
+var completed_achievements: Array
+
 var score: int = 0
 var high_score: int = 0
 var multiplier: int = 1
@@ -60,7 +62,8 @@ func save() -> Dictionary:
     return {
         "high_score" : high_score,
         "music_on": music_on,
-        "sfx_on": sfx_on
+        "sfx_on": sfx_on,
+        "completed_achievements": completed_achievements
     }
 
 
@@ -78,10 +81,22 @@ func load_game() -> void:
     
     save_game.open("user://savegame.save", File.READ)
     var line = parse_json(save_game.get_line())
-    _update_high_score(line["high_score"])
-    _set_sfx_on(line["sfx_on"])
-    _set_music_on(line["music_on"])
+    if line.has("high_score"):
+        _update_high_score(line["high_score"])
+    if line.has("sfx_on"):
+        _set_sfx_on(line["sfx_on"])
+    if line.has("music_on"):
+        _set_music_on(line["music_on"])
+    if line.has("completed_achievements"):
+        completed_achievements = line["completed_achievements"]
     save_game.close()
+
+
+func _update_completed_achievements(achievement_name: String) -> void:
+    if not achievement_name in completed_achievements: 
+        completed_achievements.append(achievement_name)
+        $HUD.display_achievement_unlocked(achievement_name)
+        save_game()
 
 
 func new_game() -> void:
@@ -379,3 +394,7 @@ func _on_HUD_music_toggled() -> void:
     else:
         init_load -= 1
     save_game()        
+
+
+func _on_HUD_achievement_complete(achievement_name: String) -> void:
+    _update_completed_achievements(achievement_name)

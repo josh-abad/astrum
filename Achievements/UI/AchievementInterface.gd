@@ -1,5 +1,7 @@
 extends MarginContainer
 
+signal achievement_complete(achievement_name)
+
 const ACHIEVEMENT_ITEM = "res://Achievements/UI/AchievementItem.tscn";
 
 var achievementPanel = null;
@@ -9,9 +11,17 @@ func init(achievements):
     achievementPanel = $Background/Layout/MarginContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer;
     for i in achievements:
         var achievement = load(ACHIEVEMENT_ITEM).instance();
+        achievement.connect("achievement_complete", self, "_on_achievement_complete")
         achievement.set_achievement(achievements[i]);
         achievementsNodes[i] = achievement;
         achievementPanel.add_child(achievement);
+
+
+func _on_achievement_complete(achievement_name: String) -> void:
+    
+    # Signal emitted to AchievementManager
+    emit_signal("achievement_complete", achievement_name)
+
 
 func _on_Button_pressed():
     hide();

@@ -1,10 +1,9 @@
 extends CanvasLayer
 
-onready var ScoredPopup = load("res://ScoredPopup.tscn")
-
 signal start_game
 signal sfx_toggled
 signal music_toggled
+signal achievement_complete(achievement_name)
 
 const RESTART_ICON: Resource = preload("res://Assets/HUD/Restart.png")
 const AUDIO_ON_ICON: Resource = preload("res://Assets/HUD/AudioOn.png")
@@ -25,6 +24,7 @@ func _ready() -> void:
     $Warning.modulate = TRANSPARENT
     $MultiplierLabel.modulate = TRANSPARENT
     $HealthBar.modulate = TRANSPARENT
+    $CheevoUnlocked.modulate = TRANSPARENT
 
 
 func increment_achievement(achievement_name, amount):
@@ -81,6 +81,17 @@ func set_music_on(value: bool) -> void:
     
 func hide_high_score(yes: bool) -> void:
     fade(yes, $HighScore)
+    
+    
+func hide_achievement_unlocked(yes: bool) -> void:
+    fade(yes, $CheevoUnlocked)
+    
+    
+func display_achievement_unlocked(achievement_name: String) -> void:
+    fade(false, $CheevoUnlocked)
+    $CheevoUnlocked/CheevoLabel.set_text(achievement_name)
+    yield(get_tree().create_timer(2), "timeout")
+    fade(true, $CheevoUnlocked)
     
     
 func show_game_over() -> void:
@@ -140,3 +151,7 @@ func _on_MusicToggle_pressed() -> void:
     music_on = not music_on
     $MusicToggle.icon = MUSIC_ON_ICON if music_on else MUSIC_OFF_ICON
     $MusicToggle.modulate = Color(1, 1, 1, 1.0 if music_on else 0.25)    
+
+
+func _on_AchievementsInterface_achievement_complete(achievement_name: String) -> void:
+    emit_signal("achievement_complete", achievement_name)

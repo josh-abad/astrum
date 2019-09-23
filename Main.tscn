@@ -279,6 +279,7 @@ environment = SubResource( 6 )
 [connection signal="timeout" from="SlowMotionTimer" to="." method="_on_SlowMotionTimer_timeout"]
 [connection signal="absorb" from="BlackHole" to="." method="_on_BlackHole_absorb"]
 [connection signal="inactive" from="BlackHole" to="." method="_on_BlackHole_inactive"]
+[connection signal="achievement_complete" from="HUD" to="." method="_on_HUD_achievement_complete"]
 [connection signal="music_toggled" from="HUD" to="." method="_on_HUD_music_toggled"]
 [connection signal="sfx_toggled" from="HUD" to="." method="_on_HUD_sfx_toggled"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
