@@ -46,6 +46,13 @@ func update_score(score: int) -> void:
     $ScoreLabel.set_text(str(score))
     
     
+func update_credits(credits: int) -> void:
+    $Tween.interpolate_property($Credits/Label, 'modulate', $Credits/Label.modulate, Color(1, 1, 1, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.interpolate_property($Credits/Label, 'modulate', Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()
+    $Credits/Label.set_text(str(credits))
+    
+    
 func update_high_score(high_score: int) -> void:
     $Tween.interpolate_property($HighScore/HighScoreLabel, 'modulate', $HighScore/HighScoreLabel.modulate, Color(1, 1, 1, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.interpolate_property($HighScore/HighScoreLabel, 'modulate', Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)

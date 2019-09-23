@@ -2,6 +2,7 @@ extends Node
 
 export (PackedScene) var Planet
 export (PackedScene) var Spike
+export (PackedScene) var Credit
 
 const MAX_MULTIPLIER: int = 8
 const MAX_ENEMIES: int = 15
@@ -19,6 +20,7 @@ onready var ScoredPopup = load("res://ScoredPopup.tscn")
 var completed_achievements: Array
 
 var score: int = 0
+var credits: int = 0
 var high_score: int = 0
 var multiplier: int = 1
 var health: float = 100
@@ -60,7 +62,8 @@ func _process(delta: float) -> void:
 
 func save() -> Dictionary:
     return {
-        "high_score" : high_score,
+        "credits": credits,
+        "high_score": high_score,
         "music_on": music_on,
         "sfx_on": sfx_on,
         "completed_achievements": completed_achievements
@@ -81,6 +84,8 @@ func load_game() -> void:
     
     save_game.open("user://savegame.save", File.READ)
     var line = parse_json(save_game.get_line())
+    if line.has("credits"):
+        _update_credits(line["credits"])
     if line.has("high_score"):
         _update_high_score(line["high_score"])
     if line.has("sfx_on"):
@@ -201,6 +206,12 @@ func _update_score(value: int) -> void:
     $HUD.update_score(score)
 
 
+func _update_credits(value: int) -> void:
+    credits = value
+    $HUD.update_credits(credits)
+    save_game()
+
+
 func _update_high_score(value: int) -> void:
     high_score = value
     $HUD.update_high_score(high_score)
@@ -257,6 +268,7 @@ func _on_StartTimer_timeout():
     $PlanetTimer.start()
     $BlackHoleTimer.start()
     $SpikeTimer.start()
+    $CreditTimer.start()
 
 
 func _on_BlackHole_absorb() -> void:
@@ -398,3 +410,20 @@ func _on_HUD_music_toggled() -> void:
 
 func _on_HUD_achievement_complete(achievement_name: String) -> void:
     _update_completed_achievements(achievement_name)
+
+
+func _on_CreditTimer_timeout() -> void:
+    if active and $Player.moving and enemies_spawned <= MAX_ENEMIES:
+        var credit = Credit.instance()
+        add_child(credit)
+        credit.appear(_get_random_position())
+        if credit.connect("collected", self, "_on_Credit_collected"):
+            pass
+        if $HUD.connect("start_game", credit, "_on_start_game"):
+            pass
+    $CreditTimer.set_wait_time(rand_range(3, 5))
+    $CreditTimer.start()
+
+
+func _on_Credit_collected() -> void:
+    _update_credits(credits + 100)
