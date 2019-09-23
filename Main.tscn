@@ -169,7 +169,7 @@ region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
 
 [node name="BackgroundModulate" type="CanvasModulate" parent="ParallaxBackground/ParallaxLayer"]
 visible = false
-color = Color( 0.666667, 0.666667, 0.666667, 1 )
+color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
 [node name="BlurLayer" type="CanvasLayer" parent="ParallaxBackground/ParallaxLayer"]
 layer = -2
@@ -196,7 +196,7 @@ region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
 [node name="ForegroundModulate" type="CanvasModulate" parent="ParallaxForeground/ParallaxLayer"]
 visible = false
 self_modulate = Color( 0.94902, 0.203922, 0.482353, 1 )
-color = Color( 0.588235, 0.588235, 0.588235, 1 )
+color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
 [node name="Tween" type="Tween" parent="."]
 
@@ -229,7 +229,7 @@ one_shot = true
 [node name="MainModulate" type="CanvasModulate" parent="."]
 visible = false
 material = SubResource( 3 )
-color = Color( 0.176471, 0.176471, 0.176471, 1 )
+color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
 [node name="BlackHole" parent="." instance=ExtResource( 8 )]
 visible = false
