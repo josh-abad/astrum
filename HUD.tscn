@@ -62,28 +62,28 @@ font_path = "res://Fonts/Comfortaa-Regular.ttf"
 size = 20
 font_data = SubResource( 12 )
 
+[sub_resource type="DynamicFontData" id=14]
+font_path = "res://Fonts/Kenney Future Narrow.ttf"
+
+[sub_resource type="DynamicFont" id=15]
+size = 20
+font_data = SubResource( 14 )
+
 [sub_resource type="DynamicFontData" id=16]
 font_path = "res://Fonts/Kenney Future Narrow.ttf"
 
 [sub_resource type="DynamicFont" id=17]
-size = 20
+size = 11
 font_data = SubResource( 16 )
 
 [sub_resource type="DynamicFontData" id=18]
 font_path = "res://Fonts/Kenney Future Narrow.ttf"
 
 [sub_resource type="DynamicFont" id=19]
-size = 11
+size = 18
 font_data = SubResource( 18 )
 
-[sub_resource type="DynamicFontData" id=20]
-font_path = "res://Fonts/Kenney Future Narrow.ttf"
-
-[sub_resource type="DynamicFont" id=21]
-size = 18
-font_data = SubResource( 20 )
-
-[sub_resource type="Shader" id=14]
+[sub_resource type="Shader" id=20]
 code = "shader_type canvas_item;
 
 uniform bool apply = true;
@@ -103,8 +103,8 @@ void fragment() {
 	COLOR = color;
 }"
 
-[sub_resource type="ShaderMaterial" id=15]
-shader = SubResource( 14 )
+[sub_resource type="ShaderMaterial" id=21]
+shader = SubResource( 20 )
 shader_param/apply = true
 shader_param/amount = 0.15
 
@@ -311,7 +311,7 @@ margin_left = -1.0
 margin_top = -54.0
 margin_right = 156.0
 margin_bottom = -29.0
-custom_fonts/font = SubResource( 17 )
+custom_fonts/font = SubResource( 15 )
 custom_colors/font_color = Color( 0.447059, 0.2, 0.933333, 1 )
 text = "ACHIEVEMENT"
 
@@ -324,7 +324,7 @@ margin_left = -1.0
 margin_top = -35.0
 margin_right = 156.0
 margin_bottom = -10.0
-custom_fonts/font = SubResource( 19 )
+custom_fonts/font = SubResource( 17 )
 custom_colors/font_color = Color( 0.447059, 0.2, 0.933333, 1 )
 text = "UNLOCKED"
 
@@ -350,7 +350,7 @@ margin_left = -24.0
 margin_top = 5.0
 margin_right = -3.0
 margin_bottom = 5.0
-custom_fonts/font = SubResource( 21 )
+custom_fonts/font = SubResource( 19 )
 custom_colors/font_color = Color( 0.4, 0.501961, 1, 1 )
 text = "0"
 
@@ -364,7 +364,7 @@ texture = ExtResource( 11 )
 script = ExtResource( 12 )
 
 [node name="ChromaticAberration" type="Sprite" parent="."]
-material = SubResource( 15 )
+material = SubResource( 21 )
 position = Vector2( 610, 460 )
 scale = Vector2( 31.4062, 28.9063 )
 texture = ExtResource( 13 )
@@ -378,6 +378,4 @@ bus = "HUD"
 [connection signal="pressed" from="SFXToggle" to="." method="_on_SFXToggle_pressed"]
 [connection signal="pressed" from="MusicToggle" to="." method="_on_MusicToggle_pressed"]
 [connection signal="closed" from="UpgradeInterface" to="." method="_on_interface_closed"]
-[connection signal="upgraded" from="UpgradeInterface" to="." method="_on_UpgradeInterface_upgraded"]
-[connection signal="achievement_complete" from="AchievementsInterface" to="." method="_on_AchievementsInterface_achievement_complete"]
 [connection signal="closed" from="AchievementsInterface" to="." method="_on_interface_closed"]

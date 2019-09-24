@@ -23,6 +23,10 @@ config/icon="res://Assets/res/drawable-xxxhdpi/ic_launcher.png"
 
 Freeze="*res://Freeze.gd"
 Palette="*res://Palette.gd"
+CreditManager="*res://StateManagers/CreditManager.gd"
+SettingsManager="*res://StateManagers/SettingsManager.gd"
+UpgradeManager="*res://StateManagers/UpgradeManager.gd"
+AchievementPopupManager="*res://StateManagers/AchievementPopupManager.gd"
 
 [display]
 

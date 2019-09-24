@@ -1,23 +1,26 @@
 extends CanvasLayer
 
 signal start_game
-signal sfx_toggled
-signal music_toggled
-signal achievement_complete(achievement_name)
-signal upgraded(upgrade_name, level, upgrade_cost)
 
 const RESTART_ICON: Resource = preload("res://Assets/HUD/Restart.png")
 const AUDIO_ON_ICON: Resource = preload("res://Assets/HUD/AudioOn.png")
 const AUDIO_OFF_ICON: Resource = preload("res://Assets/HUD/AudioOff.png")
 const MUSIC_ON_ICON: Resource = preload("res://Assets/HUD/MusicOn.png")
 const MUSIC_OFF_ICON: Resource = preload("res://Assets/HUD/MusicOff.png")
-const TRANSPARENT = Color(1, 1, 1, 0)
+const TRANSPARENT := Color(1, 1, 1, 0)
 
-var sfx_on := true
-var music_on := true
+var save_loaded: bool = false
 
 
 func _ready() -> void:
+    if CreditManager.connect("changed", self, "_on_credits_changed"):
+        pass
+    if SettingsManager.connect("changed", self, "_on_settings_changed"):
+        pass
+    if UpgradeManager.connect("changed", self, "_on_upgrades_changed"):
+        pass
+    if AchievementPopupManager.connect("changed", self, "_on_completed_achievements_changed"):
+        pass
     $ScoreLabel.modulate = TRANSPARENT
     $GameOverLabel.modulate = TRANSPARENT
     $HighScore/Label.modulate = TRANSPARENT
@@ -47,12 +50,41 @@ func update_score(score: int) -> void:
     $ScoreLabel.set_text(str(score))
     
     
-func update_credits(credits: int) -> void:
+func _on_save_loaded() -> void:
+    save_loaded = true
+    
+    
+func _on_credits_changed() -> void:
     $Tween.interpolate_property($Credits/Label, 'modulate', $Credits/Label.modulate, Color(1, 1, 1, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.interpolate_property($Credits/Label, 'modulate', Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
-    $Credits/Label.set_text(str(credits))
-    $UpgradeInterface.update_credits(credits)
+    $Credits/Label.set_text(str(CreditManager.get_credits()))
+    
+    
+func _on_settings_changed() -> void:
+    var music_icon: Resource = MUSIC_ON_ICON if SettingsManager.is_music_on() else MUSIC_OFF_ICON
+    var sfx_icon: Resource = AUDIO_ON_ICON if SettingsManager.is_sfx_on() else AUDIO_OFF_ICON
+    
+    _disable_toggle($MusicToggle, music_icon, not SettingsManager.is_music_on())
+    _disable_toggle($SFXToggle, sfx_icon, not SettingsManager.is_sfx_on())
+    
+    if save_loaded:
+        $ButtonSound.play()
+    
+    
+func _on_upgrades_changed(upgrade_name: String) -> void:
+    if upgrade_name:
+        pass
+    if save_loaded:
+        $ButtonSound.play()
+    
+    
+func _on_completed_achievements_changed(achievement_name: String) -> void:
+    if save_loaded and not achievement_name in AchievementPopupManager.get_completed_achievements():
+        fade(false, $CheevoUnlocked)
+        $CheevoUnlocked/CheevoLabel.set_text(achievement_name)
+        yield(get_tree().create_timer(2), "timeout")
+        fade(true, $CheevoUnlocked)
     
     
 func update_high_score(high_score: int) -> void:
@@ -77,36 +109,8 @@ func update_multiplier(multiplier: int) -> void:
         $MultiplierLabel.set_text('×' + str(multiplier))
     
     
-func init_toggles(sfx: bool, music: bool) -> void:
-    sfx_on = sfx
-    music_on = music
-    _disable_toggle($SFXToggle, AUDIO_ON_ICON if sfx_on else AUDIO_OFF_ICON, not sfx_on)
-    _disable_toggle($MusicToggle, MUSIC_ON_ICON if music_on else MUSIC_OFF_ICON, not music_on)
-    
-    
-func set_sfx_on(value: bool) -> void:
-    if sfx_on != value:
-        _on_SFXToggle_pressed()
-    
-    
-func set_music_on(value: bool) -> void:
-    if music_on != value:
-        _on_MusicToggle_pressed()
-    
-    
 func hide_high_score(yes: bool) -> void:
     fade(yes, $HighScore)
-    
-    
-func hide_achievement_unlocked(yes: bool) -> void:
-    fade(yes, $CheevoUnlocked)
-    
-    
-func display_achievement_unlocked(achievement_name: String) -> void:
-    fade(false, $CheevoUnlocked)
-    $CheevoUnlocked/CheevoLabel.set_text(achievement_name)
-    yield(get_tree().create_timer(2), "timeout")
-    fade(true, $CheevoUnlocked)
     
     
 func show_game_over() -> void:
@@ -159,17 +163,11 @@ func _on_CheevoButton_pressed() -> void:
 
 
 func _on_SFXToggle_pressed() -> void:    
-    emit_signal("sfx_toggled")
-    sfx_on = not sfx_on
-    _disable_toggle($SFXToggle, AUDIO_ON_ICON if sfx_on else AUDIO_OFF_ICON, not sfx_on)
-    $ButtonSound.play()
+    SettingsManager.set_sfx_on(not SettingsManager.is_sfx_on())
 
 
 func _on_MusicToggle_pressed() -> void:
-    emit_signal("music_toggled")
-    music_on = not music_on
-    _disable_toggle($MusicToggle, MUSIC_ON_ICON if music_on else MUSIC_OFF_ICON, not music_on)
-    $ButtonSound.play()
+    SettingsManager.set_music_on(not SettingsManager.is_music_on())
 
 
 func _disable_toggle(toggle: Button, icon: Resource, yes: bool) -> void:
@@ -184,15 +182,6 @@ func _on_AchievementsInterface_achievement_complete(achievement_name: String) ->
 func _on_UpgradesButton_pressed() -> void:
     Input.action_press("upgrade_interface_open_close")
     $ButtonSound.play()
-
-
-func _on_UpgradeInterface_upgraded(upgrade_name: String, level: float, upgrade_cost: int) -> void:
-    emit_signal("upgraded", upgrade_name, level, upgrade_cost)
-    $ButtonSound.play()
-
-
-func load_upgrades(upgrades: Dictionary) -> void:
-    $UpgradeInterface.load_upgrades(upgrades)
 
 
 func _on_interface_closed() -> void:

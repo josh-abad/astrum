@@ -1,5 +1,7 @@
 extends Node
 
+signal save_loaded
+
 export (PackedScene) var Planet
 export (PackedScene) var Spike
 export (PackedScene) var Collectible
@@ -17,28 +19,57 @@ var bh_wait_time_lower: int = 3
 
 var active := false
 
-var completed_achievements: Array
-
 var score: int = 0
-var credits: int = 0
 var high_score: int = 0
 var multiplier: int = 1
 var health: float = 100
-var music_on: bool = true
-var sfx_on: bool = true
 var enemies_spawned: int = 0
 var combo: bool = false
 var ignorata: bool = false
+var save_loaded = false
 
 
 func _ready() -> void:
+    if connect("save_loaded", $HUD, "_on_save_loaded"):
+        pass
+    if CreditManager.connect("changed", self, "_on_credits_changed"):
+        pass
+    if SettingsManager.connect("changed", self, "_on_settings_changed"):
+        pass
+    if UpgradeManager.connect("changed", self, "_on_upgrades_changed"):
+        pass
+    if AchievementPopupManager.connect("changed", self, "_on_completed_achievements_changed"):
+        pass
     randomize()
     load_game()    
-    $HUD.load_upgrades($UpgradeManager.upgrades)
-    _apply_upgrades()
     $AmbientSound.play()
     $HUD.hide_high_score(true)
     _reset_achievements()
+
+
+func _on_credits_changed() -> void:
+    if save_loaded:
+        save_game()
+
+
+func _on_settings_changed() -> void:
+    _mute_music(not SettingsManager.is_music_on())
+    _mute_sfx(not SettingsManager.is_sfx_on())
+    if save_loaded:
+        save_game()
+
+
+func _on_upgrades_changed(upgrade_name: String) -> void:
+    _apply_upgrades(upgrade_name)
+    if save_loaded:
+        save_game()
+
+
+func _on_completed_achievements_changed(achievement_name: String) -> void:
+    if achievement_name:
+        pass
+    if save_loaded:
+        save_game()
 
 
 func _process(delta: float) -> void:
@@ -53,12 +84,12 @@ func _process(delta: float) -> void:
 
 func save() -> Dictionary:
     return {
-        "credits": credits,
+        "credits": CreditManager.get_credits(),
         "high_score": high_score,
-        "music_on": music_on,
-        "sfx_on": sfx_on,
-        "completed_achievements": completed_achievements,
-        "upgrades": $UpgradeManager.upgrades
+        "music_on": SettingsManager.is_music_on(),
+        "sfx_on": SettingsManager.is_sfx_on(),
+        "completed_achievements": AchievementPopupManager.get_completed_achievements(),
+        "upgrades": UpgradeManager.get_upgrades()
     }
 
 
@@ -78,23 +109,19 @@ func load_game() -> void:
     save_game.open("user://savegame.save", File.READ)
     var line = parse_json(save_game.get_line())
     if line.has("credits"):
-        _update_credits(line["credits"], false)
+        CreditManager.set_credits(line["credits"])
     if line.has("high_score"):
         _update_high_score(line["high_score"])
     if line.has("music_on") and line.has("sfx_on"):
-        _init_audio(line["sfx_on"], line["music_on"])
+        SettingsManager.set_music_on(line["music_on"])
+        SettingsManager.set_sfx_on(line["sfx_on"])
     if line.has("completed_achievements"):
-        completed_achievements = line["completed_achievements"]
+        AchievementPopupManager.set_completed_achievements(line["completed_achievements"])
     if line.has("upgrades"):
-        $UpgradeManager.upgrades = line["upgrades"]
+        UpgradeManager.set_upgrades(line["upgrades"])
     save_game.close()
-
-
-func _update_completed_achievements(achievement_name: String) -> void:
-    if not achievement_name in completed_achievements: 
-        completed_achievements.append(achievement_name)
-        $HUD.display_achievement_unlocked(achievement_name)
-        save_game()
+    save_loaded = true
+    emit_signal("save_loaded")
 
 
 func new_game() -> void:
@@ -189,13 +216,6 @@ func _update_score(value: int) -> void:
     $HUD.update_score(score)
 
 
-func _update_credits(value: int, save: bool = true) -> void:
-    credits = value
-    $HUD.update_credits(credits)
-    if save:
-        save_game()
-
-
 func _update_high_score(value: int) -> void:
     high_score = value
     $HUD.update_high_score(high_score)
@@ -214,22 +234,6 @@ func _update_multiplier(value: int) -> void:
         $HUD.update_multiplier(multiplier)
     
     
-func _init_audio(sfx: bool, music: bool) -> void:
-    sfx_on = sfx
-    music_on = music
-    _mute_sfx(not sfx_on)
-    _mute_music(not music_on)
-    $HUD.init_toggles(sfx, music)
-    
-    
-func _set_sfx_on(value: bool) -> void:
-    $HUD.set_sfx_on(value)
-    
-    
-func _set_music_on(value: bool) -> void:
-    $HUD.set_music_on(value)
-    
-
 func _get_random_position() -> Vector2:
     randomize()
     var x = $Player.position.x + $Player.direction.x + rand_range(100, 300)
@@ -384,22 +388,6 @@ func _mute_music(yes: bool) -> void:
     AudioServer.set_bus_mute(1, yes)    
 
 
-func _on_HUD_sfx_toggled() -> void:
-    sfx_on = not sfx_on
-    _mute_sfx(not sfx_on)
-    save_game()    
-        
-
-func _on_HUD_music_toggled() -> void:
-    music_on = not music_on
-    _mute_music(not music_on)
-    save_game()        
-
-
-func _on_HUD_achievement_complete(achievement_name: String) -> void:
-    _update_completed_achievements(achievement_name)
-
-
 func _on_CollectibleTimer_timeout() -> void:
     if active and $Player.moving and enemies_spawned <= MAX_ENEMIES:
         var collectible = Collectible.instance()
@@ -418,43 +406,40 @@ func _on_Collectible_collected(is_health: bool) -> void:
     if is_health:
         _update_health(100)
     else:
-        _update_credits(credits + 100)
+        CreditManager.set_credits(CreditManager.get_credits() + 100)
 
 
-func _on_HUD_upgraded(upgrade_name: String, level: float, upgrade_cost: int) -> void:
-    $UpgradeManager.update_upgrade(upgrade_name, level)
-    _update_credits(credits - upgrade_cost)
-    _apply_upgrades()
-
-
-func _apply_upgrades() -> void:
-    var speed_level: float = $UpgradeManager.get_level("speed")
-    match speed_level:
-        1.0:
-            $Player.speed = 1250
-        2.0:
-            $Player.speed = 1500
-        3.0:
-            $Player.speed = 1750
+func _apply_upgrades(upgrade_name) -> void:
+    if upgrade_name == "speed" or upgrade_name == UpgradeManager.ALL:
+        var speed_level: float = UpgradeManager.get_upgrade("speed")["level"]
+        match speed_level:
+            1.0:
+                $Player.speed = 1250
+            2.0:
+                $Player.speed = 1500
+            3.0:
+                $Player.speed = 1750
+    
+    if upgrade_name == "health" or upgrade_name == UpgradeManager.ALL:        
+        var health_level: float = UpgradeManager.get_upgrade("health")["level"]      
+        match health_level:
+            1.0:
+                COUNTDOWN_RATE_FAST = 40
+                COUNTDOWN_RATE_NORMAL = 20
+            2.0:
+                COUNTDOWN_RATE_FAST = 30
+                COUNTDOWN_RATE_NORMAL = 10
+            3.0:
+                COUNTDOWN_RATE_FAST = 20
+                COUNTDOWN_RATE_NORMAL = 0
             
-    var health_level: float = $UpgradeManager.get_level("health")            
-    match health_level:
-        1.0:
-            COUNTDOWN_RATE_FAST = 40
-            COUNTDOWN_RATE_NORMAL = 20
-        2.0:
-            COUNTDOWN_RATE_FAST = 30
-            COUNTDOWN_RATE_NORMAL = 10
-        3.0:
-            COUNTDOWN_RATE_FAST = 20
-            COUNTDOWN_RATE_NORMAL = 0
-            
-    var combo_level: float = $UpgradeManager.get_level("combo")            
-    match combo_level:
-        1.0:
-            max_multiplier = 4
-        2.0:
-            max_multiplier = 6
-        3.0:
-            max_multiplier = 8
+    if upgrade_name == "combo" or upgrade_name == UpgradeManager.ALL:
+        var combo_level: float = UpgradeManager.get_upgrade("combo")["level"]         
+        match combo_level:
+            1.0:
+                max_multiplier = 4
+            2.0:
+                max_multiplier = 6
+            3.0:
+                max_multiplier = 8
             

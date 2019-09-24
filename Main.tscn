@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Main.gd" type="Script" id=1]
 [ext_resource path="res://Planet.tscn" type="PackedScene" id=2]
@@ -18,7 +18,6 @@
 [ext_resource path="res://Audio/CollectibleSound.ogg" type="AudioStream" id=16]
 [ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=17]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=18]
-[ext_resource path="res://UpgradeManager.tscn" type="PackedScene" id=19]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -284,8 +283,6 @@ region_rect = Rect2( 0, 0, 20000, 20000 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 6 )
-
-[node name="UpgradeManager" parent="." instance=ExtResource( 19 )]
 [connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
 [connection signal="timeout" from="CollectibleTimer" to="." method="_on_CollectibleTimer_timeout"]
 [connection signal="timeout" from="PlanetTimer" to="." method="_on_PlanetTimer_timeout"]
@@ -295,10 +292,6 @@ environment = SubResource( 6 )
 [connection signal="timeout" from="SlowMotionTimer" to="." method="_on_SlowMotionTimer_timeout"]
 [connection signal="absorb" from="BlackHole" to="." method="_on_BlackHole_absorb"]
 [connection signal="inactive" from="BlackHole" to="." method="_on_BlackHole_inactive"]
-[connection signal="achievement_complete" from="HUD" to="." method="_on_HUD_achievement_complete"]
-[connection signal="music_toggled" from="HUD" to="." method="_on_HUD_music_toggled"]
-[connection signal="sfx_toggled" from="HUD" to="." method="_on_HUD_sfx_toggled"]
 [connection signal="start_game" from="HUD" to="." method="new_game"]
-[connection signal="upgraded" from="HUD" to="." method="_on_HUD_upgraded"]
 [connection signal="nor_mo" from="Player" to="." method="_on_Comet_nor_mo"]
 [connection signal="slo_mo" from="Player" to="." method="_on_Comet_slo_mo"]

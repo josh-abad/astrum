@@ -8,7 +8,6 @@ var achievement_data = null
 var achievement_interface = null
 
 signal updated
-signal achievement_complete(achievement_name)
 signal closed
 
 func _ready():
@@ -19,8 +18,6 @@ func _ready():
     add_child(achievement_interface);
     if self.connect("updated", achievement_interface, "_update_bar"):
         pass
-    if achievement_interface.connect("achievement_complete", self, "_on_achievement_complete"):
-        pass
     if achievement_interface.connect("closed", self, "_on_AchievementInterface_closed"):
         pass
     
@@ -29,11 +26,6 @@ func _on_AchievementInterface_closed() -> void:
     emit_signal("closed")
     
     
-func _on_achievement_complete(achievement_name: String) -> void:
-    
-    # Signal emitted to HUD
-    emit_signal("achievement_complete", achievement_name)
-
 func _process(delta: float):
     if delta:
         pass
@@ -43,9 +35,22 @@ func _process(delta: float):
         else:
             achievement_interface.show();
 
+
+func _is_achievement_complete(achievement_name: String) -> bool:
+    var achievements = achievement_data.get_achievements();
+    if achievements.has(achievement_name):
+        var achievement = achievements[achievement_name]
+        var progress = achievement.get_progress()
+        var total = achievement.get_total()
+        return progress >= total
+    return false
+
+
 func increment_achievement(achievement_name, amount):
     var achievements = achievement_data.get_achievements();
     if achievements.has(achievement_name):
+        if not _is_achievement_complete(achievement_name):
+            return
         achievements[achievement_name].increment(amount);
         achievement_data.save();
         emit_signal("updated", achievement_name, achievements[achievement_name]);
@@ -53,11 +58,7 @@ func increment_achievement(achievement_name, amount):
         
 func reset_achievement(achievement_name: String) -> void:
     var achievements = achievement_data.get_achievements()
-    if achievements.has(achievement_name):
-        var achievement = achievements[achievement_name]
-        var progress = achievement.get_progress()
-        var total = achievement.get_total()
-        if progress < total:
-            achievement.set_value("progress", 0)
-            emit_signal("updated", achievement_name, achievements[achievement_name]);
+    if achievements.has(achievement_name) and not _is_achievement_complete(achievement_name):
+        achievements[achievement_name].set_value("progress", 0)
+        emit_signal("updated", achievement_name, achievements[achievement_name]);
             
