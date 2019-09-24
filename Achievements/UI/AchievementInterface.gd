@@ -18,7 +18,18 @@ func init(achievements):
 
 func _on_Button_pressed():
     emit_signal("closed")
-    hide();
+    _display(false)
+
 
 func _update_bar(achievement_name, achievement):
     achievementsNodes[achievement_name].update_progress_bar(achievement)
+    
+    
+func _display(yes: bool) -> void:
+    $Tween.interpolate_property(self, 'rect_position', rect_position, Vector2(0, 0) if yes else Vector2(-320, 0), 0.4, Tween.TRANS_QUAD, Tween.EASE_OUT)
+    $Tween.start()
+    if yes:
+        show()
+    else:
+        yield(get_tree().create_timer(1), "timeout")
+        hide()

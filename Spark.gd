@@ -1,6 +1,10 @@
 extends Particles2D
 
 
+func _on_start_game() -> void:
+    queue_free()
+
+
 func _ready() -> void:
     process_material.color_ramp.gradient.set_color(0, Palette.ORANGE)
 
@@ -18,3 +22,7 @@ func set_color(color: Color) -> void:
     var transparent = color
     transparent.a = 0
     process_material.color_ramp.gradient.set_color(1, transparent)      
+
+
+func _on_DisappearTimer_timeout() -> void:
+    queue_free()

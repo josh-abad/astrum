@@ -190,7 +190,7 @@ texture = ExtResource( 9 )
 motion_scale = Vector2( 0.7, 0.7 )
 
 [node name="Stars" type="Sprite" parent="ParallaxForeground/ParallaxLayer"]
-self_modulate = Color( 0.968627, 0.654902, 0.341176, 1 )
+self_modulate = Color( 0.4, 0.501961, 1, 1 )
 position = Vector2( -1280, -96 )
 rotation = -3.14159
 texture = ExtResource( 8 )

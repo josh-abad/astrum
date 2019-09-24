@@ -24,6 +24,7 @@ flag_disable_z = true
 spread = 90.0
 flatness = 1.0
 initial_velocity = 35.0
+angular_velocity = 1.05
 angular_velocity_random = 1.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
@@ -50,3 +51,9 @@ explosiveness = 1.0
 process_material = SubResource( 5 )
 texture = ExtResource( 1 )
 script = ExtResource( 2 )
+
+[node name="DisappearTimer" type="Timer" parent="."]
+wait_time = 6.0
+one_shot = true
+autostart = true
+[connection signal="timeout" from="DisappearTimer" to="." method="_on_DisappearTimer_timeout"]

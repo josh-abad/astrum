@@ -31,9 +31,9 @@ func _process(delta: float):
         pass
     if Input.is_action_just_pressed(INTERFACE_OPENCLOSE_ACTION):
         if achievement_interface.is_visible_in_tree():
-            achievement_interface.hide();
+            achievement_interface._display(false)
         else:
-            achievement_interface.show();
+            achievement_interface._display(true)
 
 
 func _is_achievement_complete(achievement_name: String) -> bool:
@@ -49,7 +49,7 @@ func _is_achievement_complete(achievement_name: String) -> bool:
 func increment_achievement(achievement_name, amount):
     var achievements = achievement_data.get_achievements();
     if achievements.has(achievement_name):
-        if not _is_achievement_complete(achievement_name):
+        if _is_achievement_complete(achievement_name):
             return
         achievements[achievement_name].increment(amount);
         achievement_data.save();

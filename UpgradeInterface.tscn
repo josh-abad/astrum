@@ -21,15 +21,19 @@ font_path = "res://Fonts/Kenney Rocket Square.ttf"
 size = 20
 font_data = SubResource( 5 )
 
-[node name="UpgradeInterface" type="Control"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="UpgradeInterface" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 320.0
+margin_right = 320.0
 script = ExtResource( 1 )
 
 [node name="Panel" type="Panel" parent="."]
-self_modulate = Color( 0, 0, 0, 1 )
+self_modulate = Color( 0, 0, 0, 0 )
 margin_right = 320.0
 margin_bottom = 480.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Title" type="Label" parent="Panel"]
 margin_left = 20.0
@@ -76,4 +80,6 @@ upgrade_name = "health"
 margin_top = 240.0
 margin_bottom = 280.0
 upgrade_name = "combo"
+
+[node name="Tween" type="Tween" parent="."]
 [connection signal="pressed" from="Panel/CloseButton" to="." method="_on_CloseButton_pressed"]

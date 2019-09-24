@@ -45,6 +45,7 @@ func _ready() -> void:
     $AmbientSound.play()
     $HUD.hide_high_score(true)
     _reset_achievements()
+    _enable_background_blur(true, 0)
 
 
 func _on_credits_changed() -> void:
@@ -196,6 +197,8 @@ func scored(special: bool, position: Vector2) -> void:
 
     $HitSound.play()
     var popup = ScoredPopup.instance()
+    if $HUD.connect("start_game", popup, "_on_start_game"):
+        pass
     add_child(popup)
     popup.display(position, points, Palette.PINK if special else Palette.ORANGE)
     _add_spark(Palette.PINK if special else Palette.ORANGE, position)
@@ -203,12 +206,12 @@ func scored(special: bool, position: Vector2) -> void:
     
 func _add_spark(color: Color, position: Vector2) -> void:
     var spark = Spark.instance()
-    add_child(spark)
+    add_child(spark)    
+    if $HUD.connect("start_game", spark, "_on_start_game"):
+        pass
     spark.set_color(color)
     spark.set_position(position)
     spark.set_emitting(true)
-    yield(get_tree().create_timer(6), "timeout")
-    spark.queue_free()
     
 
 func _update_score(value: int) -> void:

@@ -16,3 +16,11 @@ custom_fonts/font = SubResource( 2 )
 script = ExtResource( 1 )
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="DisappearTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="FadeTimer" type="Timer" parent="."]
+one_shot = true
+[connection signal="timeout" from="DisappearTimer" to="." method="_on_DisappearTimer_timeout"]
+[connection signal="timeout" from="FadeTimer" to="." method="_on_FadeTimer_timeout"]

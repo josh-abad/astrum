@@ -40,7 +40,7 @@ font_path = "res://Fonts/Kenney Future Narrow.ttf"
 font_data = SubResource( 10 )
 
 [node name="BackGround" type="Panel"]
-self_modulate = Color( 0, 0, 0, 1 )
+self_modulate = Color( 0, 0, 0, 0 )
 margin_left = 80.0
 margin_top = 105.0
 margin_right = 680.0

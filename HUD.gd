@@ -10,6 +10,8 @@ const MUSIC_OFF_ICON: Resource = preload("res://Assets/HUD/MusicOff.png")
 const TRANSPARENT := Color(1, 1, 1, 0)
 
 var save_loaded: bool = false
+var main_screen_hidden: bool = false
+var on_start_screen: bool = true
 
 
 func _ready() -> void:
@@ -81,6 +83,7 @@ func _on_upgrades_changed(upgrade_name: String) -> void:
     
 func _on_completed_achievements_changed(achievement_name: String) -> void:
     if save_loaded and not achievement_name in AchievementPopupManager.get_completed_achievements():
+        AchievementPopupManager.popup_complete()
         fade(false, $CheevoUnlocked)
         $CheevoUnlocked/CheevoLabel.set_text(achievement_name)
         yield(get_tree().create_timer(2), "timeout")
@@ -114,6 +117,7 @@ func hide_high_score(yes: bool) -> void:
     
     
 func show_game_over() -> void:
+    main_screen_hidden = false
     hide_high_score(false)
     fade(true, $ScoreLabel)
     fade(true, $MultiplierLabel)
@@ -130,6 +134,8 @@ func show_game_over() -> void:
     
     
 func _on_StartButton_pressed() -> void:
+    main_screen_hidden = true
+    on_start_screen = false
     fade(false, $ScoreLabel)
     fade(false, $HighScore/Label)
     fade(false, $HighScore/HighScoreLabel)
@@ -155,11 +161,24 @@ func _press_button(button: Control) -> void:
 func disable_warning(yes: bool) -> void:
     fade(yes, $Warning)
     $Tween.start()
+    $Warning.active = not yes
                     
 
 func _on_CheevoButton_pressed() -> void:
+    fade(true, $StartLabel if on_start_screen else $GameOverLabel)
+    fade(true, $StartButton)
+    fade(true, $CheevoButton)
+    fade(true, $UpgradesButton)
+    $SFXToggle.hide()
+    $MusicToggle.hide()
+    fade(true, $HighScore)
+    fade(true, $Credits)
+    $Tween.start()
     Input.action_press("achievement_interface_open_close")
     $ButtonSound.play()
+    """
+    TODO: refactor this please, Josh. This is a mess.
+    """
 
 
 func _on_SFXToggle_pressed() -> void:    
@@ -180,9 +199,27 @@ func _on_AchievementsInterface_achievement_complete(achievement_name: String) ->
 
 
 func _on_UpgradesButton_pressed() -> void:
+    main_screen_hidden = not main_screen_hidden
+    fade(true, $StartLabel if on_start_screen else $GameOverLabel)
+    fade(true, $StartButton)
+    fade(true, $CheevoButton)
+    fade(true, $UpgradesButton)
+    $SFXToggle.hide()
+    $MusicToggle.hide()
+    fade(true, $HighScore)
+    $Tween.start()
     Input.action_press("upgrade_interface_open_close")
     $ButtonSound.play()
 
 
 func _on_interface_closed() -> void:
     $ButtonSound.play()
+    fade(false, $StartLabel if on_start_screen else $GameOverLabel)
+    fade(false, $StartButton)
+    fade(false, $CheevoButton)
+    fade(false, $UpgradesButton)
+    $SFXToggle.show()
+    $MusicToggle.show()
+    fade(on_start_screen, $HighScore)
+    fade(false, $Credits)
+    $Tween.start()
