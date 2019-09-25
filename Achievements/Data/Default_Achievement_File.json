@@ -1,10 +1,10 @@
 {
     "score10Points": {
         "name": {
-            "name": "X"
+            "name": "X Stellas"
         },
         "desc": {
-            "desc": "Score 10 points."
+            "desc": "Score 10 points"
         },
         "progress": {
             "progress": 0,
@@ -18,14 +18,22 @@
         },
         "progress-bar-color": {
             "progress-bar-color": "#6680ff"
+        },
+        "rewardClaimed": {
+            "rewardClaimed": false,
+            "userData": true
+        },
+        "popupDisplayed": {
+            "rewardClaimed": false,
+            "userData": true
         }
     },    
     "score100Points": {
         "name": {
-            "name": "C"
+            "name": "C Stellas"
         },
         "desc": {
-            "desc": "Score 100 points."
+            "desc": "Score 100 points"
         },
         "progress": {
             "progress": 0,
@@ -39,14 +47,22 @@
         },
         "progress-bar-color": {
             "progress-bar-color": "#6680ff"
+        },
+        "rewardClaimed": {
+            "rewardClaimed": false,
+            "userData": true
+        },
+        "popupDisplayed": {
+            "rewardClaimed": false,
+            "userData": true
         }
     },    
     "score1000Points": {
         "name": {
-            "name": "M"
+            "name": "M Stellas"
         },
         "desc": {
-            "desc": "Score 1000 points."
+            "desc": "Score 1000 points"
         },
         "progress": {
             "progress": 0,
@@ -60,6 +76,14 @@
         },
         "progress-bar-color": {
             "progress-bar-color": "#6680ff"
+        },
+        "rewardClaimed": {
+            "rewardClaimed": false,
+            "userData": true
+        },
+        "popupDisplayed": {
+            "rewardClaimed": false,
+            "userData": true
         }
     },    
     "stella_mortem": {
@@ -67,7 +91,7 @@
             "name": "Stella Mortem"
         },
         "desc": {
-            "desc": "Lose 100 times."
+            "desc": "Lose 100 times"
         },
         "progress": {
             "progress": 0,
@@ -81,6 +105,14 @@
         },
         "progress-bar-color": {
             "progress-bar-color": "#6680ff"
+        },
+        "rewardClaimed": {
+            "rewardClaimed": false,
+            "userData": true
+        },
+        "popupDisplayed": {
+            "rewardClaimed": false,
+            "userData": true
         }
     },
     "ad_astra": {
@@ -88,7 +120,7 @@
             "name": "Ad Astra"
         },
         "desc": {
-            "desc": "Hit 50 stars consecutively."
+            "desc": "Hit 50 stars consecutively"
         },
         "progress": {
             "progress": 0,
@@ -102,6 +134,14 @@
         },
         "progress-bar-color": {
             "progress-bar-color": "#6680ff"
+        },
+        "rewardClaimed": {
+            "rewardClaimed": false,
+            "userData": true
+        },
+        "popupDisplayed": {
+            "rewardClaimed": false,
+            "userData": true
         }
     },
     "sequentia": {
@@ -109,7 +149,7 @@
             "name": "Sequentia"
         },
         "desc": {
-            "desc": "Achieve a x5 multiplier."
+            "desc": "Achieve a ×8 combo"
         },
         "progress": {
             "progress": 0,
@@ -123,6 +163,14 @@
         },
         "progress-bar-color": {
             "progress-bar-color": "#6680ff"
+        },
+        "rewardClaimed": {
+            "rewardClaimed": false,
+            "userData": true
+        },
+        "popupDisplayed": {
+            "rewardClaimed": false,
+            "userData": true
         }
     },
     "rosea": {
@@ -130,7 +178,7 @@
             "name": "Rosea"
         },
         "desc": {
-            "desc": "Hit 10 pink stars in a row."
+            "desc": "Hit 10 pink stars in a row"
         },
         "progress": {
             "progress": 0,
@@ -144,6 +192,14 @@
         },
         "progress-bar-color": {
             "progress-bar-color": "#6680ff"
+        },
+        "rewardClaimed": {
+            "rewardClaimed": false,
+            "userData": true
+        },
+        "popupDisplayed": {
+            "rewardClaimed": false,
+            "userData": true
         }
     },
     "ignorata": {
@@ -151,7 +207,7 @@
             "name": "Ignorata"
         },
         "desc": {
-            "desc": "Hit 10 stars without trying."
+            "desc": "Hit 10 stars without trying"
         },
         "progress": {
             "progress": 0,
@@ -165,6 +221,14 @@
         },
         "progress-bar-color": {
             "progress-bar-color": "#6680ff"
+        },
+        "rewardClaimed": {
+            "rewardClaimed": false,
+            "userData": true
+        },
+        "popupDisplayed": {
+            "rewardClaimed": false,
+            "userData": true
         }
     }
 }

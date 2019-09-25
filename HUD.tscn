@@ -28,6 +28,7 @@ font_path = "res://Fonts/Kenney Future.ttf"
 
 [sub_resource type="DynamicFont" id=4]
 size = 28
+use_filter = true
 font_data = SubResource( 3 )
 
 [sub_resource type="DynamicFontData" id=5]
@@ -35,7 +36,6 @@ font_path = "res://Fonts/Kenney Rocket Square.ttf"
 
 [sub_resource type="DynamicFont" id=6]
 size = 24
-use_mipmaps = true
 use_filter = true
 font_data = SubResource( 5 )
 
@@ -44,6 +44,7 @@ font_path = "res://Fonts/Kenney Future Narrow.ttf"
 
 [sub_resource type="DynamicFont" id=8]
 size = 14
+use_filter = true
 font_data = SubResource( 7 )
 
 [sub_resource type="DynamicFontData" id=9]
@@ -51,6 +52,7 @@ font_path = "res://Fonts/Kenney Future Narrow.ttf"
 
 [sub_resource type="DynamicFont" id=10]
 size = 19
+use_filter = true
 font_data = SubResource( 9 )
 
 [sub_resource type="StyleBoxEmpty" id=11]
@@ -81,6 +83,7 @@ font_path = "res://Fonts/Kenney Future Narrow.ttf"
 
 [sub_resource type="DynamicFont" id=19]
 size = 18
+use_filter = true
 font_data = SubResource( 18 )
 
 [node name="HUD" type="CanvasLayer"]
@@ -358,3 +361,4 @@ bus = "HUD"
 [connection signal="pressed" from="MusicToggle" to="." method="_on_MusicToggle_pressed"]
 [connection signal="closed" from="UpgradeInterface" to="." method="_on_interface_closed"]
 [connection signal="closed" from="AchievementsInterface" to="." method="_on_interface_closed"]
+[connection signal="display_popup" from="AchievementsInterface" to="." method="_on_AchievementsInterface_display_popup"]

@@ -38,8 +38,6 @@ func _ready() -> void:
         pass
     if UpgradeManager.connect("changed", self, "_on_upgrades_changed"):
         pass
-    if AchievementPopupManager.connect("changed", self, "_on_completed_achievements_changed"):
-        pass
     randomize()
     load_game()    
     $AmbientSound.play()
@@ -89,7 +87,6 @@ func save() -> Dictionary:
         "high_score": high_score,
         "music_on": SettingsManager.is_music_on(),
         "sfx_on": SettingsManager.is_sfx_on(),
-        "completed_achievements": AchievementPopupManager.get_completed_achievements(),
         "upgrades": UpgradeManager.get_upgrades()
     }
 
@@ -116,8 +113,6 @@ func load_game() -> void:
     if line.has("music_on") and line.has("sfx_on"):
         SettingsManager.set_music_on(line["music_on"])
         SettingsManager.set_sfx_on(line["sfx_on"])
-    if line.has("completed_achievements"):
-        AchievementPopupManager.set_completed_achievements(line["completed_achievements"])
     if line.has("upgrades"):
         UpgradeManager.set_upgrades(line["upgrades"])
     save_game.close()
@@ -149,6 +144,7 @@ func _reset_achievements() -> void:
     
     
 func _game_over() -> void:
+    Engine.time_scale = 1
     $HUD.show_game_over()
     _enable_background_blur(true, 0)    
     active = false
@@ -187,7 +183,7 @@ func scored(special: bool, position: Vector2) -> void:
     Engine.time_scale = 0.25
     _update_score(score + points)
     _update_multiplier(multiplier + 1)
-    if multiplier == 5:
+    if multiplier == 8:
         $HUD.increment_achievement("sequentia", 1)
     $ComboTimer.start()
     if score > high_score:

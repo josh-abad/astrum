@@ -26,3 +26,7 @@ func set_color(color: Color) -> void:
 
 func _on_DisappearTimer_timeout() -> void:
     queue_free()
+
+
+func _on_VisibilityNotifier2D_screen_exited() -> void:
+    queue_free()

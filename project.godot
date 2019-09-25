@@ -26,7 +26,7 @@ Palette="*res://Palette.gd"
 CreditManager="*res://StateManagers/CreditManager.gd"
 SettingsManager="*res://StateManagers/SettingsManager.gd"
 UpgradeManager="*res://StateManagers/UpgradeManager.gd"
-AchievementPopupManager="*res://StateManagers/AchievementPopupManager.gd"
+AchievementHelper="*res://AchievementHelper.gd"
 
 [display]
 

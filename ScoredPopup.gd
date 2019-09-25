@@ -22,3 +22,7 @@ func _on_FadeTimer_timeout() -> void:
     $Tween.interpolate_property(self, 'modulate', modulate, Color(1, 1, 1, 0), 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
     $Tween.start()
     $DisappearTimer.start()
+
+
+func _on_VisibilityNotifier2D_screen_exited() -> void:
+    queue_free()

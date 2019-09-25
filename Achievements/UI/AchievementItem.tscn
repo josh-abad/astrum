@@ -145,3 +145,4 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Incompleted"
 align = 1
 valign = 1
+[connection signal="gui_input" from="MarginContainer/HBoxContainer/MarginContainer/VBoxContainer/MarginContainer/TextureProgress" to="." method="_on_TextureProgress_gui_input"]

@@ -14,7 +14,7 @@
 
 [sub_resource type="Gradient" id=1]
 offsets = PoolRealArray( 0, 0.372093, 1 )
-colors = PoolColorArray( 0, 0, 0, 1, 0.886275, 0.419608, 0.105882, 1, 0.886275, 0.419608, 0.105882, 0 )
+colors = PoolColorArray( 0, 0, 0, 1, 0.968627, 0.654902, 0.341176, 1, 0.968627, 0.654902, 0.341176, 0 )
 
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
@@ -66,7 +66,7 @@ texture = ExtResource( 2 )
 [node name="AnimatedSprite2" type="AnimatedSprite" parent="."]
 visible = false
 frames = SubResource( 4 )
-frame = 4
+frame = 1
 speed_scale = 2.0
 playing = true
 
@@ -81,7 +81,7 @@ shadow_filter_smooth = 60.0
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Light2D"]
 frames = SubResource( 4 )
-frame = 4
+frame = 5
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
