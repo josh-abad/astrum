@@ -1,13 +1,12 @@
 extends Panel
 
-const REWARD: int = 1000
-
 var name_text: String
 var progress_bar = null;
 var progress_text = null;
 var picture_parent = null;
 var picture = null;
 var achievement
+var reward: int
 
 
 func claim_reward() -> void:
@@ -32,6 +31,7 @@ func set_achievement(achievement):
         claim_reward()
     if achievement.is_complete():
         AchievementHelper.emit_signal("popup_requested", achievement.get_key())
+    reward = achievement.get_reward()
     set_text(achievement);
     update_progress_bar(achievement);
     set_custom_progress_bar_colors(achievement);
@@ -55,7 +55,7 @@ func update_progress_bar_text(achievement):
         return
     if achievement.is_complete():
         AchievementHelper.emit_signal("popup_requested", achievement.get_key())
-        progress_text.set_text("claim " + str(REWARD))
+        progress_text.set_text("claim " + str(reward) + " credits")
         return
     progress_text.set_text("%s / %s" % [achievement.get_progress(), achievement.get_total()]);
 
@@ -88,6 +88,7 @@ func set_or_remove_picture(achievement):
 func _on_TextureProgress_gui_input(event: InputEvent) -> void:
     if event is InputEventMouseButton and event.pressed:
         if achievement.is_complete() and not achievement.is_reward_claimed():
-            CreditManager.set_credits(CreditManager.get_credits() + REWARD)
+            AudioHelper.emit_signal("play_button_sound")
+            CreditManager.set_credits(CreditManager.get_credits() + reward)
             achievement.set_reward_claimed(true)
             claim_reward()

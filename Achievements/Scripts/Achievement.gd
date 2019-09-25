@@ -64,6 +64,10 @@ func get_picture_location():
     return get_value("picture");
 
 
+func get_reward() -> int:
+    return get_value("reward")
+
+
 func is_complete() -> bool:
     return get_progress() >= get_total()
 

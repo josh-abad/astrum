@@ -7,17 +7,18 @@
 [ext_resource path="res://Spark.tscn" type="PackedScene" id=5]
 [ext_resource path="res://ScoredPopup.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Parallax/Background.png" type="Texture" id=7]
-[ext_resource path="res://icon.png" type="Texture" id=8]
-[ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Parallax/Stars.png" type="Texture" id=8]
+[ext_resource path="res://icon.png" type="Texture" id=9]
 [ext_resource path="res://BlackHole.tscn" type="PackedScene" id=10]
-[ext_resource path="res://HUD.tscn" type="PackedScene" id=11]
-[ext_resource path="res://Audio/Ambient.ogg" type="AudioStream" id=12]
-[ext_resource path="res://Audio/BlackHoleActive.ogg" type="AudioStream" id=13]
-[ext_resource path="res://Audio/BlackHoleTransition.wav" type="AudioStream" id=14]
-[ext_resource path="res://Audio/Hit.wav" type="AudioStream" id=15]
-[ext_resource path="res://Audio/CollectibleSound.ogg" type="AudioStream" id=16]
-[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=17]
-[ext_resource path="res://Player.tscn" type="PackedScene" id=18]
+[ext_resource path="res://Assets/HealthBar/Progress.png" type="Texture" id=11]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Audio/Ambient.ogg" type="AudioStream" id=13]
+[ext_resource path="res://Audio/BlackHoleActive.ogg" type="AudioStream" id=14]
+[ext_resource path="res://Audio/BlackHoleTransition.wav" type="AudioStream" id=15]
+[ext_resource path="res://Audio/Hit.wav" type="AudioStream" id=16]
+[ext_resource path="res://Audio/CollectibleSound.ogg" type="AudioStream" id=17]
+[ext_resource path="res://Audio/Bounce.wav" type="AudioStream" id=18]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=19]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -35,8 +36,6 @@ COLOR = textureLod(SCREEN_TEXTURE, SCREEN_UV, float(blurSize)/10.0);
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
 shader_param/blurSize = 0
-
-[sub_resource type="CanvasItemMaterial" id=3]
 
 [sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
@@ -156,17 +155,19 @@ layer = -2
 [node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.5, 0.5 )
 
-[node name="Background" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-self_modulate = Color( 1, 0, 0.752941, 1 )
-position = Vector2( -1152, -64 )
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+modulate = Color( 0.447059, 0.2, 0.933333, 1 )
 scale = Vector2( 5, 5 )
 texture = ExtResource( 7 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
 
-[node name="BackgroundModulate" type="CanvasModulate" parent="ParallaxBackground/ParallaxLayer"]
-visible = false
-color = Color( 0.490196, 0.490196, 0.490196, 1 )
+[node name="Stars" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+self_modulate = Color( 0.980392, 0.121569, 0.47451, 1 )
+position = Vector2( -1280, -96 )
+texture = ExtResource( 8 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
 
 [node name="BlurLayer" type="CanvasLayer" parent="ParallaxBackground/ParallaxLayer"]
 layer = -2
@@ -175,33 +176,7 @@ layer = -2
 material = SubResource( 2 )
 position = Vector2( 0, 154 )
 scale = Vector2( 19, 20.5 )
-texture = ExtResource( 8 )
-
-[node name="ParallaxBackground2" type="ParallaxBackground" parent="."]
-layer = -2
-
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground2"]
-motion_scale = Vector2( 0.6, 0.6 )
-
-[node name="Stars" type="Sprite" parent="ParallaxBackground2/ParallaxLayer"]
-self_modulate = Color( 0.980392, 0.121569, 0.47451, 1 )
-position = Vector2( -1280, -96 )
 texture = ExtResource( 9 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
-
-[node name="BackgroundModulate" type="CanvasModulate" parent="ParallaxBackground2/ParallaxLayer"]
-visible = false
-color = Color( 0.490196, 0.490196, 0.490196, 1 )
-
-[node name="BlurLayer" type="CanvasLayer" parent="ParallaxBackground2/ParallaxLayer"]
-layer = -2
-
-[node name="Blur" type="Sprite" parent="ParallaxBackground2/ParallaxLayer/BlurLayer"]
-material = SubResource( 2 )
-position = Vector2( 0, 154 )
-scale = Vector2( 19, 20.5 )
-texture = ExtResource( 8 )
 
 [node name="ParallaxForeground" type="ParallaxBackground" parent="."]
 
@@ -212,15 +187,9 @@ motion_scale = Vector2( 0.7, 0.7 )
 self_modulate = Color( 0.4, 0.501961, 1, 1 )
 position = Vector2( -1280, -96 )
 rotation = -3.14159
-scale = Vector2( 1.5, 1.5 )
-texture = ExtResource( 9 )
+texture = ExtResource( 8 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
-
-[node name="ForegroundModulate" type="CanvasModulate" parent="ParallaxForeground/ParallaxLayer"]
-visible = false
-self_modulate = Color( 0.94902, 0.203922, 0.482353, 1 )
-color = Color( 0.490196, 0.490196, 0.490196, 1 )
 
 [node name="Tween" type="Tween" parent="."]
 
@@ -250,42 +219,44 @@ one_shot = true
 wait_time = 0.35
 one_shot = true
 
-[node name="MainModulate" type="CanvasModulate" parent="."]
-visible = false
-material = SubResource( 3 )
-color = Color( 0.490196, 0.490196, 0.490196, 1 )
-
 [node name="BlackHole" parent="." instance=ExtResource( 10 )]
 visible = false
 position = Vector2( 340, 90 )
 
-[node name="HUD" parent="." instance=ExtResource( 11 )]
+[node name="Shade" type="Sprite" parent="."]
+visible = false
+modulate = Color( 0, 0, 0, 0.501961 )
+texture = ExtResource( 11 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 1e+006, 1e+006 )
+
+[node name="HUD" parent="." instance=ExtResource( 12 )]
 
 [node name="AmbientSound" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
-stream = ExtResource( 12 )
+stream = ExtResource( 13 )
 volume_db = -0.5
 pitch_scale = 1.05
 bus = "Ambient"
 
 [node name="BlackHoleActiveSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 13 )
-bus = "SFX"
-
-[node name="BlackHoleTransitionSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 14 )
 bus = "SFX"
 
-[node name="HitSound" type="AudioStreamPlayer" parent="."]
+[node name="BlackHoleTransitionSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 15 )
 bus = "SFX"
 
-[node name="CollectibleSound" type="AudioStreamPlayer" parent="."]
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 16 )
 bus = "SFX"
 
-[node name="BounceSound" type="AudioStreamPlayer" parent="."]
+[node name="CollectibleSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 17 )
+bus = "SFX"
+
+[node name="BounceSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 18 )
 pitch_scale = 2.0
 bus = "SFX"
 
@@ -293,13 +264,13 @@ bus = "SFX"
 visible = false
 modulate = Color( 1, 1, 1, 0.0392157 )
 material = SubResource( 5 )
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 region_enabled = true
 region_rect = Rect2( 0, 0, 20000, 20000 )
 
 [node name="Player" parent="." groups=[
 "Balls",
-] instance=ExtResource( 18 )]
+] instance=ExtResource( 19 )]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 6 )

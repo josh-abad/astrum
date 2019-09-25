@@ -13,6 +13,9 @@
         "total": {
             "total": 10
         },
+        "reward": {
+            "reward": 100
+        },
         "progress-bar-background-color": {
             "progress-bar-background-color": "#1f2b65"
         },
@@ -41,6 +44,9 @@
         },
         "total": {
             "total": 100
+        },
+        "reward": {
+            "reward": 1000
         },
         "progress-bar-background-color": {
             "progress-bar-background-color": "#1f2b65"
@@ -71,6 +77,9 @@
         "total": {
             "total": 1000
         },
+        "reward": {
+            "reward": 10000
+        },
         "progress-bar-background-color": {
             "progress-bar-background-color": "#1f2b65"
         },
@@ -99,6 +108,9 @@
         },
         "total": {
             "total": 100
+        },
+        "reward": {
+            "reward": 500
         },
         "progress-bar-background-color": {
             "progress-bar-background-color": "#1f2b65"
@@ -129,6 +141,9 @@
         "total": {
             "total": 50
         },
+        "reward": {
+            "reward": 10000
+        },
         "progress-bar-background-color": {
             "progress-bar-background-color": "#1f2b65"
         },
@@ -157,6 +172,9 @@
         },
         "total": {
             "total": 1
+        },
+        "reward": {
+            "reward": 1000
         },
         "progress-bar-background-color": {
             "progress-bar-background-color": "#1f2b65"
@@ -187,6 +205,9 @@
         "total": {
             "total": 10
         },
+        "reward": {
+            "reward": 1000
+        },
         "progress-bar-background-color": {
             "progress-bar-background-color": "#1f2b65"
         },
@@ -214,7 +235,10 @@
             "userData": true
         },
         "total": {
-            "total": 10
+            "total": 5000
+        },
+        "reward": {
+            "reward": 100
         },
         "progress-bar-background-color": {
             "progress-bar-background-color": "#1f2b65"

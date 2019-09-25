@@ -21,6 +21,8 @@ func _ready() -> void:
         pass
     if UpgradeManager.connect("changed", self, "_on_upgrades_changed"):
         pass
+    if AudioHelper.connect("play_button_sound", self, "_on_interface_closed"):
+        pass
     $ScoreLabel.modulate = TRANSPARENT
     $GameOverLabel.modulate = TRANSPARENT
     $HighScore/Label.modulate = TRANSPARENT

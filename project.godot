@@ -27,6 +27,7 @@ CreditManager="*res://StateManagers/CreditManager.gd"
 SettingsManager="*res://StateManagers/SettingsManager.gd"
 UpgradeManager="*res://StateManagers/UpgradeManager.gd"
 AchievementHelper="*res://AchievementHelper.gd"
+AudioHelper="*res://AudioHelper.gd"
 
 [display]
 

@@ -323,9 +323,7 @@ func _enable_background_blur(yes: bool, layer: int = -2) -> void:
     )
     $Tween.start()
     $ParallaxBackground/ParallaxLayer/BlurLayer.layer = layer
-    $MainModulate.visible = layer == 0
-    $ParallaxForeground/ParallaxLayer/ForegroundModulate.visible = layer == 0
-    $ParallaxBackground/ParallaxLayer/BackgroundModulate.visible = layer == 0
+    $Shade.visible = layer == 0
 
 
 func _on_Comet_slo_mo(temporary: bool = true) -> void:
