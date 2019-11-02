@@ -27,6 +27,7 @@ var enemies_spawned: int = 0
 var combo: bool = false
 var ignorata: bool = false
 var save_loaded = false
+var player_moved = false
 
 
 func _ready() -> void:
@@ -72,7 +73,7 @@ func _on_completed_achievements_changed(achievement_name: String) -> void:
 
 
 func _process(delta: float) -> void:
-    if active:
+    if active and player_moved:
         _update_health(health - (COUNTDOWN_RATE_NORMAL if $Player.moving else COUNTDOWN_RATE_FAST) * delta)
     
     if round(health) == 0:
@@ -121,6 +122,7 @@ func load_game() -> void:
 
 
 func new_game() -> void:
+    player_moved = false
     enemies_spawned = 0
     _enable_background_blur(false)
     _update_score(0)
@@ -334,6 +336,7 @@ func _on_Comet_slo_mo(temporary: bool = true) -> void:
 
 
 func _on_Comet_nor_mo() -> void:
+    player_moved = true
     $BounceSound.play()
     Engine.time_scale = 1
     _enable_background_blur(false)
